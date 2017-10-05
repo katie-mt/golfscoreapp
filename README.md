@@ -27,13 +27,22 @@ We can assume there will be one person logging in to report scores in real time 
 A user not logged in should have access to a leaderboard screen that shows all scores for all players in that round. I envision a screen with a hyperlink list of courses (Only one in this iteration of the project), which opens to a screen of all the rounds played on that course (perhaps rounds are labeled by date/time of initial creation), that opens to a table showing each player, their total score, and differential from par based on how many holes they've played. That player is hyperlinked to a detailed page which shows their individual scores per hole.
     
 Design and Layout
+
 There will be 6 total screens:
+
 (1) Sign-In Page: including a username field, a password field, a submit button and an optin to sign up for an account.
+
 (2) List Courses Page - Will include a list of all the courses (comprised of 18 holes each).  Scorer can select the course they will be scoring.
+
 (3) Round Initiation Page - Enables scorer to input the number of players and the names of each player for the round.
+
 (4) Score Input Page - Screen where scorer can input the number of swings for each player for each hole.  (there will actually be 18 of these, one for each hole)
+
 (5) Leaderboard Page - Will list the players in the round and order them from the fewest number of swings to the most number of swings
+
 (6) Independent Player Score - Will list the name of the player at the top of the screen and will then display the number of swings for each hole with the total listed at the bottom.
 
+
 Design will be created with HTML, CSS, and JavaScript
+
 Reach goal will be to implement JavaScript that saves the data to the database immediately upon input instead of waiting for the user to hit a submit button.
