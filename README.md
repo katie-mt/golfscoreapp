@@ -46,3 +46,7 @@ There will be 6 total screens:
 Design will be created with HTML, CSS, and JavaScript
 
 Reach goal will be to implement JavaScript that saves the data to the database immediately upon input instead of waiting for the user to hit a submit button.
+
+Links to Wire Frames-
+https://ibb.co/kgcFyw
+https://ibb.co/kjUjrG
