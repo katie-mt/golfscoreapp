@@ -22,8 +22,13 @@ Score- Has one player, one round, one Hole. This stores the stroke count for eac
 Player- Would be nice feature to CRUD players and keep stats however initial build could be no ability to create new players and will need players preprogrammed as "Player 1", "Player 2". Create a round using the "Player 1", "Player 2" names.
 
 Additionally, I think we should have one User object that can log in as a Score Reporter. 
-We can assume there will be one person logging in to report scores in real time after each hole. This can be one user. (Think of a group of 4 golfers come to the end of their hole, they call/text the tournament director to report scores. That tournament direct actually inputs scores to update real time progress.)
 
+User Stories:
+
+User Story #1:  The Scorekeeper
+We can assume there will be one person logging in to report scores in real time after each hole. This can be one user. (Think of a group of 4 golfers come to the end of their hole, they call/text the tournament director to report scores. That tournament direct actually inputs scores to update real time progress.)  This scorekeeper will use the app to keep score for each of the golf players
+
+User Story #2:  Golf Player
 A user not logged in should have access to a leaderboard screen that shows all scores for all players in that round. I envision a screen with a hyperlink list of courses (Only one in this iteration of the project), which opens to a screen of all the rounds played on that course (perhaps rounds are labeled by date/time of initial creation), that opens to a table showing each player, their total score, and differential from par based on how many holes they've played. That player is hyperlinked to a detailed page which shows their individual scores per hole.
     
 Design and Layout
@@ -46,7 +51,3 @@ There will be 6 total screens:
 Design will be created with HTML, CSS, and JavaScript
 
 Reach goal will be to implement JavaScript that saves the data to the database immediately upon input instead of waiting for the user to hit a submit button.
-
-Links to Wire Frames-
-https://ibb.co/kgcFyw
-https://ibb.co/kjUjrG
