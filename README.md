@@ -54,6 +54,7 @@ Reach goal will be to implement JavaScript that saves the data to the database i
 
 STRETCH GOALS(not in any specific order):
 1)Connect to some golfcourse API to integrate real golf course information such as names and par number for holes.
+2)Deploy Live?(Heroku)
 
 Links to the Wire Frames - 
 https://ibb.co/kgcFyw
