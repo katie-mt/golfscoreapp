@@ -52,6 +52,9 @@ Design will be created with HTML, CSS, and JavaScript
 
 Reach goal will be to implement JavaScript that saves the data to the database immediately upon input instead of waiting for the user to hit a submit button.
 
+STRETCH GOALS(not in any specific order):
+1)Connect to some golfcourse API to integrate real golf course information such as names and par number for holes.
+
 Links to the Wire Frames - 
 https://ibb.co/kgcFyw
 https://ibb.co/kjUjrG
