@@ -3,6 +3,7 @@ Golf Score App
 This app is going to be designed to allow players to easily keep track of their score throughout gameplay. 
 
 Stack: Python, Flask, Html, Css, Jinja2, JavaScript (adding in JS here - Katie)
+Git VCS: Utilizing a develp branch as described in this model- http://nvie.com/posts/a-successful-git-branching-model/
 
 Important golf score notes:
     1)A round of golf is played over 18 holes. After each hole, you should record your score on a scorecard (or in this case, our application) (May seem like common knowledge but its amazing how little I know about golf-Jonathan)
