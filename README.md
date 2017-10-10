@@ -36,17 +36,19 @@ Design and Layout
 
 There will be 6 total screens:
 
-(1) Sign-In Page: including a username field, a password field, a submit button and an optin to sign up for an account.
+(1) Sign-Up Page:  Page for the score keeper to sign up for an account.  Would request username, password, verify password and email address
 
-(2) List Courses Page - Will include a list of all the courses (comprised of 18 holes each).  Scorer can select the course they will be scoring.
+(2) Sign-In Page: including a username field, a password field, a submit button and an optin to sign up for an account.
 
-(3) Round Initiation Page - Enables scorer to input the number of players and the names of each player for the round.
+(3) List Courses Page - Will include a list of all the courses (comprised of 18 holes each).  Scorer can select the course they will be scoring.
 
-(4) Score Input Page - Screen where scorer can input the number of swings for each player for each hole.  (there will actually be 18 of these, one for each hole)
+(4) Tournament Initiation Page - Enables scorer to initiate a tournament and input the name of each player for the tournament.
 
-(5) Leaderboard Page - Will list the players in the round and order them from the fewest number of swings to the most number of swings
+(5) Score Input Page - Screen where scorer can input the number of swings for each player for each hole.  (there will actually be 18 of these, one for each hole)
 
-(6) Independent Player Score - Will list the name of the player at the top of the screen and will then display the number of swings for each hole with the total listed at the bottom.
+(6) Leaderboard Page - Will list the players in the round and order them from the fewest number of swings to the most number of swings
+
+(7) Independent Player Score - Will list the name of the player at the top of the screen and will then display the number of swings for each hole with the total listed at the bottom.
 
 
 Design will be created with HTML, CSS, and JavaScript
