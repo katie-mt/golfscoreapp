@@ -11,6 +11,7 @@ Constructor: Player(name) '''
 db.session.add(Player('Player1'))
 db.session.add(Player('Player2'))
 db.session.add(Player('Player3'))
+db.session.add(Player('Player4'))
 db.session.commit()
 
 '''This is how you would add a new tournament to the db.
