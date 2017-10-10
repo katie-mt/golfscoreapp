@@ -60,5 +60,5 @@ STRETCH GOALS(not in any specific order):
 2)Deploy Live?(Heroku)
 
 Links to the Wire Frames - 
-https://ibb.co/kgcFyw
+https://ibb.co/gdjsWG
 https://ibb.co/kjUjrG
