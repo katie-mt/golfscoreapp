@@ -6,9 +6,11 @@ all into one file called models so here they are...'''
 class Tournament(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     rounds = db.relationship('Round', backref='owner')
 
-    def __init__(self, name):
+    def __init__(self, owner_id, name):
+        self.owner_id = owner_id
         self.name = name
 
     def __repr__(self):
@@ -47,16 +49,16 @@ class Course(db.Model):
 class Hole(db.Model):
     id = db.Column(db.Integer, primary_key= True)
     par = db.Column(db.Integer)
-    owner = db.Column(db.Integer, db.ForeignKey('course.id'))
+    owner_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     scores = db.relationship('Score', backref='hole')
 
 
-    def __init__(self, owner, par):
-        self.owner = owner
+    def __init__(self, owner_id, par):
+        self.owner_id = owner_id
         self.par = par
 
     def __repr__(self):
-        return 'Hole %d' % self.id
+        return '<Hole %d>' % self.id
 
 
 class Player(db.Model):
@@ -72,7 +74,7 @@ class Player(db.Model):
         return '<Player %r>' % self.name
 
 class Round(db.Model):
-    id = db.Column(db.Integer, primary_key= True)
+    id = db.Column(db.Integer, primary_key=True)
     round_number = db.Column(db.Integer)
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
     scores = db.relationship('Score', backref='round')
@@ -82,4 +84,18 @@ class Round(db.Model):
         self.tournament_id = tournament_id
 
     def __repr__(self):
-        return 'Round %d' % self.roundNum
+        return '<Round %d>' % self.roundNum
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True)
+    password = db.Column(db.String(80))
+    tournaments = db.relationship('Tournament', backref='owner')
+
+
+    def __init__(self, username, password):
+        self.username = username
+        self.password = password
+
+    def __repr__(self):
+        return '<User %r' % self.username

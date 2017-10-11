@@ -1,6 +1,6 @@
 from flask import request, redirect, render_template, session, flash
 from app import app, db
-from models import Course, Hole, Player, Round, Score, Tournament
+from models import User, Tournament, Player, Round, Course, Hole, Score 
 
 
 @app.route("/")
