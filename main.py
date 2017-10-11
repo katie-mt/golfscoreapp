@@ -8,7 +8,13 @@ def index():
    encoded_error = request.args.get("error")
    return render_template("signin.html", error=encoded_error and cgi.escape(encoded_error, quote=True))
 
-
+'''The following route pulls all the courses from the DB and puts them into
+the courses variable which is sent to the template where a loop can pull 
+the course name'''
+@app.route("/courses")
+def list_courses():
+    courses = Course.query.all()
+    return render_template("list-courses.html", courses=courses)
 
 
 
