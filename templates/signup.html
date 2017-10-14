@@ -7,58 +7,60 @@
 <!--TODO:  Update the Flask sections with the correct variable names once the backend files are created-->
 
 <html>
-    <body>
-    <h1>Signup for an Account:
+
+<body>
+  <h1>Signup for an Account:
     </h1>
-        <form action="/user_signup" method="post">
-            <table>
-                <tr>
-                    <td>
-                        <label>Username:</label>
-                    </td>
-                    <td>
-                        <input name = "username1" type "text" value = "{{username1}}"/>
-                    </td> 
-                    <td>
-                        <p class ="username_error">{{username_error}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Password:</label>
-                    </td>
-                    <td>
-                        <input name = "verify_password1" type = "password" value = "{{verify_password1}}"/>
-                    </td>
-                    <td>
-                        <p class = "password_error1">{{password_error1}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Verify Password:</label>
-                    </td>
-                    <td>
-                        <input name = "verify_password2" type = "password" value "{{verify_password2}}"/>
-                    </td>
-                    <td>
-                        <p class = "password_error2"> {{password_error2}}</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <label>Email Address:</label>
-                    </td>
-                    <td>
-                        <input name = "user-email" type = "text" value "{{e_address}}"/>
-                    </td>
-                    <td>
-                        <p class = "email_error"> {{email_error}}</p>
-                    </td>
-                </tr>
-            </table>
-            <input type = "submit"/>
-        </form>
-        <p>Already a user? Login <strong><a href="http://www.yahoo.com">here</a></strong></p>
-    </body>
+  <form action="/signup" method="post">
+    <table>
+      <tr>
+        <td>
+          <label>Username:</label>
+        </td>
+        <td>
+          <input name="username" type="text" value="{{username}}" />
+        </td>
+        <td>
+          <p class="username_error">{{username_error}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Password:</label>
+        </td>
+        <td>
+          <input name="password" type="password" value="{{password}}" />
+        </td>
+        <td>
+          <p class="password_error1">{{password_error1}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Verify Password:</label>
+        </td>
+        <td>
+          <input name="verify" type="password" value="{{verify}}" />
+        </td>
+        <td>
+          <p class="password_error"> {{password_error2}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Email Address:</label>
+        </td>
+        <td>
+          <input name="email" type="text" value="{{email}}" />
+        </td>
+        <td>
+          <p class="email_error"> {{email_error}}</p>
+        </td>
+      </tr>
+    </table>
+    <input type="submit" />
+  </form>
+  <p>Already a user? Login <strong><a href="/">here</a></strong></p>
+</body>
+
 </html>
