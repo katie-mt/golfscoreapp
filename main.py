@@ -38,7 +38,7 @@ the course name'''
 @app.route("/courses")
 def list_courses():
     courses = Course.query.all()
-    return render_template("list-courses.html", courses=courses)
+    return render_template("list_courses.html", courses=courses)
 
 
 
