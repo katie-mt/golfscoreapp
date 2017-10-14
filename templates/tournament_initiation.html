@@ -8,11 +8,84 @@
 <!--this is actually going to be a tournament_initiation, rename this file-->
 
 <html>
-    <head>
-    </head>
-    <body>
-        <!--Tournament number - each tournament would have a different name and then the round number-->
-    </body>
+
+<body>
+  <h1>Round</h1>
+  <input name="Number of Players:"/>
+  <!--TODO:  Fill in route-->
+  <form action="/" method="post">
+
+    <table>
+
+      <tr>
+        <td>
+          <label>Number of Players:</label>
+        </td>
+        <td>
+          <input name="Number of Players:" type="text"/>
+        </td>
+        <td>
+          <p class="numplayers_error">{{numplayers_error}}</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label>Player 1 Name:</label>
+        </td>
+        <td>
+          <input name="Player 1 Name:" type="text"/>
+        </td>
+        <td>
+          <p class="name_error">{{name_error}}</p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Player 2 Name:</label>
+        </td>
+        <td>
+          <input name="Player 2 Name:" type="text"/>
+        </td>
+        <td>
+          <p class="name_error">{{name_error}}</p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Player 3 Name:</label>
+        </td>
+        <td>
+          <input name="Player 3 Name:" type="text"/>
+        </td>
+        <td>
+          <p class="name_error">{{name_error}}</p>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <label>Player 4 Name:</label>
+        </td>
+        <td>
+          <input name="Player 4 Name:" type="text"/>
+        </td>
+        <td>
+          <p class="name_error">{{name_error}}</p>
+        </td>
+      </tr>
+
+    </table>
+
+    <input type="Start Round" />
+
+  </form>
+
+</body>
+
 </html>
+        <!--Tournament number - each tournament would have a different name and then the round number-->
+
 
 <!--add base.html for header info, etc-->
