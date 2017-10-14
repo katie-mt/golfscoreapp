@@ -7,9 +7,9 @@ db.drop_all()
 db.create_all()
 
 '''This is how to add new users to the db
-Constructor: User(username, password) '''
+Constructor: User(username, email, password) '''
 
-db.session.add(User('golfguy', 'golfislife'))
+db.session.add(User('golfguy','golfguy@gmail.com','golfislife'))
 db.session.commit()
 
 '''This is how you would add a new tournament to the db.
