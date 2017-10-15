@@ -1,8 +1,8 @@
 {% extends "base.html" %} {% block content %}
-<h1>Setting up round for {course.name}</h1>
+<h1>Setting up round for {{course}}</h1>
 
 <!--TODO:  Fill in route-->
-<form action="/initiate_tournament" method="post">
+<form action="/score_input" method="post">
   <table>
     <!--<tr>
       <td>
