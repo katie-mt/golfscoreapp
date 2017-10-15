@@ -36,7 +36,10 @@ db.session.commit()
 Constructor = Course(name)'''
 
 db.session.add(Course('Brooke Woods'))
+db.session.add(Course('Emerald Valley'))
+db.session.add(Course('Broadmoore West Course'))
 db.session.commit()
+
 
 '''This is how to add a new hole to the db
 Constructor: Hole(owner_id, par)'''

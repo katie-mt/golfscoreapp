@@ -1,10 +1,11 @@
-{% extends "base.html" %} {% block content %}
+ {% extends "base.html" %} {% block content %}
 <h1>Select a course:</h1>
 <!--TODO:  Update the routes once routes are available-->
-<ul>
+<form action='/initiate_tournament' method='post'>
   {% for course in courses %}
-  <li><a href="/initiate_tournament">{{course.name}}</a></li>
-  <input type='hidden' value='{{course}}'> {% endfor %}
-</ul>
+
+  <input type='radio' name='course' value='{{course.name}}'>
+  <label for='{{course.name}}'>{{course.name}}</label> {% endfor %} <input type='submit' value='Start Tournament'>
+</form>
 
 {% endblock %}

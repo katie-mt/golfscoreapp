@@ -61,7 +61,7 @@ class Round(db.Model):
 class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
-    db.relationship('Hole', backref = 'owner')
+    holes = db.relationship('Hole', backref = 'owner')
 
 
     def __init__(self, name):

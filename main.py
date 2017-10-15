@@ -96,7 +96,6 @@ endpoints_without_login = ['signup' ,'leaderboard', 'signin']
 @app.before_request
 def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
-        print('wtf is going on')
         return redirect("/signin")
 
 
