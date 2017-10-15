@@ -64,8 +64,18 @@ def list_courses():
     return render_template("list_courses.html", courses=courses)
 
 
-'''@app.route("/tournament")
-def create_tournament():'''
+@app.route("/initiate_tournament", methods=['GET', 'POST'])
+def initiate_tournament():
+    if request.method == 'GET':
+        return render_template('tournament_initiation.html', title='Start A Tournament')
+    else:
+        player_1 = request.form['player1']
+        player_2 = request.form['player2']
+        player_3 = request.form['player3']
+        player_4 = request.form['player4']
+
+
+
 
 def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()

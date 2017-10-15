@@ -1,28 +1,25 @@
 {% extends "base.html" %} {% block content %}
 <h1>Round</h1>
-<input name="Number of Players:" />
 <!--TODO:  Fill in route-->
-<form action="/" method="post">
-
+<form action="/tournament_initiation" method="post">
   <table>
-
     <tr>
       <td>
         <label>Number of Players:</label>
       </td>
       <td>
-        <input name="Number of Players:" type="text" />
+        <input name="numOfPlayers" type="text" />
       </td>
-      <td>
+      <!--<td>
         <p class="numplayers_error">{{numplayers_error}}</p>
-      </td>
+      </td>-->
     </tr>
     <tr>
       <td>
         <label>Player 1 Name:</label>
       </td>
       <td>
-        <input name="Player 1 Name:" type="text" />
+        <input name="Player1" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -34,7 +31,7 @@
         <label>Player 2 Name:</label>
       </td>
       <td>
-        <input name="Player 2 Name:" type="text" />
+        <input name="Player2" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -46,7 +43,7 @@
         <label>Player 3 Name:</label>
       </td>
       <td>
-        <input name="Player 3 Name:" type="text" />
+        <input name="Player3" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -58,7 +55,7 @@
         <label>Player 4 Name:</label>
       </td>
       <td>
-        <input name="Player 4 Name:" type="text" />
+        <input name="Player4" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -67,7 +64,7 @@
 
   </table>
 
-  <input type="Start Round" />
+  <input type="Submit" value='Start Round!' />
 
 </form>
 
