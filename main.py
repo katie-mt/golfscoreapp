@@ -6,13 +6,15 @@ from models import User, Tournament, Player, Round, Course, Hole, Score
 @app.route("/")
 def index():
    encoded_error = request.args.get("error")
-   return render_template("signin.html", error=encoded_error and cgi.escape(encoded_error, quote=True))
+   return redirect('/courses')
 
 @app.route("/signin", methods=['GET', 'POST'])
-def login():
+def signin():
     if request.method == 'GET':
+        print('am I getting here?')
         return render_template('signin.html')
     elif request.method == 'POST':
+        print('what about here?')
         email = request.form['email']
         password = request.form['password']
         users = User.query.filter_by(email=email)
@@ -25,6 +27,11 @@ def login():
         flash('bad username or password')
         '''have it redirect to courses page until other controllers are implemented'''
         return redirect("/courses")
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    del session['user']
+    return redirect('/')
 
 
 @app.route("/signup", methods=['GET','POST'])
@@ -48,11 +55,9 @@ def signup():
         session['user'] = user.email
         return redirect("/")
     else:
-        return render_template('signup.html')
+        return render_template('signup.html', title='Sign up!')
 
-'''The following route pulls all the courses from the DB and puts them into
-the courses variable which is sent to the template where a loop can pull
-the course name'''
+
 @app.route("/courses")
 def list_courses():
     courses = Course.query.all()
@@ -66,11 +71,12 @@ def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
     return owner
 
-endpoints_without_login = ['leaderboard', 'signin']
+endpoints_without_login = ['signup' ,'leaderboard', 'signin']
 
 @app.before_request
 def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
+        print('wtf is going on')
         return redirect("/signin")
 
 

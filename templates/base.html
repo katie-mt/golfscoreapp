@@ -12,12 +12,17 @@
 </head>
 
 <body>
-  {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+  {% if 'user' in session %} {{ session['user'] }}
+  <div>
+    <form action="/logout" method="post" id='logout'>
+      <input type="submit" value="Log Out" />
+    </form>
+  </div>
+  {% endif %} {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
   <p>{{message}}</p>
   {% endfor %}{% endif %}{% endwith %}
   <nav>
     <ul>
-      <li><a href='/logout'>Logout</a></li>
       <li><a href='/leaderboard'>Leaderboard</a></li>
     </ul>
   </nav>
