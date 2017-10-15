@@ -1,19 +1,10 @@
-<!doctype html>
+{% extends "base.html" %} {% block content %}
+<h1>Select a course:</h1>
+<!--TODO:  Update the routes once routes are available-->
+<ul>
+  {% for course in courses %}
+  <li><a href="http://www.placeholder.com">{{course.name}}</a></li>
+  {% endfor %}
+</ul>
 
-<!--Corresponds to View #3 in the wireframe-->
-
-<!--TODO:  Are we using the golf API to attain golf course data?  Need this info before spending time building this file-->
-
-<html>
-
-<body>
-  <h1>Select a course:</h1>
-  <!--TODO:  Update the routes once routes are available-->
-  <ul>
-    {% for course in courses %}
-    <li><a href="http://www.placeholder.com">{{course.name}}</a></li>
-    {% endfor %}
-  </ul>
-</body>
-
-</html>
+{% endblock %}

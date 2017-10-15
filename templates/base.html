@@ -6,9 +6,21 @@
 <!--need to add directions to repo on how to open app and run it.  Do this before Sunday-->
 
 <html>
-    <head>
-        <h1>Welcome, {{username}}!</h1>
-    </head>
-    <body>
-    </body>
+
+<head>
+  <title>{{title}}</title>
+</head>
+
+<body>
+  {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+  <p>{{message}}</p>
+  {% endfor %}{% endif %}{% endwith %}
+  <nav>
+    <ul>
+      <li><a href='/logout'>Logout</a></li>
+      <li><a href='/leaderboard'>Leaderboard</a></li>
+    </ul>
+  </nav>
+  {% block content %} {% endblock %}</body>
+
 </html>

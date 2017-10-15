@@ -1,66 +1,54 @@
-<!doctype html>
-
-<!--From user-signup-->
-
-<!--Corresponds to View #2 in the wireframe-->
-
-<!--TODO:  Update the Flask sections with the correct variable names once the backend files are created-->
-
-<html>
-
-<body>
-  <h1>Signup for an Account:
+{% extends "base.html" %} {% block content%}
+<h1>Signup for an Account:
     </h1>
-  <form action="/signup" method="post">
-    <table>
-      <tr>
-        <td>
-          <label>Username:</label>
-        </td>
-        <td>
-          <input name="username" type="text" value="{{username}}" />
-        </td>
-        <td>
-          <p class="username_error">{{username_error}}</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label>Password:</label>
-        </td>
-        <td>
-          <input name="password" type="password" value="{{password}}" />
-        </td>
-        <td>
-          <p class="password_error1">{{password_error1}}</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label>Verify Password:</label>
-        </td>
-        <td>
-          <input name="verify" type="password" value="{{verify}}" />
-        </td>
-        <td>
-          <p class="password_error"> {{password_error2}}</p>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <label>Email Address:</label>
-        </td>
-        <td>
-          <input name="email" type="text" value="{{email}}" />
-        </td>
-        <td>
-          <p class="email_error"> {{email_error}}</p>
-        </td>
-      </tr>
-    </table>
-    <input type="submit" />
-  </form>
-  <p>Already a user? Login <strong><a href="/">here</a></strong></p>
-</body>
-
-</html>
+<form action="/signup" method="post">
+  <table>
+    <tr>
+      <td>
+        <label>Username:</label>
+      </td>
+      <td>
+        <input name="username" type="text" value="{{username}}" />
+      </td>
+      <td>
+        <p class="username_error">{{username_error}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Password:</label>
+      </td>
+      <td>
+        <input name="password" type="password" value="{{password}}" />
+      </td>
+      <td>
+        <p class="password_error1">{{password_error1}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Verify Password:</label>
+      </td>
+      <td>
+        <input name="verify" type="password" value="{{verify}}" />
+      </td>
+      <td>
+        <p class="password_error"> {{password_error2}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <label>Email Address:</label>
+      </td>
+      <td>
+        <input name="email" type="text" value="{{email}}" />
+      </td>
+      <td>
+        <p class="email_error"> {{email_error}}</p>
+      </td>
+    </tr>
+  </table>
+  <input type="submit" />
+</form>
+<p>Already a user? Login <strong><a href="/">here</a></strong></p>
+{% endblock %}
