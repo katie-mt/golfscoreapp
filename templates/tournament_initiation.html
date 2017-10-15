@@ -1,9 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<h1>Round</h1>
+<h1>Setting up round for {course.name}</h1>
+
 <!--TODO:  Fill in route-->
-<form action="/tournament_initiation" method="post">
+<form action="/initiate_tournament" method="post">
   <table>
-    <tr>
+    <!--<tr>
       <td>
         <label>Number of Players:</label>
       </td>
@@ -12,14 +13,14 @@
       </td>
       <!--<td>
         <p class="numplayers_error">{{numplayers_error}}</p>
-      </td>-->
-    </tr>
+      </td>
+    </tr>-->
     <tr>
       <td>
         <label>Player 1 Name:</label>
       </td>
       <td>
-        <input name="Player1" type="text" />
+        <input name="player1" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -31,7 +32,7 @@
         <label>Player 2 Name:</label>
       </td>
       <td>
-        <input name="Player2" type="text" />
+        <input name="player2" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -43,7 +44,7 @@
         <label>Player 3 Name:</label>
       </td>
       <td>
-        <input name="Player3" type="text" />
+        <input name="player3" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>
@@ -55,7 +56,7 @@
         <label>Player 4 Name:</label>
       </td>
       <td>
-        <input name="Player4" type="text" />
+        <input name="player4" type="text" />
       </td>
       <td>
         <p class="name_error">{{name_error}}</p>

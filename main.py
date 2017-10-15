@@ -68,11 +68,21 @@ def list_courses():
 def initiate_tournament():
     if request.method == 'GET':
         return render_template('tournament_initiation.html', title='Start A Tournament')
-    else:
+    elif request.method == 'POST':
         player_1 = request.form['player1']
+        db.session.add(Player(player_1))
         player_2 = request.form['player2']
+        db.session.add(Player(player_2))
         player_3 = request.form['player3']
+        db.session.add(Player(player_3))
         player_4 = request.form['player4']
+        db.session.add(Player(player_4))
+        db.session.commit()
+        return redirect('score_input')
+
+@app.route('/score_input')
+def input_score():
+    return "PlaceHolder"
 
 
 

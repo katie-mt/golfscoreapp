@@ -4,7 +4,7 @@
 <ul>
   {% for course in courses %}
   <li><a href="/initiate_tournament">{{course.name}}</a></li>
-  {% endfor %}
+  <input type='hidden' value='{{course}}'> {% endfor %}
 </ul>
 
 {% endblock %}
