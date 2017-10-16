@@ -85,17 +85,11 @@ def score_input():
         db.session.add(Player(player_4))
         db.session.commit()
 
-        all_Players = Player.query.all()
         this_Rounds_Players = []
         this_Rounds_Players += Player.query.filter_by(name = player_1)
         this_Rounds_Players += Player.query.filter_by(name = player_2)
         this_Rounds_Players += Player.query.filter_by(name = player_3)
         this_Rounds_Players += Player.query.filter_by(name = player_4)
-
-
-
-
-
 
         return render_template('score_input.html', players=this_Rounds_Players)
 
