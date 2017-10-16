@@ -2,19 +2,36 @@
 <h3>Input Scores:</h3>
 
 <table style="width:50%">
-  <tr>
-    <th>name</th>
-    <th>Score</th>
-  </tr>
-  <form action='/handle_score' method='post'>
-    {% for player in players %}
+  <form action='/process_score' method='post'>
+    <tr>
+      <th>name</th>
+      <th>Score</th>
+    </tr>
     <tr>
       <td>
-        <p>{{player.name}}</p>
+        <p>{{players[0].name}}</p>
       </td>
-      <td><input type="text" name="score" placeholder="Score"></td>
+      <td><input type="text" name="player_1_score" placeholder="Enter Score"></td>
     </tr>
-    {% endfor %}
+    <tr>
+      <td>
+        <p>{{players[1].name}}</p>
+      </td>
+      <td><input type="text" name="player_2_score" placeholder="Enter Score"></td>
+    </tr>
+    <tr>
+      <td>
+        <p>{{players[2].name}}</p>
+      </td>
+      <td><input type="text" name="player_3_score" placeholder="Enter Score"></td>
+    </tr>
+    <tr>
+      <td>
+        <p>{{players[3].name}}</p>
+      </td>
+      <td><input type="text" name="player_4_score" placeholder="Enter Score"></td>
+    </tr>
+
 </table>
 <input type='submit' value='submit score!'>
 </form>

@@ -32,6 +32,15 @@ Constuctor: Round(roundNumber, tournament_id)'''
 db.session.add(Round(1,1))
 db.session.commit()
 
+'''This is how to add a round to person relationshi to the db
+Constructor: Round_Player_Table(Round_id, Player_id)'''
+
+db.session.add(Round_Player_Table(1,1))
+db.session.add(Round_Player_Table(1,2))
+db.session.add(Round_Player_Table(1,3))
+db.session.add(Round_Player_Table(1,4))
+db.session.commit()
+
 '''This is how to add a Course to the db.
 Constructor = Course(name)'''
 

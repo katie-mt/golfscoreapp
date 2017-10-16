@@ -1,6 +1,6 @@
 from flask import request, redirect, render_template, session, flash
 from app import app, db
-from models import User, Tournament, Player, Round, Course, Hole, Score
+from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 
 
 @app.route("/")
@@ -70,34 +70,68 @@ def initiate_tournament():
         return render_template('tournament_initiation.html', title='Start A Tournament')
     elif request.method == 'POST':
         tournament_course = request.form['course']
+
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
+
+@app.route('/process_players', methods=['POST', 'GET'])
+def process_players():
+    if request.method == 'POST':
+        player_1_Name = request.form['player1']
+        db.session.add(Player(player_1_Name))
+        player_2_Name = request.form['player2']
+        db.session.add(Player(player_2_Name))
+        player_3_Name = request.form['player3']
+        db.session.add(Player(player_3_Name))
+        player_4_Name = request.form['player4']
+        db.session.add(Player(player_4_Name))
+        db.session.commit()
+        session['player_1_Name'] = player_1_Name
+        session['player_2_Name'] = player_2_Name
+        session['player_3_Name'] = player_3_Name
+        session['player_4_Name'] = player_4_Name
+        return redirect('/score_input')
 
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
+    this_Rounds_Players = []
+    this_Rounds_Players += Player.query.filter_by(name = session['player_1_Name'])
+    this_Rounds_Players += Player.query.filter_by(name = session['player_2_Name'])
+    this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
+    this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
+
+
+
+    return render_template('score_input.html', players=this_Rounds_Players)
+
+
+
+
+@app.route('/process_score', methods=['POST', 'GET'])
+def process_score():
+    round_num = 1
+    hole_num = 1
+    tournament_id = 1
     if request.method == 'POST':
-        player_1 = request.form['player1']
-        db.session.add(Player(player_1))
-        player_2 = request.form['player2']
-        db.session.add(Player(player_2))
-        player_3 = request.form['player3']
-        db.session.add(Player(player_3))
-        player_4 = request.form['player4']
-        db.session.add(Player(player_4))
+        player_1_Score = int(request.form['player_1_score'])
+        player_2_Score = int(request.form['player_2_score'])
+        player_3_Score = int(request.form['player_3_score'])
+        player_4_Score = int(request.form['player_4_score'])
+        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=1, score=player_1_Score))
+        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=2, score=player_2_Score))
+        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=3, score=player_3_Score))
+        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=4, score=player_4_Score))
+        hole_num =+ 1
+        if hole_num > 18:
+            db.session.add(Round(round_num,tournament_id))
+            db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
+            db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
+            db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
+            db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
 
-        this_Rounds_Players = []
-        this_Rounds_Players += Player.query.filter_by(name = player_1)
-        this_Rounds_Players += Player.query.filter_by(name = player_2)
-        this_Rounds_Players += Player.query.filter_by(name = player_3)
-        this_Rounds_Players += Player.query.filter_by(name = player_4)
-
-        return render_template('score_input.html', players=this_Rounds_Players)
-
-'''@app.route('handle_score', methods=['POST', 'GET'])
-def handle_score():
-    if request.method == 'POST':
-
-'''
+        return redirect('/score_input')
+    else:
+        return render_template("score_input.html")
 
 
 def logged_in_user():

@@ -2,66 +2,54 @@
 <h1>Setting up round for {{course}}</h1>
 
 <!--TODO:  Fill in route-->
-<form action="/score_input" method="post">
-  <table>
-    <!--<tr>
-      <td>
-        <label>Number of Players:</label>
-      </td>
-      <td>
-        <input name="numOfPlayers" type="text" />
-      </td>
-      <!--<td>
-        <p class="numplayers_error">{{numplayers_error}}</p>
-      </td>
-    </tr>-->
-    <tr>
-      <td>
-        <label>Player 1 Name:</label>
-      </td>
-      <td>
-        <input name="player1" type="text" />
-      </td>
-      <td>
-        <p class="name_error">{{name_error}}</p>
-      </td>
-    </tr>
+<form action="/process_players" method="post">
+  <tr>
+    <td>
+      <label>Player 1 Name:</label>
+    </td>
+    <td>
+      <input name="player1" type="text" />
+    </td>
+    <td>
+      <p class="name_error">{{name_error}}</p>
+    </td>
+  </tr>
 
-    <tr>
-      <td>
-        <label>Player 2 Name:</label>
-      </td>
-      <td>
-        <input name="player2" type="text" />
-      </td>
-      <td>
-        <p class="name_error">{{name_error}}</p>
-      </td>
-    </tr>
+  <tr>
+    <td>
+      <label>Player 2 Name:</label>
+    </td>
+    <td>
+      <input name="player2" type="text" />
+    </td>
+    <td>
+      <p class="name_error">{{name_error}}</p>
+    </td>
+  </tr>
 
-    <tr>
-      <td>
-        <label>Player 3 Name:</label>
-      </td>
-      <td>
-        <input name="player3" type="text" />
-      </td>
-      <td>
-        <p class="name_error">{{name_error}}</p>
-      </td>
-    </tr>
+  <tr>
+    <td>
+      <label>Player 3 Name:</label>
+    </td>
+    <td>
+      <input name="player3" type="text" />
+    </td>
+    <td>
+      <p class="name_error">{{name_error}}</p>
+    </td>
+  </tr>
 
-    <tr>
-      <td>
-        <label>Player 4 Name:</label>
-      </td>
-      <td>
-        <input name="player4" type="text" />
-      </td>
-      <td>
-        <p class="name_error">{{name_error}}</p>
-      </td>
-    </tr>
+  <tr>
+    <td>
+      <label>Player 4 Name:</label>
+    </td>
+    <td>
+      <input name="player4" type="text" />
+    </td>
+    <td>
+      <p class="name_error">{{name_error}}</p>
+    </td>
+  </tr>
 
   </table>
 

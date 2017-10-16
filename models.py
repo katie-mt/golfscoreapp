@@ -36,6 +36,7 @@ class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True)
     scores = db.relationship('Score', backref='player')
+    rounds = db.relationship('Round_Player_Table', backref='player')
 
 
     def __init__(self, name):
@@ -49,6 +50,8 @@ class Round(db.Model):
     round_number = db.Column(db.Integer)
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
     scores = db.relationship('Score', backref='round')
+    players = db.relationship('Round_Player_Table', backref='round')
+
 
     def __init__(self, round_number, tournament_id):
         self.round_number = round_number
@@ -85,6 +88,16 @@ class Hole(db.Model):
     def __repr__(self):
         return '<Hole %d>' % self.id
 
+class Round_Player_Table(db.Model):
+    '''this is a table specifically for associating a round with a player. This is a many-to-many relationship
+    as a round can have many players and a player can have many rounds(hence having a unique table for this relationship)'''
+    id = db.Column(db.Integer, primary_key=True)
+    round_id = db.Column(db.Integer, db.ForeignKey('round.id'))
+    player_id = db.Column(db.Integer, db.ForeignKey('player.id'))
+
+    def __init__(self, round_id, player_id):
+        self.round_id=round_id
+        self.player_id=player_id
 
 class Score(db.Model):
     id = db.Column(db.Integer, primary_key=True)
