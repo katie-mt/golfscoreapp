@@ -120,7 +120,7 @@ def process_score():
         db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=2, score=player_2_Score))
         db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=3, score=player_3_Score))
         db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=4, score=player_4_Score))
-        hole_num =+ 1
+        hole_num += 1
         if hole_num > 18:
             db.session.add(Round(round_num,tournament_id))
             db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
