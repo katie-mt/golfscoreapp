@@ -11,10 +11,8 @@ def index():
 @app.route("/signin", methods=['GET', 'POST'])
 def signin():
     if request.method == 'GET':
-        print('am I getting here?')
         return render_template('signin.html')
     elif request.method == 'POST':
-        print('what about here?')
         email = request.form['email']
         password = request.form['password']
         users = User.query.filter_by(email=email)
@@ -30,7 +28,8 @@ def signin():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-    del session['user']
+    session.clear()
+    print(session.keys())
     return redirect('/')
 
 
@@ -91,6 +90,9 @@ def process_players():
         session['player_4_Name'] = player_4_Name
         return redirect('/score_input')
 
+
+
+
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
     this_Rounds_Players = []
@@ -99,39 +101,40 @@ def score_input():
     this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
 
-
-
+    if 'hole_num' not in session:
+        session['hole_num'] = 1
+    if 'round_num' not in session:
+        session['round_num'] = 1
     return render_template('score_input.html', players=this_Rounds_Players)
 
 
 
-
-@app.route('/process_score', methods=['POST', 'GET'])
+@app.route('/process_score', methods=['POST'])
 def process_score():
-    round_num = 1
-    hole_num = 1
     tournament_id = 1
     if request.method == 'POST':
-        player_1_Score = int(request.form['player_1_score'])
-        player_2_Score = int(request.form['player_2_score'])
-        player_3_Score = int(request.form['player_3_score'])
-        player_4_Score = int(request.form['player_4_score'])
-        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=1, score=player_1_Score))
-        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=2, score=player_2_Score))
-        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=3, score=player_3_Score))
-        db.session.add(Score(round_id=round_num, hole_id=hole_num, player_id=4, score=player_4_Score))
-        hole_num += 1
-        if hole_num > 18:
-            db.session.add(Round(round_num,tournament_id))
+        if session['hole_num'] > 18:
+            session['round_num'] += 1
+            session['hole_num'] = 1
+            db.session.add(Round(session['round_num'],tournament_id))
             db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
             db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
             db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
             db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+
+        player_1_Score = int(request.form['player_1_score'])
+        player_2_Score = int(request.form['player_2_score'])
+        player_3_Score = int(request.form['player_3_score'])
+        player_4_Score = int(request.form['player_4_score'])
+        db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=1, score=player_1_Score))
+        db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=2, score=player_2_Score))
+        db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=3, score=player_3_Score))
+        db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=4, score=player_4_Score))
+        session['hole_num'] += 1
         db.session.commit()
 
+
         return redirect('/score_input')
-    else:
-        return render_template("score_input.html")
 
 
 def logged_in_user():
