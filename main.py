@@ -112,7 +112,7 @@ def score_input():
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     tournament_id = 1
-    if session['hole_num'] > 18:
+    if session['hole_num'] >= 18:
         session['round_num'] += 1
         session['hole_num'] = 1
         db.session.add(Round(session['round_num'],tournament_id))
@@ -120,6 +120,7 @@ def process_score():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+        return redirect('/leaderboard')
 
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
