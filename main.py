@@ -68,23 +68,20 @@ def initiate_tournament():
         return render_template('tournament_initiation.html', title='Start A Tournament')
     elif request.method == 'POST':
         tournament_course = request.form['course']
+        session['course'] = tournament_course
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
 
 @app.route('/process_players', methods=['POST', 'GET'])
 def process_players():
     if request.method == 'POST':
         player_1_Name = request.form['player1']
-        if not Player.query.filter_by(name=player_1_Name):
-            db.session.add(Player(player_1_Name))
+        db.session.add(Player(player_1_Name))
         player_2_Name = request.form['player2']
-        if not Player.query.filter_by(name=player_2_Name):
-            db.session.add(Player(player_2_Name))
+        db.session.add(Player(player_2_Name))
         player_3_Name = request.form['player3']
-        if not Player.query.filter_by(name=player_3_Name):
-            db.session.add(Player(player_3_Name))
+        db.session.add(Player(player_3_Name))
         player_4_Name = request.form['player4']
-        if not Player.query.filter_by(name=player_4_Name):
-            db.session.add(Player(player_4_Name))
+        db.session.add(Player(player_4_Name))
         db.session.commit()
         session['player_1_Name'] = player_1_Name
         session['player_2_Name'] = player_2_Name
@@ -103,6 +100,12 @@ def score_input():
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
+        db.session.add(Round(session['round_num'],1))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+        db.session.commit()
     return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'])
 
 @app.route('/process_score', methods=['POST', 'GET'])
@@ -116,6 +119,7 @@ def process_score():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+        db.session.commit()
         return redirect('/leaderboard')
 
     player_1_Score = int(request.form['player_1_score'])
@@ -168,8 +172,9 @@ def leaderboard():
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
         round_num = session['round_num']
+        course = session['course']
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course)
 
 
 
