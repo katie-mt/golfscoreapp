@@ -137,35 +137,28 @@ def process_score():
 
 
 @app.route("/leaderboard", methods=['GET'])
-"""populating score data assuming a for loop will be used in the template to list every players score"""
+    hole_id = session['hole_num']
+    round_id = session['round_num']
     if request.method == 'GET':
-        player1total = int(0)
-        player2total = int(0)
-        player3total = int(0)
-        player4total = int(0)
+    player1total = int(0)
+    player2total = int(0)
+    player3total = int(0)
+    player4total = int(0)
 
-        player1 = Score.query.filter_by(player_id=1)
-        for scores_1 in player1.score:
-            player1total = player1total + scores_1
-        player2 = Score.query.filter_by(player_id=2)
-        for scores_2 in player2.score:
-            player2total = player2total + scores_2
-        player3 = Score.query.filter_by(player_id=3)
-        for scores_3 in player3.score:
-            player3total = player3total + scores_3
-        player4 = Score.query.filter_by(player_id=4)
-        for scores_4 in player4.score:
-            player4total = player4total + scores_4
+    player1 = Score.query.filter_by(player_id=1)
+    for scores_1 in player1.score:
+        player1total = player1total + scores_1
+    player2 = Score.query.filter_by(player_id=2)
+    for scores_2 in player2.score:
+        player2total = player2total + scores_2
+    player3 = Score.query.filter_by(player_id=3)
+    for scores_3 in player3.score:
+        player3total = player3total + scores_3
+    player4 = Score.query.filter_by(player_id=4)
+    for scores_4 in player4.score:
+        player4total = player4total + scores_4
 
-        player_1_Name = Player.query.filter_by(name=player_1_Name)
-        player_2_Name = Player.query.filter_by(name=player_2_Name)
-        player_3_Name = Player.query.filter_by(name=player_3_Name)
-        player_4_Name = Player.query.filter_by(name=player_4_Name)
-
-        hole_id = session['hole_num']
-        round_id = session['round_num']
-
-        return render_template("leaderboard.html," player1total=player1total, player2total=player2total, player3total=player3total, player4total=player4total, player_1_Name=player_1_Name, player_2_Name=player_2_Name, player_3_Name=player_3_Name, player_4_Name=player_4_Name, hole_id=hole_id, round_id=round_id)
+    return render_template("leaderboard.html", **locals())
 
 
 
