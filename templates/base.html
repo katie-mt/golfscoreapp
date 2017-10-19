@@ -10,20 +10,32 @@
 </head>
 
 <body>
-  {% if 'user' in session %} {{ session['user'] }}
-  <div>
-    <form action="/logout" method="post" id='logout'>
-      <input type="submit" value="Log Out" />
-    </form>
-  </div>
-  {% endif %} {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
-  <p>{{message}}</p>
-  {% endfor %}{% endif %}{% endwith %}
-  <nav>
-    <ul>
-      <li><a href='/leaderboard'>Leaderboard</a></li>
-    </ul>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">Golf Score App</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/leaderboard">Leaderboard <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <span class="navbar-text">
+        {% if 'user' in session %} {{ session['user'] }}
+        <li>
+          <form action="/logout" method="post" id='logout' align="right">
+            <input type="submit" value="Log Out" />
+          </form>
+        </li>
+        {% endif %} {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}{% endif %}{% endwith %}
+      </span>
+    </div>
   </nav>
+
   {% block content %} {% endblock %}
   
   <!-- jQuery library -->
