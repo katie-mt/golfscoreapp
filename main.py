@@ -152,51 +152,62 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-@app.route("/scoreinput", methods=['POST', 'GET'])
-def input_score():
-    User.id = User.query.filter_by(id=id)
+@app.route("/score_input", methods=['POST', 'GET'])
+def score_input():
+    User = User.query.filter_by(id=id)
     if request.method == 'POST':
 
+        session[round_id] = 1
+        session[hole_id] = 1
 
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
         score1 = request.form['score1']
         score2 = request.form['score2']
         score3 = request.form['score3']
         score4 = request.form['score4']
-        Tournament(player_id)score()
-
-        round_id = Round.query.filter_by(round_id=round_id)
-        hole_id = Hole.query.filter_by(hole_id=hole_id)
-        player_id = Player.query.filter_by(player_id=player_id)
-        scoreinput = Score(id=id, round_id=round_id, hole_id=hold_id, player_id=player_id, score=score)
-        db.session.add(scoreinput)
-        hole_id = hole_id +1
+        Score(round_id=session[round_id], hole_id=session[hole_id] player=1, score=score1) 
+        db.session.add(Score)
+        Score(round_id=session[round_id], hole_id=session[hole_id] player=2, score=score2)
+        db.session.add(Score)
+        Score(round_id=session[round_id], hole_id=session[hole_id] player=3, score=score3) 
+        db.session.add(Score)
+        Score(round_id=session[round_id], hole_id=session[hole_id] player=4, score=score4) 
+        db.session.add(Score)
+        session[hole_id] = session[hole_id] +1
         if hole_id > 18:
-            round_id = round_id +1
-            hole_id == 1
+            session[round_id] = session[round_id] +1
+            session[hole_id] == 1
             db.session.add(round_id)
         db.session.add(hole_id)
         db.session.commit()
-        """Add User session validation """
-        return redirect("/score-input.html", scoreinput=scoreinput, hole_id=hole_id, round_id=round_id)
+        return redirect("/score_input", round_id=round_id, hole_id=hole_id, player=player, score=score)
     else:
-        @app.before_request
-        def require_login():
-            if not ('user' in session or request.endpoint in endpoints_without_login):
-                
-        return render_template("score-input.html", user=user, round_id=round_id, hole_id=hole_id, player_id=player_id, score=score)
-    """will i get a bug on the first input prompt because vars will be empty?"""
+        return render_template("score_input.html", user=user, round_id=round_id, hole_id=hole_id, player=player, score=score)
 
 @app.route("/leaderboard", methods=['GET'])
-"""generating the data for every players score. assuming a for loop will be used in the template to list every players score"""
+"""populating score data assuming a for loop will be used in the template to list every players score"""
     if request.method == 'GET':
-        players[] = Player.query.filter_by(score=score)
-        round_id = Round.query.filter_by(round_id=round_id)
-        """all_scores = Score.query.all(score=score)"""
-        """player_id = User.query.all(player_id=player_id)"""
-        """score_db = Score(id=id, round_id=round_id, hole_id=hold_id, player_id=player_id, score=score)"""
+        player1 = Score.query.filter_by(player_id==1)
+        player2 = Score.query.filter_by(player_id==2)
+        player3 = Score.query.filter_by(player_id==3)
+        player4 = Score.query.filter_by(player_id==4)
         return render_template("leaderboard.html," user=user, players=players, score=score, round_id=round_id)
 
+
+@app.before_request
+def require_login():
+    if not ('user' in session or request.endpoint in endpoints_without_login):
+        return redirect("/leaderboard")
+        """ Should I redirect to leaderboard or login?"""
+
+def logged_in_user():
+    scoreKeeper = User.query.filter_by(User=session['username']).first()
+    return scoreKeeper
+    """ This is set up so the login is set by the session['username']"""
+
+endpoints_without_login = ['scoreinput']
+
+# Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
 
 if __name__ == '__main__':
     app.run()
