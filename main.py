@@ -32,7 +32,6 @@ def logout():
     print(session.keys())
     return redirect('/')
 
-
 @app.route("/signup", methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
@@ -40,7 +39,6 @@ def signup():
         email = request.form['email']
         password = request.form['password']
         verify = request.form['verify']
-
         email_db_count = User.query.filter_by(email=email).count()
         if email_db_count > 0:
             flash('yikes! ' + email + ' is already taken')
@@ -56,8 +54,6 @@ def signup():
     else:
         return render_template('signup.html', title='Sign up!')
 
-
-
 '''The following route pulls all the courses from the DB and puts them into
 the courses variable which is sent to the template where a loop can pull 
 the course name'''
@@ -66,14 +62,12 @@ def list_courses():
     courses = Course.query.all()
     return render_template("list_courses.html", courses=courses)
 
-
 @app.route("/initiate_tournament", methods=['GET', 'POST'])
 def initiate_tournament():
     if request.method == 'GET':
         return render_template('tournament_initiation.html', title='Start A Tournament')
     elif request.method == 'POST':
         tournament_course = request.form['course']
-
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
 
 @app.route('/process_players', methods=['POST', 'GET'])
@@ -94,9 +88,6 @@ def process_players():
         session['player_4_Name'] = player_4_Name
         return redirect('/score_input')
 
-
-
-
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
     this_Rounds_Players = []
@@ -104,14 +95,11 @@ def score_input():
     this_Rounds_Players += Player.query.filter_by(name = session['player_2_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
-
     if 'hole_num' not in session:
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
     return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'])
-
-
 
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
@@ -125,7 +113,6 @@ def process_score():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         return redirect('/leaderboard')
-
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
@@ -138,9 +125,6 @@ def process_score():
     db.session.commit()
     return redirect('/score_input')
 
-
-
-
 def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
     return owner
@@ -152,46 +136,14 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-@app.route("/score_input", methods=['POST', 'GET'])
-def score_input():
-    User = User.query.filter_by(id=id)
-    if request.method == 'POST':
-
-        session[round_id] = 1
-        session[hole_id] = 1
-
-        score1 = request.form['score1']
-        score2 = request.form['score2']
-        score3 = request.form['score3']
-        score4 = request.form['score4']
-        Score(round_id=session[round_id], hole_id=session[hole_id] player=1, score=score1) 
-        db.session.add(Score)
-        Score(round_id=session[round_id], hole_id=session[hole_id] player=2, score=score2)
-        db.session.add(Score)
-        Score(round_id=session[round_id], hole_id=session[hole_id] player=3, score=score3) 
-        db.session.add(Score)
-        Score(round_id=session[round_id], hole_id=session[hole_id] player=4, score=score4) 
-        db.session.add(Score)
-        session[hole_id] = session[hole_id] +1
-        if hole_id > 18:
-            session[round_id] = session[round_id] +1
-            session[hole_id] == 1
-            db.session.add(round_id)
-        db.session.add(hole_id)
-        db.session.commit()
-        return redirect("/score_input", round_id=round_id, hole_id=hole_id, player=player, score=score)
-    else:
-        return render_template("score_input.html", user=user, round_id=round_id, hole_id=hole_id, player=player, score=score)
-
 @app.route("/leaderboard", methods=['GET'])
-"""populating score data assuming a for loop will be used in the template to list every players score"""
+def display_leaderboard():
     if request.method == 'GET':
         player1 = Score.query.filter_by(player_id==1)
         player2 = Score.query.filter_by(player_id==2)
         player3 = Score.query.filter_by(player_id==3)
         player4 = Score.query.filter_by(player_id==4)
-        return render_template("leaderboard.html," user=user, players=players, score=score, round_id=round_id)
-
+    return render_template("leaderboard.html,")
 
 @app.before_request
 def require_login():
@@ -203,8 +155,6 @@ def logged_in_user():
     scoreKeeper = User.query.filter_by(User=session['username']).first()
     return scoreKeeper
     """ This is set up so the login is set by the session['username']"""
-
-endpoints_without_login = ['scoreinput']
 
 # Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
