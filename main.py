@@ -165,13 +165,10 @@ def leaderboard():
 
 
         player_1_Name = session['player_1_Name']
-        print(player_1_Name)
         player_2_Name = session['player_2_Name']
-        print(player_2_Name)
         player_3_Name = session['player_3_Name']
         player_4_Name = session['player_4_Name']
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
-        print(player_names)
 
         round_num = session['round_num']
 
