@@ -32,7 +32,6 @@ def logout():
     print(session.keys())
     return redirect('/')
 
-
 @app.route("/signup", methods=['GET','POST'])
 def signup():
     if request.method == 'POST':
@@ -40,7 +39,6 @@ def signup():
         email = request.form['email']
         password = request.form['password']
         verify = request.form['verify']
-
         email_db_count = User.query.filter_by(email=email).count()
         if email_db_count > 0:
             flash('yikes! ' + email + ' is already taken')
@@ -56,12 +54,13 @@ def signup():
     else:
         return render_template('signup.html', title='Sign up!')
 
-
+'''The following route pulls all the courses from the DB and puts them into
+the courses variable which is sent to the template where a loop can pull
+the course name'''
 @app.route("/courses")
 def list_courses():
     courses = Course.query.all()
     return render_template("list_courses.html", courses=courses)
-
 
 @app.route("/initiate_tournament", methods=['GET', 'POST'])
 def initiate_tournament():
@@ -69,29 +68,29 @@ def initiate_tournament():
         return render_template('tournament_initiation.html', title='Start A Tournament')
     elif request.method == 'POST':
         tournament_course = request.form['course']
-
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
 
 @app.route('/process_players', methods=['POST', 'GET'])
 def process_players():
     if request.method == 'POST':
         player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name))
+        if not Player.query.filter_by(name=player_1_Name):
+            db.session.add(Player(player_1_Name))
         player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name))
+        if not Player.query.filter_by(name=player_2_Name):
+            db.session.add(Player(player_2_Name))
         player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name))
+        if not Player.query.filter_by(name=player_3_Name):
+            db.session.add(Player(player_3_Name))
         player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name))
+        if not Player.query.filter_by(name=player_4_Name):
+            db.session.add(Player(player_4_Name))
         db.session.commit()
         session['player_1_Name'] = player_1_Name
         session['player_2_Name'] = player_2_Name
         session['player_3_Name'] = player_3_Name
         session['player_4_Name'] = player_4_Name
         return redirect('/score_input')
-
-
-
 
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
@@ -100,14 +99,11 @@ def score_input():
     this_Rounds_Players += Player.query.filter_by(name = session['player_2_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
-
     if 'hole_num' not in session:
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
     return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'])
-
-
 
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
@@ -187,8 +183,27 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
+@app.route("/leaderboard", methods=['GET'])
+def display_leaderboard():
+    if request.method == 'GET':
+        player1 = Score.query.filter_by(player_id==1)
+        player2 = Score.query.filter_by(player_id==2)
+        player3 = Score.query.filter_by(player_id==3)
+        player4 = Score.query.filter_by(player_id==4)
+    return render_template("leaderboard.html,")
 
+@app.before_request
+def require_login():
+    if not ('user' in session or request.endpoint in endpoints_without_login):
+        return redirect("/leaderboard")
+        """ Should I redirect to leaderboard or login?"""
 
+def logged_in_user():
+    scoreKeeper = User.query.filter_by(User=session['username']).first()
+    return scoreKeeper
+    """ This is set up so the login is set by the session['username']"""
+
+# Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
 
 if __name__ == '__main__':
