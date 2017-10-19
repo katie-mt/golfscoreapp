@@ -74,13 +74,17 @@ def initiate_tournament():
 def process_players():
     if request.method == 'POST':
         player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name))
+        if not Player.query.filter_by(name=player_1_Name):
+            db.session.add(Player(player_1_Name))
         player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name))
+        if not Player.query.filter_by(name=player_2_Name):
+            db.session.add(Player(player_2_Name))
         player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name))
+        if not Player.query.filter_by(name=player_3_Name):
+            db.session.add(Player(player_3_Name))
         player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name))
+        if not Player.query.filter_by(name=player_4_Name):
+            db.session.add(Player(player_4_Name))
         db.session.commit()
         session['player_1_Name'] = player_1_Name
         session['player_2_Name'] = player_2_Name
