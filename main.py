@@ -112,14 +112,14 @@ def score_input():
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     tournament_id = 1
-    if session['hole_num'] > 18:
-        session['round_num'] += 1
+    if session['hole_num'] >= 18:
         session['hole_num'] = 1
         db.session.add(Round(session['round_num'],tournament_id))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+        return redirect('/leaderboard')
 
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
@@ -137,35 +137,45 @@ def process_score():
 
 
 @app.route("/leaderboard", methods=['GET'])
-"""populating score data assuming a for loop will be used in the template to list every players score"""
+def leaderboard():
+#populating score data assuming a for loop will be used in the template to list every players score'''
     if request.method == 'GET':
-        player1total = int(0)
-        player2total = int(0)
-        player3total = int(0)
-        player4total = int(0)
+        player1total = 0
+        player2total = 0
+        player3total = 0
+        player4total = 0
 
-        player1 = Score.query.filter_by(player_id=1)
-        for scores_1 in player1.score:
-            player1total = player1total + scores_1
-        player2 = Score.query.filter_by(player_id=2)
-        for scores_2 in player2.score:
-            player2total = player2total + scores_2
-        player3 = Score.query.filter_by(player_id=3)
-        for scores_3 in player3.score:
-            player3total = player3total + scores_3
-        player4 = Score.query.filter_by(player_id=4)
-        for scores_4 in player4.score:
-            player4total = player4total + scores_4
+        player_1_Scores = Score.query.filter_by(player_id=1)
+        for score in player_1_Scores:
+            player1total += score.score
 
-        player_1_Name = Player.query.filter_by(name=player_1_Name)
-        player_2_Name = Player.query.filter_by(name=player_2_Name)
-        player_3_Name = Player.query.filter_by(name=player_3_Name)
-        player_4_Name = Player.query.filter_by(name=player_4_Name)
+        player_2_Scores = Score.query.filter_by(player_id=2)
+        for score in player_2_Scores:
+            player2total += score.score
 
-        hole_id = session['hole_num']
-        round_id = session['round_num']
+        player_3_Scores = Score.query.filter_by(player_id=3)
+        for score in player_3_Scores:
+            player3total += score.score
 
-        return render_template("leaderboard.html," player1total=player1total, player2total=player2total, player3total=player3total, player4total=player4total, player_1_Name=player_1_Name, player_2_Name=player_2_Name, player_3_Name=player_3_Name, player_4_Name=player_4_Name, hole_id=hole_id, round_id=round_id)
+        player_4_Scores = Score.query.filter_by(player_id=4)
+        for score in player_4_Scores:
+            player4total += score.score
+
+        all_Players_Total_Scores = player1total, player2total, player3total, player4total
+
+
+        player_1_Name = session['player_1_Name']
+        print(player_1_Name)
+        player_2_Name = session['player_2_Name']
+        print(player_2_Name)
+        player_3_Name = session['player_3_Name']
+        player_4_Name = session['player_4_Name']
+        player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
+        print(player_names)
+
+        round_num = session['round_num']
+
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names)
 
 
 

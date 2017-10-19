@@ -5,7 +5,7 @@
 
   <!--use Jinja loop ''for player in round''-->
   <!--rank column, name, par total, round 1, round 2, round 3, total-->
-
+  <h2>Round: {{round_num}}</h2>
   <tr>
     <th>Playername</th>
     <th>Score</th>
@@ -13,37 +13,37 @@
 
   <tr>
     <td>
-      <p>1st Place Player Name</p>
+      <p>{{player_names[0]}}</p>
     </td>
     <td>
-      <p>Score</p>
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      <p>2nd Place Player Name</p>
-    </td>
-    <td>
-      <p>Score</p>
+      <p>{{player_scores[0]}}</p>
     </td>
   </tr>
 
   <tr>
     <td>
-      <p>3rd Place Player Name</p>
+      <p>{{player_names[1]}}</p>
     </td>
     <td>
-      <p>Score</p>
+      <p>{{player_scores[1]}}</p>
     </td>
   </tr>
 
   <tr>
     <td>
-      <p>4th Place Player Name</p>
+      <p>{{player_names[2]}}</p>
     </td>
     <td>
-      <p>Score</p>
+      <p>{{player_scores[2]}}</p>
+    </td>
+  </tr>
+
+  <tr>
+    <td>
+      <p>{{player_names[3]}}</p>
+    </td>
+    <td>
+      <p>{{player_scores[3]}}</p>
     </td>
   </tr>
 
