@@ -3,18 +3,33 @@ from app import db
 '''In java, classes usually go in their own file but for some reason the norm in python is to throw them
 all into one file called models so here they are...'''
 
+
+class Tournament(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    owner_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    rounds = db.relationship('Round', backref='owner')
+
+    def __init__(self, owner_id, name):
+        self.owner_id = owner_id
+        self.name = name
+
+    def __repr__(self):
+        return '<Tournament %r' % self.name
+
+
+
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True)
     password = db.Column(db.String(80))
-    email = db.Column(db.String(120), unique=True)
     tournaments = db.relationship('Tournament', backref='owner')
 
 
-    def __init__(self, username, email, password):
+    def __init__(self, username, password):
         self.username = username
         self.password = password
-        self.email = email
 
     def __repr__(self):
         return '<User %r' % self.username
@@ -53,6 +68,8 @@ class Round(db.Model):
     players = db.relationship('Round_Player_Table', backref='round')
 
 
+
+
     def __init__(self, round_number, tournament_id):
         self.round_number = round_number
         self.tournament_id = tournament_id
@@ -78,7 +95,7 @@ class Hole(db.Model):
     id = db.Column(db.Integer, primary_key= True)
     par = db.Column(db.Integer)
     owner_id = db.Column(db.Integer, db.ForeignKey('course.id'))
-    scores = db.relationship('Score', backref='hole')
+    """scores = db.relationship('Score', backref='hole')"""
 
 
     def __init__(self, owner_id, par):
@@ -114,3 +131,4 @@ class Score(db.Model):
 
     def __repr__(self):
         return '<Score %d' % self.score
+

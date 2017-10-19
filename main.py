@@ -57,6 +57,10 @@ def signup():
         return render_template('signup.html', title='Sign up!')
 
 
+
+'''The following route pulls all the courses from the DB and puts them into
+the courses variable which is sent to the template where a loop can pull 
+the course name'''
 @app.route("/courses")
 def list_courses():
     courses = Course.query.all()
@@ -148,9 +152,51 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
+@app.route("/scoreinput", methods=['POST', 'GET'])
+def input_score():
+    User.id = User.query.filter_by(id=id)
+    if request.method == 'POST':
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
+        score1 = request.form['score1']
+        score2 = request.form['score2']
+        score3 = request.form['score3']
+        score4 = request.form['score4']
+        Tournament(player_id)score()
+
+        round_id = Round.query.filter_by(round_id=round_id)
+        hole_id = Hole.query.filter_by(hole_id=hole_id)
+        player_id = Player.query.filter_by(player_id=player_id)
+        scoreinput = Score(id=id, round_id=round_id, hole_id=hold_id, player_id=player_id, score=score)
+        db.session.add(scoreinput)
+        hole_id = hole_id +1
+        if hole_id > 18:
+            round_id = round_id +1
+            hole_id == 1
+            db.session.add(round_id)
+        db.session.add(hole_id)
+        db.session.commit()
+        """Add User session validation """
+        return redirect("/score-input.html", scoreinput=scoreinput, hole_id=hole_id, round_id=round_id)
+    else:
+        @app.before_request
+        def require_login():
+            if not ('user' in session or request.endpoint in endpoints_without_login):
+                
+        return render_template("score-input.html", user=user, round_id=round_id, hole_id=hole_id, player_id=player_id, score=score)
+    """will i get a bug on the first input prompt because vars will be empty?"""
+
+@app.route("/leaderboard", methods=['GET'])
+"""generating the data for every players score. assuming a for loop will be used in the template to list every players score"""
+    if request.method == 'GET':
+        players[] = Player.query.filter_by(score=score)
+        round_id = Round.query.filter_by(round_id=round_id)
+        """all_scores = Score.query.all(score=score)"""
+        """player_id = User.query.all(player_id=player_id)"""
+        """score_db = Score(id=id, round_id=round_id, hole_id=hold_id, player_id=player_id, score=score)"""
+        return render_template("leaderboard.html," user=user, players=players, score=score, round_id=round_id)
+
 
 if __name__ == '__main__':
     app.run()
