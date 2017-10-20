@@ -4,41 +4,37 @@
 <h2>Round: {{round_num}}</h2>
 <h2>Hole: {{hole_num}}</h2>
 
-<table style="width:50%">
-  <form action='/process_score' method='post'>
+<form action='/process_score' method='post'>
+
+<table class="table table-hover table-inverse">
+  <thead>
     <tr>
-      <th>name</th>
+      <th>Player Name</th>
       <th>Score</th>
     </tr>
+  </thead>
+  <tbody>
     <tr>
-      <td>
-        <p>{{players[0].name}}</p>
-      </td>
+      <td>{{players[0].name}}</td>
       <td><input type="text" name="player_1_score" placeholder="Enter Score"></td>
     </tr>
     <tr>
-      <td>
-        <p>{{players[1].name}}</p>
-      </td>
+      <td>{{players[1].name}}</td>
       <td><input type="text" name="player_2_score" placeholder="Enter Score"></td>
     </tr>
     <tr>
-      <td>
-        <p>{{players[2].name}}</p>
-      </td>
+      <td>{{players[2].name}}</td>
       <td><input type="text" name="player_3_score" placeholder="Enter Score"></td>
     </tr>
     <tr>
-      <td>
-        <p>{{players[3].name}}</p>
-      </td>
+      <td>{{players[3].name}}</td>
       <td><input type="text" name="player_4_score" placeholder="Enter Score"></td>
     </tr>
-
+  </tbody>
 </table>
-<input type='submit' value='submit score!'>
-</form>
 
+<input type='submit' value='Submit Scores!'>
+</form>
 
 
 {% endblock %}
