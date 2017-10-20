@@ -3,49 +3,59 @@
 
 <table style="width:50%">
 
-  <!--use Jinja loop ''for player in round''-->
-  <!--rank column, name, par total, round 1, round 2, round 3, total-->
+  <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
+  <h2>Course: {{course}}</h2>
+  <h2>Round: {{round_num}}</h2>
 
-  <tr>
-    <th>Playername</th>
-    <th>Score</th>
-  </tr>
 
-  <tr>
-    <td>
-      <p>1st Place Player Name</p>
-    </td>
-    <td>
-      <p>Score</p>
-    </td>
-  </tr>
+<!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
 
-  <tr>
-    <td>
-      <p>2nd Place Player Name</p>
-    </td>
-    <td>
-      <p>Score</p>
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      <p>3rd Place Player Name</p>
-    </td>
-    <td>
-      <p>Score</p>
-    </td>
-  </tr>
-
-  <tr>
-    <td>
-      <p>4th Place Player Name</p>
-    </td>
-    <td>
-      <p>Score</p>
-    </td>
-  </tr>
-
+<table class="table table-hover table-inverse">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Player Name</th>
+      <th>Round 1 Score</th>
+      <th>Round 2 Score</th>
+      <th>Round 3 Score</th>
+      <th>Overall Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>{{player_names[0]}}</td>
+      <td>{{placeholder Round 1 Score}}</td>
+      <td>{{placeholder Round 2 Score}}</td>
+      <td>{{placeholder Round 3 Score}}</td>
+      <td>{{player_scores[0]}}</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>{{player_names[1]}}</td>
+      <td>{{placeholder Round 1 Score}}</td>
+      <td>{{placeholder Round 2 Score}}</td>
+      <td>{{placeholder Round 3 Score}}</td>
+      <td>{{player_scores[1]}}</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td>{{player_names[2]}}</td>
+      <td>{{placeholder Round 1 Score}}</td>
+      <td>{{placeholder Round 2 Score}}</td>
+      <td>{{placeholder Round 3 Score}}</td>
+      <td>{{player_scores[2]}}</td>
+    </tr>
+    <tr>
+      <th scope="row">4</th>
+      <td>{{player_names[3]}}</td>
+      <td>{{placeholder Round 1 Score}}</td>
+      <td>{{placeholder Round 2 Score}}</td>
+      <td>{{placeholder Round 3 Score}}</td>
+      <td>{{player_scores[3]}}</td>
+    </tr>
+  </tbody>
 </table>
+
 {% endblock %}
+

@@ -1,13 +1,13 @@
 # golfscoreapp
 Golf Score App
-This app is going to be designed to allow players to easily keep track of their score throughout gameplay. 
+This app is going to be designed to allow players to easily keep track of their score throughout gameplay.
 
 Stack: Python, Flask, Html, Css, Jinja2, JavaScript (adding in JS here - Katie)
 Git VCS: Utilizing a develp branch as described in this model- http://nvie.com/posts/a-successful-git-branching-model/
 
 Important golf score notes:
     1)A round of golf is played over 18 holes. After each hole, you should record your score on a scorecard (or in this case, our application) (May seem like common knowledge but its amazing how little I know about golf-Jonathan)
-    2)Generally in golf, your opponent is responsible for keeping track of your score, and vise versa. 
+    2)Generally in golf, your opponent is responsible for keeping track of your score, and vise versa.
 
 Some thoughts I've(Dan) been writing down and want to share:
 1. I can see potentially 6 objects or models: Course, Hole, Round, Score, Player.
@@ -22,7 +22,7 @@ Score- Has one player, one round, one Hole. This stores the stroke count for eac
 
 Player- Would be nice feature to CRUD players and keep stats however initial build could be no ability to create new players and will need players preprogrammed as "Player 1", "Player 2". Create a round using the "Player 1", "Player 2" names.
 
-Additionally, I think we should have one User object that can log in as a Score Reporter. 
+Additionally, I think we should have one User object that can log in as a Score Reporter.
 
 User Stories:
 
@@ -31,7 +31,7 @@ We can assume there will be one person logging in to report scores in real time 
 
 User Story #2:  Golf Player
 A user not logged in should have access to a leaderboard screen that shows all scores for all players in that round. I envision a screen with a hyperlink list of courses (Only one in this iteration of the project), which opens to a screen of all the rounds played on that course (perhaps rounds are labeled by date/time of initial creation), that opens to a table showing each player, their total score, and differential from par based on how many holes they've played. That player is hyperlinked to a detailed page which shows their individual scores per hole.
-    
+
 Design and Layout
 
 There will be 6 total screens:
@@ -59,7 +59,7 @@ STRETCH GOALS(not in any specific order):
 1)Connect to some golfcourse API to integrate real golf course information such as names and par number for holes.
 2)Deploy Live?(Heroku)
 
-Links to the Wire Frames - 
+Links to the Wire Frames -
 https://ibb.co/gdjsWG
 https://ibb.co/kjUjrG
 
