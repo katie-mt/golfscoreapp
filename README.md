@@ -63,4 +63,32 @@ Links to the Wire Frames -
 https://ibb.co/gdjsWG
 https://ibb.co/kjUjrG
 
-This file was last modified by Armen Juhl
+How to get this working on your machine:
+1) clone this repo to your machine.
+2) activate a flask environment with these dependecies installed(using conda or another package manager alike):
+click 6.7
+flask 0.12.2
+flask-sqlalchemy 2.2
+itsdangerous 0.24
+jinja2 2.9.6
+markupsafe 0.23
+openssl 1.0.2l
+pip 9.0.1
+pymysql 0.7.9
+python 3.6.1
+readline 6.2
+setuptools 27.2.0
+sqlalchemy 1.1.11
+sqlite 3.13.0
+tk 8.5.18
+werkzeug 0.12.2
+wheel 0.29.0
+xz 5.2.2
+zlib 1.2.8
+3) Create a mamp user with the name 'golfapp' and password 'golfapp'(note that you CAN use whatever username and password that you would like but that you will need to modify the SQLALCHEMY_DATABASE_URI link to accomodate the new username and password.) and check the 'Create database with same name and grant all privileges' box then click 'go'.
+4) Next from the command line run '$ python database_reset.py' while in the project directory(note '$' represents a terminal  command do not actually include in the command). This will reset the database and add some hard coded data in there necessary for the minimum viable product to run. 
+5) Then start the local server with '$ python main.py' from the terminal and go to the appropriate address that the server is ported to locally on your machine. 
+6) From here you can then create a new user and start keeping track of your golf scores!
+
+This file was last modified by jjames1011
+
