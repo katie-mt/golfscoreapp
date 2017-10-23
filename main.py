@@ -48,7 +48,7 @@ def validate_user():
     password_error1 = ''
     password_error2 = ''
     email_error = ''
-    
+
     if not " " in username:
         if username_db_count == 0:
             if len(username) < 3 or len(username) > 20:
@@ -62,7 +62,7 @@ def validate_user():
         if len(password) < 3 or len(password) > 20:
             password_error1 = "Chunked it! Password must be between 3 and 20 characters with no spaces. Please try again."
     else:
-        password_error1 = "Chunked it! Password must be between 3 and 20 characters with no spaces. Please try again." 
+        password_error1 = "Chunked it! Password must be between 3 and 20 characters with no spaces. Please try again."
 
     if password != verify:
         password_error2 = "Double Bogey! Passwords do not match."
@@ -79,8 +79,8 @@ def validate_user():
         else:
             email_error = "Shanked it! Email is already taken. Please try again."
     else:
-        email_error = "Shanked it! Email can be blank or must contain '@' and '.' to be valid. Please try again."
-    
+        email_error = "Shanked it! Email can\'t be blank or must contain '@' and '.' to be valid. Please try again."
+
     if not user_error and not password_error1 and not password_error2 and not email_error:
         user = User(username=username, email=email, password=password)
         db.session.add(user)
@@ -88,8 +88,8 @@ def validate_user():
         session['user'] = user.email
         return redirect('/')
     else:
-        return render_template("signup.html", username=username, email=email, 
-    username_error=user_error, password_error1=password_error1, 
+        return render_template("signup.html", username=username, email=email,
+    username_error=user_error, password_error1=password_error1,
     password_error2=password_error2, email_error=email_error)
 
 @app.route("/courses")
@@ -221,7 +221,7 @@ endpoints_without_login = ['display_signup' , 'validate_user','leaderboard', 'si
 
 @app.before_request
 def require_login():
-    
+
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
