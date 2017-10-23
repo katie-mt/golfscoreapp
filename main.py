@@ -140,7 +140,7 @@ def score_input():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
-        db.session.commit
+        db.session.commit()
         
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
