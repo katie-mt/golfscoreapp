@@ -8,54 +8,41 @@
   <h2>Round: {{round_num}}</h2>
 
 
-<!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
+  <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
 
-<table class="table table-hover table-inverse">
-  <thead>
-    <tr>
-      <th>Rank</th>
-      <th>Player Name</th>
-      <th>Round 1 Score</th>
-      <th>Round 2 Score</th>
-      <th>Round 3 Score</th>
-      <th>Overall Score</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>{{player_names[0]}}</td>
-      <td>{{placeholder Round 1 Score}}</td>
-      <td>{{placeholder Round 2 Score}}</td>
-      <td>{{placeholder Round 3 Score}}</td>
-      <td>{{player_scores[0]}}</td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>{{player_names[1]}}</td>
-      <td>{{placeholder Round 1 Score}}</td>
-      <td>{{placeholder Round 2 Score}}</td>
-      <td>{{placeholder Round 3 Score}}</td>
-      <td>{{player_scores[1]}}</td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>{{player_names[2]}}</td>
-      <td>{{placeholder Round 1 Score}}</td>
-      <td>{{placeholder Round 2 Score}}</td>
-      <td>{{placeholder Round 3 Score}}</td>
-      <td>{{player_scores[2]}}</td>
-    </tr>
-    <tr>
-      <th scope="row">4</th>
-      <td>{{player_names[3]}}</td>
-      <td>{{placeholder Round 1 Score}}</td>
-      <td>{{placeholder Round 2 Score}}</td>
-      <td>{{placeholder Round 3 Score}}</td>
-      <td>{{player_scores[3]}}</td>
-    </tr>
-  </tbody>
-</table>
+  <table class="table table-hover table-inverse">
+    <thead>
+      <!--<tr>
+        <th>Rank</th>
+        <th>Player Name</th>
+        <th>Round 1 Score</th>
+        <th>Round 2 Score</th>
+        <th>Round 3 Score</th>
+        <th>Overall Score</th>
+      </tr>-->
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">1</th>
+        <td>{{player_names[0]}}</td>
+        <td>{{player_scores[0]}}</td>
+      </tr>
+      <tr>
+        <th scope="row">2</th>
+        <td>{{player_names[1]}}</td>
+        <td>{{player_scores[1]}}</td>
+      </tr>
+      <tr>
+        <th scope="row">3</th>
+        <td>{{player_names[2]}}</td>
+        <td>{{player_scores[2]}}</td>
+      </tr>
+      <tr>
+        <th scope="row">4</th>
+        <td>{{player_names[3]}}</td>
+        <td>{{player_scores[3]}}</td>
+      </tr>
+    </tbody>
+  </table>
 
-{% endblock %}
-
+  {% endblock %}
