@@ -1,13 +1,18 @@
 {% extends "base.html" %} {% block content%}
-<h3>Leaderboard</h3>
+<h1>Leaderboard</h1>
 
 <table style="width:50%">
 
   <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
-  <h2>Course: {{course}}</h2>
-  <h2>Round: {{round_num}}</h2>
-
-
+  <h3>Course: {{course}}</h3>
+  <h3>Round: {{session['this_round']}}</h3>
+  <h3>Last Hole Played: {{session['this_hole']}}</h3>
+  <h5>Total scores</h5>
+ 
+  {% if user %}
+  <h2>Go back to <a href="/score_input"> Score Input</a></h2>
+  {% endif %}
+  
   <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
 
   <table class="table table-hover table-inverse">
@@ -44,5 +49,10 @@
       </tr>
     </tbody>
   </table>
-
+  
+  {% if session['this_hole'] >= 18 %}
+  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</h3>
+  {% else %}
+  <h3>Return to<a href="/score_input"> Score Input</a></h3>
+  {% endif %}
   {% endblock %}

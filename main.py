@@ -95,6 +95,7 @@ def validate_user():
 @app.route("/courses")
 def list_courses():
     courses = Course.query.all()
+    #db.session.drop_all(player)
     return render_template("list_courses.html", courses=courses)
 
 @app.route("/initiate_tournament", methods=['GET', 'POST'])
@@ -135,6 +136,10 @@ def score_input():
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
+
+        session['this_round'] = session['round_num']
+        session['this_hole'] = session['hole_num']
+
         db.session.add(Round(session['round_num'],1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
@@ -142,24 +147,29 @@ def score_input():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
         
+
+
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
 
 
-    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par)
+    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'], par_num=hole.par)
+
 
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     tournament_id = 1
+    session['this_round'] = session['round_num']
+    session['this_hole'] = session['hole_num']
     if session['hole_num'] >= 18:
-        session['hole_num'] = 1
-        #session['round_num'] += 1
         db.session.add(Round(session['round_num'],tournament_id))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
+        session['hole_num'] = 1
+        session['round_num'] += 1
         return redirect('/leaderboard')
 
     player_1_Score = int(request.form['player_1_score'])
@@ -203,6 +213,7 @@ def leaderboard():
             player4total += score.score
 
         all_Players_Total_Scores = player1total, player2total, player3total, player4total
+        session['all_Players_Scores'] = player1total, player2total, player3total, player4total
 
 
         player_1_Name = session['player_1_Name']
@@ -211,12 +222,29 @@ def leaderboard():
         player_4_Name = session['player_4_Name']
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
+        hole_num = session['hole_num']
         round_num = session['round_num']
         course = session['course']
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, hole_num=hole_num, player_names=player_names,course=course)
 
+"""
+@app.route("/new_tournament", methods=['GET'])
+def new_tournament():
+    if request.method == 'GET':
+        db.session.query(Score).delete()
+        db.session.commit()
+        db.session.query(Round_Player_Table).delete()
+        db.session.query(Player).delete()
+        db.session.commit()
+        session['hole_num'] = 1
+        session['round_num'] = 1
+        hole = Hole.query.filter_by(id = session['hole_num']).first()
+        par_num=hole.par
+        db.session.commit()
 
+        return redirect("/courses")
+"""
 
 def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
@@ -229,15 +257,6 @@ def require_login():
 
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
-
-@app.route("/leaderboard", methods=['GET'])
-def display_leaderboard():
-    if request.method == 'GET':
-        player1 = Score.query.filter_by(player_id==1)
-        player2 = Score.query.filter_by(player_id==2)
-        player3 = Score.query.filter_by(player_id==3)
-        player4 = Score.query.filter_by(player_id==4)
-    return render_template("leaderboard.html,")
 
 @app.before_request
 def require_login():
