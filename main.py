@@ -183,7 +183,9 @@ def process_score():
 @app.route("/leaderboard", methods=['GET'])
 def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
-    #if Scores.query.all()
+    if not Score.query.all():
+        leaderboard_error = 'Sorry, the leaderboard is currently empty, try starting a tournament!'
+        return render_template('signin.html', leaderboard_error=leaderboard_error)
 
     if request.method == 'GET':
         player1total = 0
