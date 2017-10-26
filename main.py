@@ -183,6 +183,8 @@ def process_score():
 @app.route("/leaderboard", methods=['GET'])
 def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
+    #if Scores.query.all()
+
     if request.method == 'GET':
         player1total = 0
         player2total = 0
@@ -208,14 +210,10 @@ def leaderboard():
         all_Players_Total_Scores = player1total, player2total, player3total, player4total
 
 
-        player_1 = Player.query.filter_by(id = 1).first()
-        player_2 = Player.query.filter_by(id = 2).first()
-        player_3 = Player.query.filter_by(id = 3).first()
-        player_4 = Player.query.filter_by(id = 4).first()
-        player_1_Name = player_1.name
-        player_2_Name = player_2.name
-        player_3_Name = player_3.name
-        player_4_Name = player_4.name
+        player_1_Name = Player.query.filter_by(id = 1).first().name
+        player_2_Name = Player.query.filter_by(id = 2).first().name
+        player_3_Name = Player.query.filter_by(id = 3).first().name
+        player_4_Name = Player.query.filter_by(id = 4).first().name
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
         first_score = Score.query.first()
