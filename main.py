@@ -141,7 +141,7 @@ def score_input():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-        
+
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
 
@@ -230,14 +230,6 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-@app.route("/leaderboard", methods=['GET'])
-def display_leaderboard():
-    if request.method == 'GET':
-        player1 = Score.query.filter_by(player_id==1)
-        player2 = Score.query.filter_by(player_id==2)
-        player3 = Score.query.filter_by(player_id==3)
-        player4 = Score.query.filter_by(player_id==4)
-    return render_template("leaderboard.html,")
 
 @app.before_request
 def require_login():
