@@ -104,6 +104,9 @@ def initiate_tournament():
     elif request.method == 'POST':
         tournament_course = request.form['course']
         session['course'] = tournament_course
+        course = Course.query.filter_by(name = tournament_course).first()
+        course_id = course.id
+        session['course_id'] = course_id
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
 
 @app.route('/process_players', methods=['POST', 'GET'])
@@ -166,10 +169,10 @@ def process_score():
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=1, score=player_1_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=2, score=player_2_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=3, score=player_3_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=4, score=player_4_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=1, score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=2, score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=3, score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=4, score=player_4_Score))
     session['hole_num'] += 1
     db.session.commit()
     return redirect('/score_input')
