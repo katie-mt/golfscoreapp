@@ -1,4 +1,12 @@
-{% extends "base.html" %} {% block content%}
+{% extends "base.html" %} 
+
+{% block headContent %}
+  
+  <link rel="stylesheet" href="/static/css/styles.css">
+
+{% endblock %}
+
+{% block content%}
 
 <body class="bg-light">
   <div class="container text-center">
@@ -6,9 +14,8 @@
     <p class="lead">Tee off your golf game with ParPal, the best scorecard app on the market</p>
   </div>
 
-
   <p class="h4">Sign-in:</p>
-  <!--TODO: Update route and method if necessary once backend files created-->
+
   <form action="/signin" method="post">
     <table>
       <tr>
@@ -36,9 +43,10 @@
     </table>
     <input class="btn btn-primary text-center" type="submit" value="Submit">
   </form>
-  <!--Update the URL once route is created-->
+
   <p>Not a user? Sign up <strong><a href="/signup">here</a></strong></p>
   <!--<p>Competitors, check out the <strong><a href="/leaderboard">Leaderboard</a></strong></p>-->
+
 </body>
 
 {% endblock%}
