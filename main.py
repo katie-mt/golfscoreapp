@@ -208,14 +208,21 @@ def leaderboard():
         all_Players_Total_Scores = player1total, player2total, player3total, player4total
 
 
-        player_1_Name = session['player_1_Name']
-        player_2_Name = session['player_2_Name']
-        player_3_Name = session['player_3_Name']
-        player_4_Name = session['player_4_Name']
+        player_1 = Player.query.filter_by(id = 1).first()
+        player_2 = Player.query.filter_by(id = 2).first()
+        player_3 = Player.query.filter_by(id = 3).first()
+        player_4 = Player.query.filter_by(id = 4).first()
+        player_1_Name = player_1.name
+        player_2_Name = player_2.name
+        player_3_Name = player_3.name
+        player_4_Name = player_4.name
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
-        round_num = session['round_num']
-        course = session['course']
+        first_score = Score.query.first()
+        round_id = first_score.round_id
+        course_id = first_score.course_id
+        round_num = Round.query.filter_by(id = round_id).first().round_number
+        course = Course.query.filter_by(id = course_id).first().name
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course)
 
