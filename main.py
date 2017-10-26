@@ -1,6 +1,7 @@
 from flask import request, redirect, render_template, session, flash
 from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
+from sqlalchemy import desc
 
 
 @app.route("/")
@@ -223,8 +224,9 @@ def leaderboard():
         course_id = first_score.course_id
         round_num = Round.query.filter_by(id = round_id).first().round_number
         course = Course.query.filter_by(id = course_id).first().name
+        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
 
 
 
