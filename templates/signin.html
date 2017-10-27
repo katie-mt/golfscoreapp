@@ -3,16 +3,22 @@
 {% block headContent %}
   
   <link rel="stylesheet" href="/static/css/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet"> 
 
 {% endblock %}
 
 {% block content%}
+                
+<!--background color-->
+<!--<body class="black">-->
 
-<body class="bg-light">
-  <div class="container text-center">
-    <h1 class="container display-1">ParPal</h1>
-    <p class="lead">Tee off your golf game with ParPal, the best scorecard app on the market</p>
-  </div>
+  <!--title and subtitle-->
+  <div class = "signin_styling">
+    <class="container"><br><br>
+    <div class="titles">
+      <h1 class="display-1 title_styling text-center font-weight-bold">ParPal</h1><br>
+      <p class="lead text-center font-weight-bold">Tee off your golf game with ParPal, the best scorecard app on the market</p><br><br><br><br>
+    </div>
 
   <p class="h4">Sign-in:</p>
 
@@ -20,7 +26,7 @@
     <table>
       <tr>
         <td>
-          <label>Email:</label>
+          <label><strong>Email:</strong></label>
         </td>
         <td>
           <input name="email" type="text" value="{{email}}" />
@@ -31,7 +37,7 @@
       </tr>
       <tr>
         <td>
-          <label>Password:</label>
+          <label><strong>Password:</strong></label>
         </td>
         <td>
           <input name="password" type="password" value="{{password}}" />
@@ -44,9 +50,12 @@
     <input class="btn btn-primary text-center" type="submit" value="Submit">
   </form>
 
-  <p>Not a user? Sign up <strong><a href="/signup">here</a></strong></p>
+  <p><strong>Not a user? Sign up<a href="/signup">here</a></strong></p>
   <!--<p>Competitors, check out the <strong><a href="/leaderboard">Leaderboard</a></strong></p>-->
 
+
+</div>
 </body>
+
 
 {% endblock%}

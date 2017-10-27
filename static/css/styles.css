@@ -1,12 +1,19 @@
-/*Code here is for testing purposes to check that the bootstrap CSS is being correctly overwritten*/
-
-/*universal selector*/
-/**{
-    margin: 0;
-    padding: 0;
-    color: yellow;
-}*/
-
-.container {
-    color: rgba(300, 0, 255, 0.85);
+.title_styling {
+    color: rgba(48, 48, 48, 0.85);
 }
+
+.signin_styling {
+    background-image: url(https://media.istockphoto.com/photos/lets-golf-picture-id485187122?k=6&m=485187122&s=612x612&w=0&h=SOHWYxhPqbU3F7GQh56p2DpIg_GiUFRbZ-bJR-i-dR0=);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 640px;
+    min-width: 100%;
+}
+
+.titles {
+    font-family: 'Arvo', serif;
+}
+
+                
