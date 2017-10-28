@@ -166,8 +166,7 @@ def process_score():
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=4, score=player_4_Score))
     session['hole_num'] += 1
     db.session.commit()
-
-    if session['hole_num'] >= 18:
+    if session['hole_num'] > 18:
         session['hole_num'] = 1
         #session['round_num'] += 1
         db.session.add(Round(session['round_num'],tournament_id))
