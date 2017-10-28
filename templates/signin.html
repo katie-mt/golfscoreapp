@@ -1,35 +1,47 @@
-{% extends "base.html" %} {% block content%}
-<h1>Sign-in:
-    </h1>
-<!--TODO: Update route and method if necessary once backend files created-->
-<form action="/signin" method="post">
-  <table>
-    <tr>
-      <td>
-        <label>Email:</label>
-      </td>
-      <td>
-        <input name="email" type="text" value="{{email}}" />
-      </td>
-      <td>
-        <p class="email_error">{{email_error}}</p>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <label>Password:</label>
-      </td>
-      <td>
-        <input name="password" type="password" value="{{password}}" />
-      </td>
-      <td>
-        <p class="password_error">{{password_error}}</p>
-      </td>
-    </tr>
-  </table>
-  <input type="submit" value="submit" />
-</form>
-<!--Update the URL once route is created-->
-<p>Not a user? Sign up <strong><a href="/signup">here</a></strong></p>
-<p>Competitors, check the <strong><a href="/leaderboard">Leaderboard</a></strong></p>
+{% extends "base.html" %} {% block headContent %}
+
+<link rel="stylesheet" href="/static/css/styles.css">
+<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet"> {% endblock %} {% block content%}
+
+<!--background color-->
+<!--<body class="black">-->
+
+<!--title and subtitle-->
+<div class="signin_styling text-center">
+  <div class="container">
+    <div class="titles">
+      <h1 class="display-1 title_styling text-center font-weight-bold">ParPal</h1><br>
+      <p class="lead text-center font-weight-bold">Tee off your golf game with ParPal, the best scorecard app on the market</p><br><br><br><br>
+    </div>
+
+    <div class='container'>
+      <div class='row'>
+        <div class='col-md-4'>
+        </div>
+        <div class='col-md-4' id='sign-in-form'>
+          <p class="h4">Sign-in:</p>
+          <form class='sign-in-form' action="/signin" method="post">
+            <label for='email'><strong>Email:</strong></label>
+            <input name="email" type="text" value="{{email}}" />
+            <p class="email_error">{{email_error}}</p>
+            <label for='password'><strong>Password:</strong></label>
+            <input name="password" type="password" value="{{password}}" />
+            <p class="password_error">{{password_error}}</p>
+            <input class="btn btn-primary text-center" type="submit" value="Submit">
+          </form>
+          <p><strong>Not a user? Sign up<a href="/signup"> here</a></strong></p>
+
+          <!--<p>Competitors, check out the <strong><a href="/leaderboard">Leaderboard</a></strong></p>-->
+
+
+        </div>
+        <div class='col-md-4'>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+
 {% endblock%}
