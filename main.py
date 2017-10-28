@@ -235,7 +235,7 @@ def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
     return owner
 
-endpoints_without_login = ['display_signup' , 'validate_user','leaderboard', 'signin']
+endpoints_without_login = ['display_signup' , 'validate_user','leaderboard', 'signin', 'static']
 
 @app.before_request
 def require_login():
