@@ -118,13 +118,13 @@ def process_players():
         db.session.add(Tournament(tournament_Owner_Id, tournament_Name))
 
         player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name,1))
+        db.session.add(Player(player_1_Name,session['tournament_Id']))
         player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name,1))
+        db.session.add(Player(player_2_Name,session['tournament_Id']))
         player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name,1))
+        db.session.add(Player(player_3_Name,session['tournament_Id']))
         player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name,1))
+        db.session.add(Player(player_4_Name,session['tournament_Id']))
         db.session.commit()
         session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
         session['player_1_Name'] = player_1_Name
@@ -160,7 +160,7 @@ def score_input():
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     tournament_id = session['tournament_Id']
-    
+
 
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
