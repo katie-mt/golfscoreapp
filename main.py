@@ -116,7 +116,8 @@ def process_players():
         tournament_Name = request.form['tournament_name']
         tournament_Owner_Id = User.query.filter_by(email=session['user']).first().id
         db.session.add(Tournament(tournament_Owner_Id, tournament_Name))
-
+        db.session.commit()
+        session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
         player_1_Name = request.form['player1']
         db.session.add(Player(player_1_Name,session['tournament_Id']))
         player_2_Name = request.form['player2']
@@ -126,7 +127,7 @@ def process_players():
         player_4_Name = request.form['player4']
         db.session.add(Player(player_4_Name,session['tournament_Id']))
         db.session.commit()
-        session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
+
         session['player_1_Name'] = player_1_Name
         session['player_2_Name'] = player_2_Name
         session['player_3_Name'] = player_3_Name
@@ -209,6 +210,9 @@ def list_tournaments():
         return render_template("leaderboard.html", player_scores=player_scores,round_num=round_num, player_names=player_Names_Dict,course=course,last_hole_played=last_hole_played)
     else:
         tournaments = Tournament.query.all()
+        if not tournaments:
+            flash('There are currently no tournaments, sign-in and start one!')
+            return redirect('/sign-in')
         return render_template('list_tournaments.html',tournaments=tournaments)
 
 
@@ -217,7 +221,8 @@ def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
     if not Score.query.all():
         leaderboard_error = 'Sorry, the leaderboard is currently empty, try starting a tournament!'
-        return render_template('signin.html', leaderboard_error=leaderboard_error)
+        flash('Leaderboard is currently empty')
+        return redirect('/')
 
     if request.method == 'GET':
         player1total = 0
@@ -265,7 +270,7 @@ def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
     return owner
 
-endpoints_without_login = ['display_signup' , 'validate_user','leaderboard', 'signin', 'static']
+endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'signin', 'static']
 
 @app.before_request
 def require_login():
