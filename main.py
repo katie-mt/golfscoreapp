@@ -1,4 +1,4 @@
-from flask import request, redirect, render_template, session, flash
+from flask import request, redirect, render_template, session, flash, json
 from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 
@@ -93,6 +93,11 @@ def validate_user():
     password_error2=password_error2, email_error=email_error)
 
 @app.route("/courses")
+def find_courses():
+    response = requests.get("http://api.sportradar.us/golf-t2/schedule/pga/2017/tournaments/schedule.json?api_key=cruz8v8npxp9zd2s3wzk9uwr")
+    parsed_response = json.loads(response)
+    return print(json.dump(parsed_response))
+
 def list_courses():
     courses = Course.query.all()
     return render_template("list_courses.html", courses=courses)
