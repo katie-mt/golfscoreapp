@@ -65,6 +65,7 @@ class Course(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True)
     holes = db.relationship('Hole', backref = 'owner')
+    scores = db.relationship('Score', backref='course')
 
 
     def __init__(self, name):
@@ -104,11 +105,13 @@ class Score(db.Model):
     round_id = db.Column(db.Integer,db.ForeignKey('round.id'))
     hole_id = db.Column(db.Integer, db.ForeignKey('hole.id'))
     player_id = db.Column(db.Integer, db.ForeignKey('player.id'))
+    course_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     score = db.Column(db.Integer)
 
-    def __init__(self, round_id, hole_id, player_id, score):
+    def __init__(self, round_id, hole_id, course_id, player_id, score):
         self.round_id = round_id
         self.hole_id = hole_id
+        self.course_id = course_id
         self.player_id = player_id
         self.score = score
 

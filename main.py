@@ -1,6 +1,7 @@
 from flask import request, redirect, render_template, session, flash
 from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
+from sqlalchemy import desc
 
 
 @app.route("/")
@@ -104,6 +105,9 @@ def initiate_tournament():
     elif request.method == 'POST':
         tournament_course = request.form['course']
         session['course'] = tournament_course
+        course = Course.query.filter_by(name = tournament_course).first()
+        course_id = course.id
+        session['course_id'] = course_id
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
 
 @app.route('/process_players', methods=['POST', 'GET'])
@@ -141,7 +145,7 @@ def score_input():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-        
+
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
 
@@ -151,9 +155,20 @@ def score_input():
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     tournament_id = 1
-    if session['hole_num'] >= 18:
+
+    player_1_Score = int(request.form['player_1_score'])
+    player_2_Score = int(request.form['player_2_score'])
+    player_3_Score = int(request.form['player_3_score'])
+    player_4_Score = int(request.form['player_4_score'])
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=1, score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=2, score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=3, score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=4, score=player_4_Score))
+    session['hole_num'] += 1
+    db.session.commit()
+    if session['hole_num'] > 18:
         session['hole_num'] = 1
-        #session['round_num'] += 1
+        session['round_num'] += 1
         db.session.add(Round(session['round_num'],tournament_id))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
@@ -162,16 +177,6 @@ def process_score():
         db.session.commit()
         return redirect('/leaderboard')
 
-    player_1_Score = int(request.form['player_1_score'])
-    player_2_Score = int(request.form['player_2_score'])
-    player_3_Score = int(request.form['player_3_score'])
-    player_4_Score = int(request.form['player_4_score'])
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=1, score=player_1_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=2, score=player_2_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=3, score=player_3_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], player_id=4, score=player_4_Score))
-    session['hole_num'] += 1
-    db.session.commit()
     return redirect('/score_input')
 
 
@@ -180,6 +185,10 @@ def process_score():
 @app.route("/leaderboard", methods=['GET'])
 def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
+    if not Score.query.all():
+        leaderboard_error = 'Sorry, the leaderboard is currently empty, try starting a tournament!'
+        return render_template('signin.html', leaderboard_error=leaderboard_error)
+
     if request.method == 'GET':
         player1total = 0
         player2total = 0
@@ -205,16 +214,20 @@ def leaderboard():
         all_Players_Total_Scores = player1total, player2total, player3total, player4total
 
 
-        player_1_Name = session['player_1_Name']
-        player_2_Name = session['player_2_Name']
-        player_3_Name = session['player_3_Name']
-        player_4_Name = session['player_4_Name']
+        player_1_Name = Player.query.filter_by(id = 1).first().name
+        player_2_Name = Player.query.filter_by(id = 2).first().name
+        player_3_Name = Player.query.filter_by(id = 3).first().name
+        player_4_Name = Player.query.filter_by(id = 4).first().name
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
-        round_num = session['round_num']
-        course = session['course']
+        first_score = Score.query.first()
+        round_id = first_score.round_id
+        course_id = first_score.course_id
+        round_num = Round.query.filter_by(id = round_id).first().round_number
+        course = Course.query.filter_by(id = course_id).first().name
+        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
 
 
 
@@ -230,14 +243,6 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-@app.route("/leaderboard", methods=['GET'])
-def display_leaderboard():
-    if request.method == 'GET':
-        player1 = Score.query.filter_by(player_id==1)
-        player2 = Score.query.filter_by(player_id==2)
-        player3 = Score.query.filter_by(player_id==3)
-        player4 = Score.query.filter_by(player_id==4)
-    return render_template("leaderboard.html,")
 
 @app.before_request
 def require_login():
