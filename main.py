@@ -197,17 +197,47 @@ def list_tournaments():
         course = some_Score.course_id
         player_scores = Score.query.filter_by(tournament_id = tournament_id).all()
         players = Player.query.filter_by(tournament_id = tournament_id).all()
+
+        i = 1
+        player_ids = {}
+        for player in players:
+            player_ids['player_{0}_Id'.format(i)] = player.id
+            i+=1
+        print(player_ids)
+
+        player1total = 0
+        player2total = 0
+        player3total = 0
+        player4total = 0
+
+        player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id'])
+        for score in player_1_Scores:
+            player1total += score.score
+
+        player_2_Scores = Score.query.filter_by(player_id=player_ids['player_2_Id'])
+        for score in player_2_Scores:
+            player2total += score.score
+
+        player_3_Scores = Score.query.filter_by(player_id=player_ids['player_3_Id'])
+        for score in player_3_Scores:
+            player3total += score.score
+
+        player_4_Scores = Score.query.filter_by(player_id=player_ids['player_4_Id'])
+        for score in player_4_Scores:
+            player4total += score.score
+
+        all_Players_Total_Scores = player1total, player2total, player3total, player4total
+
         #get the player names
         player_Names_Dict = {}
+        i=0
         for player in players:
-            i=0
             player_Names_Dict['player_{0}_Name'.format(i)] = players[i].name
             i += 1
-        print(player_Names_Dict)
-
+        print(player_scores)
         last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
 
-        return render_template("leaderboard.html", player_scores=player_scores,round_num=round_num, player_names=player_Names_Dict,course=course,last_hole_played=last_hole_played)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
     else:
         tournaments = Tournament.query.all()
         if not tournaments:
@@ -220,7 +250,6 @@ def list_tournaments():
 def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
     if not Score.query.all():
-        leaderboard_error = 'Sorry, the leaderboard is currently empty, try starting a tournament!'
         flash('Leaderboard is currently empty')
         return redirect('/')
 

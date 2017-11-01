@@ -19,27 +19,45 @@
     <tbody>
       <tr>
         <th scope="row">1</th>
+        {% if player_names %}
         <td>{{player_names[0]}}</td>
+        {% endif%} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_0_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[0]}}</td>
+
       </tr>
       <tr>
         <th scope="row">2</th>
+        {% if player_names %}
         <td>{{player_names[1]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_1_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[1]}}</td>
       </tr>
       <tr>
         <th scope="row">3</th>
+        {% if player_names %}
         <td>{{player_names[2]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_2_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[2]}}</td>
       </tr>
       <tr>
         <th scope="row">4</th>
+        {% if player_names %}
         <td>{{player_names[3]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_3_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[3]}}</td>
       </tr>
     </tbody>
   </table>
 
-  {% if last_hole_played >= 18 %}
-  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</h3> {% else %}
-  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% endif %} {% endblock %}
+  {% if last_hole_played >= 18 and session['user'] %}
+  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</h3> {% endif %} {% if session['user']%}
+  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% endif %} {% if not session['user']%}
+  <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
