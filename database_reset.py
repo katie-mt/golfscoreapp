@@ -10,8 +10,6 @@ db.create_all()
 db.session.add(User('golfguy','golfguy@gmail.com','golfislife'))
 db.session.commit()
 
-db.session.add(Tournament(1,"Blue"))
-db.session.commit()
 
 
 db.session.add(Course('Brooke Woods'))
