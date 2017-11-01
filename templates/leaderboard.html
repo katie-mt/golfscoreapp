@@ -58,6 +58,6 @@
   </table>
 
   {% if last_hole_played >= 18 and session['user'] %}
-  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</h3> {% endif %} {% if session['user']%}
-  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% endif %} {% if not session['user']%}
+  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
+  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
   <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
