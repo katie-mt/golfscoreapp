@@ -307,9 +307,9 @@ def require_login():
         return redirect("/signin")
 
 def logged_in_user():
-    scoreKeeper = User.query.filter_by(User=session['username']).first()
+    scoreKeeper = User.query.filter_by(User=session['user']).first()
     return scoreKeeper
-    """ This is set up so the login is set by the session['username']"""
+    """ This is set up so the login is set by the session['user']"""
 
 # Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
