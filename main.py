@@ -167,10 +167,15 @@ def process_score():
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=1, tournament_id=session['tournament_Id'],score=player_1_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=2, tournament_id=session['tournament_Id'],score=player_2_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=3, tournament_id=session['tournament_Id'],score=player_3_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=4, tournament_id=session['tournament_Id'],score=player_4_Score))
+    #TODO get the player ids
+    player_1_Id = Player.query.filter_by(name = session['player_1_Name']).first().id
+    player_2_Id = Player.query.filter_by(name = session['player_2_Name']).first().id
+    player_3_Id = Player.query.filter_by(name = session['player_3_Name']).first().id
+    player_4_Id = Player.query.filter_by(name = session['player_4_Name']).first().id
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_1_Id, tournament_id=session['tournament_Id'],score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_2_Id, tournament_id=session['tournament_Id'],score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_3_Id, tournament_id=session['tournament_Id'],score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_4_Id, tournament_id=session['tournament_Id'],score=player_4_Score))
     session['hole_num'] += 1
     db.session.commit()
     if session['hole_num'] > 18:
@@ -194,47 +199,51 @@ def list_tournaments():
 
         some_Score = Score.query.filter_by(tournament_id = tournament_id).first()
         round_num = some_Score.round_id
-        course = some_Score.course_id
+        course_id = some_Score.course_id
+        course = Course.query.filter_by(id = course_id).first().name
         player_scores = Score.query.filter_by(tournament_id = tournament_id).all()
         players = Player.query.filter_by(tournament_id = tournament_id).all()
 
-        i = 1
+        #get player id's for score query
         player_ids = {}
+        j=1
         for player in players:
-            player_ids['player_{0}_Id'.format(i)] = player.id
-            i+=1
-        print(player_ids)
+            player_ids['player_{0}_Id'.format(j)] = player.id
+            j+=1
 
         player1total = 0
         player2total = 0
         player3total = 0
         player4total = 0
 
-        player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id'])
+        player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id']).all()
         for score in player_1_Scores:
             player1total += score.score
 
-        player_2_Scores = Score.query.filter_by(player_id=player_ids['player_2_Id'])
+
+        player_2_Scores = Score.query.filter_by(player_id=player_ids['player_2_Id']).all()
         for score in player_2_Scores:
             player2total += score.score
 
-        player_3_Scores = Score.query.filter_by(player_id=player_ids['player_3_Id'])
+
+        player_3_Scores = Score.query.filter_by(player_id=player_ids['player_3_Id']).all()
         for score in player_3_Scores:
             player3total += score.score
 
-        player_4_Scores = Score.query.filter_by(player_id=player_ids['player_4_Id'])
+        player_4_Scores = Score.query.filter_by(player_id=player_ids['player_4_Id']).all()
         for score in player_4_Scores:
             player4total += score.score
 
         all_Players_Total_Scores = player1total, player2total, player3total, player4total
 
-        #get the player names
+        #get the player names for the template
         player_Names_Dict = {}
         i=0
         for player in players:
             player_Names_Dict['player_{0}_Name'.format(i)] = players[i].name
             i += 1
-        print(player_scores)
+        #print(player_Names_Dict)
+
         last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
