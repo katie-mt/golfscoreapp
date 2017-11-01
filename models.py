@@ -36,7 +36,7 @@ class Tournament(db.Model):
 
 class Player(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(80), unique=True)
+    name = db.Column(db.String(80))
     tournament_id = db.Column(db.Integer, db.ForeignKey('tournament.id'))
     scores = db.relationship('Score', backref='player')
     rounds = db.relationship('Round_Player_Table', backref='player')
