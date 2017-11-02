@@ -73,7 +73,7 @@ def validate_user():
 
     if not " " in email:
         if email_db_count == 0:
-            if len(email) >= 3 and len(email) <= 20:
+            if len(email) >= 3 and len(email) <= 30:
                 if "@" in email and "." in email:
                     email_error = ''
                 else:
