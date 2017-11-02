@@ -113,19 +113,21 @@ def initiate_tournament():
 @app.route('/process_players', methods=['POST', 'GET'])
 def process_players():
     if request.method == 'POST':
-        player_1_Name = request.form['player1']
-        if not Player.query.filter_by(name=player_1_Name):
-            db.session.add(Player(player_1_Name))
-        player_2_Name = request.form['player2']
-        if not Player.query.filter_by(name=player_2_Name):
-            db.session.add(Player(player_2_Name))
-        player_3_Name = request.form['player3']
-        if not Player.query.filter_by(name=player_3_Name):
-            db.session.add(Player(player_3_Name))
-        player_4_Name = request.form['player4']
-        if not Player.query.filter_by(name=player_4_Name):
-            db.session.add(Player(player_4_Name))
+        tournament_Name = request.form['tournament_name']
+        tournament_Owner_Id = User.query.filter_by(email=session['user']).first().id
+        db.session.add(Tournament(tournament_Owner_Id, tournament_Name))
         db.session.commit()
+        session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
+        player_1_Name = request.form['player1']
+        db.session.add(Player(player_1_Name,session['tournament_Id']))
+        player_2_Name = request.form['player2']
+        db.session.add(Player(player_2_Name,session['tournament_Id']))
+        player_3_Name = request.form['player3']
+        db.session.add(Player(player_3_Name,session['tournament_Id']))
+        player_4_Name = request.form['player4']
+        db.session.add(Player(player_4_Name,session['tournament_Id']))
+        db.session.commit()
+
         session['player_1_Name'] = player_1_Name
         session['player_2_Name'] = player_2_Name
         session['player_3_Name'] = player_3_Name
@@ -158,16 +160,22 @@ def score_input():
 
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
-    tournament_id = 1
+    tournament_id = session['tournament_Id']
+
 
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=1, score=player_1_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=2, score=player_2_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=3, score=player_3_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=4, score=player_4_Score))
+    #TODO get the player ids
+    player_1_Id = Player.query.filter_by(name = session['player_1_Name']).first().id
+    player_2_Id = Player.query.filter_by(name = session['player_2_Name']).first().id
+    player_3_Id = Player.query.filter_by(name = session['player_3_Name']).first().id
+    player_4_Id = Player.query.filter_by(name = session['player_4_Name']).first().id
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_1_Id, tournament_id=session['tournament_Id'],score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_2_Id, tournament_id=session['tournament_Id'],score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_3_Id, tournament_id=session['tournament_Id'],score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_4_Id, tournament_id=session['tournament_Id'],score=player_4_Score))
     session['hole_num'] += 1
     db.session.commit()
     if session['hole_num'] > 18:
@@ -184,14 +192,75 @@ def process_score():
     return redirect('/score_input')
 
 
+@app.route('/list_tournaments')
+def list_tournaments():
+    if request.args.get('tournament_id'):
+        tournament_id = request.args.get('tournament_id')
+
+        some_Score = Score.query.filter_by(tournament_id = tournament_id).first()
+        round_num = some_Score.round_id
+        course_id = some_Score.course_id
+        course = Course.query.filter_by(id = course_id).first().name
+        player_scores = Score.query.filter_by(tournament_id = tournament_id).all()
+        players = Player.query.filter_by(tournament_id = tournament_id).all()
+
+        #get player id's for score query
+        player_ids = {}
+        j=1
+        for player in players:
+            player_ids['player_{0}_Id'.format(j)] = player.id
+            j+=1
+
+        player1total = 0
+        player2total = 0
+        player3total = 0
+        player4total = 0
+
+        player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id']).all()
+        for score in player_1_Scores:
+            player1total += score.score
+
+
+        player_2_Scores = Score.query.filter_by(player_id=player_ids['player_2_Id']).all()
+        for score in player_2_Scores:
+            player2total += score.score
+
+
+        player_3_Scores = Score.query.filter_by(player_id=player_ids['player_3_Id']).all()
+        for score in player_3_Scores:
+            player3total += score.score
+
+        player_4_Scores = Score.query.filter_by(player_id=player_ids['player_4_Id']).all()
+        for score in player_4_Scores:
+            player4total += score.score
+
+        all_Players_Total_Scores = player1total, player2total, player3total, player4total
+
+        #get the player names for the template
+        player_Names_Dict = {}
+        i=0
+        for player in players:
+            player_Names_Dict['player_{0}_Name'.format(i)] = players[i].name
+            i += 1
+        #print(player_Names_Dict)
+
+        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
+    else:
+        tournaments = Tournament.query.all()
+        if not tournaments:
+            flash('There are currently no tournaments, sign-in and start one!')
+            return redirect('/sign-in')
+        return render_template('list_tournaments.html',tournaments=tournaments)
 
 
 @app.route("/leaderboard", methods=['GET'])
 def leaderboard():
 #populating score data assuming a for loop will be used in the template to list every players score'''
     if not Score.query.all():
-        leaderboard_error = 'Sorry, the leaderboard is currently empty, try starting a tournament!'
-        return render_template('signin.html', leaderboard_error=leaderboard_error)
+        flash('Leaderboard is currently empty')
+        return redirect('/')
 
     if request.method == 'GET':
         player1total = 0
@@ -230,34 +299,26 @@ def leaderboard():
         round_num = Round.query.filter_by(id = round_id).first().round_number
         course = Course.query.filter_by(id = course_id).first().name
         last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        #TODO find a better way to get last hole played
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
-
 
 
 def logged_in_user():
     owner = User.query.filter_by(email=session['user']).first()
     return owner
 
-endpoints_without_login = ['display_signup' , 'validate_user','leaderboard', 'signin', 'static']
+endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'signin', 'static']
 
 @app.before_request
 def require_login():
-
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-
-@app.before_request
-def require_login():
-    if not ('user' in session or request.endpoint in endpoints_without_login):
-        return redirect("/leaderboard")
-        """ Should I redirect to leaderboard or login?"""
-
 def logged_in_user():
-    scoreKeeper = User.query.filter_by(User=session['username']).first()
+    scoreKeeper = User.query.filter_by(User=session['user']).first()
     return scoreKeeper
-    """ This is set up so the login is set by the session['username']"""
+    """ This is set up so the login is set by the session['user']"""
 
 # Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
