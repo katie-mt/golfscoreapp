@@ -3,9 +3,8 @@ from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 from sqlalchemy import desc
 
-def logged_in_user():
-    logged_in_user = User.query.filter_by(User=session['user']).first()
-    return logged_in_user
+def logged_in_user_id():
+    return User.query.filter_by(email=session['user']).first().id
 
 
 @app.route("/")
@@ -117,26 +116,28 @@ def initiate_tournament():
 @app.route('/process_players', methods=['POST', 'GET'])
 def process_players():
     if request.method == 'POST':
+
+
+        logged_in_user_id = User.query.filter_by(email=session['user']).first().id
         tournament_Name = request.form['tournament_name']
-        tournament_Owner_Id = User.query.filter_by(email=session['user']).first().id
-        db.session.add(Tournament(tournament_Owner_Id, tournament_Name))
+
+        db.session.add(Tournament(logged_in_user_id, tournament_Name))
         db.session.commit()
         session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
         player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user().id))
+        db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))
         player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user().id))
+        db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user_id))
         player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user().id))
+        db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user_id))
         player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user().id))
+        db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user_id))
         db.session.commit()
 
-
-        player_1_Id = Player.query.filter_by(name = player_1_Name, owner_id=logged_in_user().id)
-        player_2_Id = Player.query.filter_by(name = player_2_Name, owner_id=logged_in_user().id)
-        player_3_Id = Player.query.filter_by(name = player_3_Name, owner_id=logged_in_user().id)
-        player_4_Id = Player.query.filter_by(name = player_4_Name, owner_id=logged_in_user().id)
+        player_1_Id = Player.query.filter_by(name = player_1_Name , owner_id = logged_in_user_id).first().id
+        player_2_Id = Player.query.filter_by(name = player_2_Name , owner_id = logged_in_user_id).first().id
+        player_3_Id = Player.query.filter_by(name = player_3_Name , owner_id = logged_in_user_id).first().id
+        player_4_Id = Player.query.filter_by(name = player_4_Name , owner_id = logged_in_user_id).first().id
 
 
         session['player_1_Id'] = player_1_Id
@@ -148,10 +149,10 @@ def process_players():
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
     this_Rounds_Players = []
-    this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id']).first()
-    this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id']).first()
-    this_Rounds_Players += Player.query.filter_by(id = session['player_3_Id']).first()
-    this_Rounds_Players += Player.query.filter_by(id = session['player_4_Id']).first()
+    this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id'])
+    this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id'])
+    this_Rounds_Players += Player.query.filter_by(id = session['player_3_Id'])
+    this_Rounds_Players += Player.query.filter_by(id = session['player_4_Id'])
     if 'hole_num' not in session:
         session['hole_num'] = 1
     if 'round_num' not in session:
@@ -178,7 +179,7 @@ def process_score():
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-    
+
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_1_Id'], tournament_id=session['tournament_Id'],score=player_1_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_2_Id'], tournament_id=session['tournament_Id'],score=player_2_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_3_Id'], tournament_id=session['tournament_Id'],score=player_3_Score))
@@ -311,9 +312,6 @@ def leaderboard():
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
 
 
-def logged_in_user():
-    owner = User.query.filter_by(email=session['user']).first()
-    return owner
 
 endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'signin', 'static']
 
