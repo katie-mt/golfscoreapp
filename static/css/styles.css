@@ -99,3 +99,9 @@ body{
   background-color: rgba(48, 48, 48, 0.9);
   color: white;
 }
+
+
+/*signup*/
+.signup_title {
+    font-family: 'Fira Sans', sans-serif;
+}
