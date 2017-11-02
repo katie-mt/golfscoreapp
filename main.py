@@ -104,7 +104,7 @@ def list_courses():#Queries the database for all Course names and passes them to
 
 @app.route("/initiate_tournament", methods=['POST'])#This route is only accessed through the post request from list_courses template
 def initiate_tournament():
-<<<<<<< HEAD
+
     tournament_course = request.form['course']#pulls name of course from list_courses template
     session['course'] = tournament_course#puts that course name in session variable with key 'course'
     course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
@@ -145,7 +145,7 @@ def score_input():#this fills in a blank template with player,round,and par info
     this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
     this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
     if 'hole_num' not in session: #This tracks the current hole number being scored
-=======
+
     if request.method == 'GET':
         return render_template('tournament_initiation.html', title='Start A Tournament')
     elif request.method == 'POST':
@@ -197,7 +197,7 @@ def score_input():
     this_Rounds_Players += Player.query.filter_by(id = session['player_3_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_4_Id'])
     if 'hole_num' not in session:
->>>>>>> list_tournanaments
+
         session['hole_num'] = 1
     if 'round_num' not in session: #This tracks the current round number being scored
         session['round_num'] = 1
