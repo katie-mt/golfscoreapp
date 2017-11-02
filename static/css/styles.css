@@ -48,3 +48,13 @@ body{
   background-color: rgba(48, 48, 48, 1);
   color: white;
 }
+
+.score_input_body {
+  background-color: #bfbfbf;
+}
+
+/*Base*/
+
+.navbar {
+  background-color:  rgb(48, 48, 48);
+}
