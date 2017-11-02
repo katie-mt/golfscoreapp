@@ -3,6 +3,10 @@ from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 from sqlalchemy import desc
 
+def logged_in_user():
+    logged_in_user = User.query.filter_by(User=session['user']).first()
+    return logged_in_user
+
 
 @app.route("/")
 def index():
@@ -119,28 +123,35 @@ def process_players():
         db.session.commit()
         session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
         player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name,session['tournament_Id']))
+        db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user().id))
         player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name,session['tournament_Id']))
+        db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user().id))
         player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name,session['tournament_Id']))
+        db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user().id))
         player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name,session['tournament_Id']))
+        db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user().id))
         db.session.commit()
 
-        session['player_1_Name'] = player_1_Name
-        session['player_2_Name'] = player_2_Name
-        session['player_3_Name'] = player_3_Name
-        session['player_4_Name'] = player_4_Name
+
+        player_1_Id = Player.query.filter_by(name = player_1_Name, owner_id=logged_in_user().id)
+        player_2_Id = Player.query.filter_by(name = player_2_Name, owner_id=logged_in_user().id)
+        player_3_Id = Player.query.filter_by(name = player_3_Name, owner_id=logged_in_user().id)
+        player_4_Id = Player.query.filter_by(name = player_4_Name, owner_id=logged_in_user().id)
+
+
+        session['player_1_Id'] = player_1_Id
+        session['player_2_Id'] = player_2_Id
+        session['player_3_Id'] = player_3_Id
+        session['player_4_Id'] = player_4_Id
         return redirect('/score_input')
 
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
     this_Rounds_Players = []
-    this_Rounds_Players += Player.query.filter_by(name = session['player_1_Name'])
-    this_Rounds_Players += Player.query.filter_by(name = session['player_2_Name'])
-    this_Rounds_Players += Player.query.filter_by(name = session['player_3_Name'])
-    this_Rounds_Players += Player.query.filter_by(name = session['player_4_Name'])
+    this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id']).first()
+    this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id']).first()
+    this_Rounds_Players += Player.query.filter_by(id = session['player_3_Id']).first()
+    this_Rounds_Players += Player.query.filter_by(id = session['player_4_Id']).first()
     if 'hole_num' not in session:
         session['hole_num'] = 1
     if 'round_num' not in session:
@@ -167,15 +178,11 @@ def process_score():
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-    #TODO get the player ids
-    player_1_Id = Player.query.filter_by(name = session['player_1_Name']).first().id
-    player_2_Id = Player.query.filter_by(name = session['player_2_Name']).first().id
-    player_3_Id = Player.query.filter_by(name = session['player_3_Name']).first().id
-    player_4_Id = Player.query.filter_by(name = session['player_4_Name']).first().id
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_1_Id, tournament_id=session['tournament_Id'],score=player_1_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_2_Id, tournament_id=session['tournament_Id'],score=player_2_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_3_Id, tournament_id=session['tournament_Id'],score=player_3_Score))
-    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_4_Id, tournament_id=session['tournament_Id'],score=player_4_Score))
+    
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_1_Id'], tournament_id=session['tournament_Id'],score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_2_Id'], tournament_id=session['tournament_Id'],score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_3_Id'], tournament_id=session['tournament_Id'],score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_4_Id'], tournament_id=session['tournament_Id'],score=player_4_Score))
     session['hole_num'] += 1
     db.session.commit()
     if session['hole_num'] > 18:
@@ -315,10 +322,7 @@ def require_login():
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
-def logged_in_user():
-    scoreKeeper = User.query.filter_by(User=session['user']).first()
-    return scoreKeeper
-    """ This is set up so the login is set by the session['user']"""
+
 
 # Our app secret key should be kept secret (i.e. not on github) upon app launch. (Not placed on github)
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RU'
