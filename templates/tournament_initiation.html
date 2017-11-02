@@ -7,6 +7,7 @@
 <div>
 
 <form action="/process_players" method="post">
+
   <label>Tournament Name</label>
   <input type='text' name='tournament_name' />
 
@@ -66,8 +67,10 @@
     </tbody>
   </table>
 
-  <input type="Submit" value='Start Round!' />
-
+  <div class="submit_btn">
+    <input class="scsubmit_text btn-lg btn-primary text-center" type="Submit" value='Start Round!'>
+  </div>
+  
 </form>
 
 {% endblock %}
