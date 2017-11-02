@@ -1,5 +1,10 @@
 {% extends "base.html" %} {% block content %}
-<h1>Setting up round for {{course}}</h1>
+
+<link rel="stylesheet" href="/static/css/styles.css">
+
+<div class="initiation_header">
+  <h3>Setting up round for: {{course}}</h3>
+<div>
 
 <form action="/process_players" method="post">
   <label>Tournament Name</label>
@@ -7,11 +12,13 @@
 
   <table class="table table-hover table-inverse">
     <thead>
-      <tr>
-        <th>Player Name</th>
+      <!--Using score_input_header class for styling-->
+      <tr class="score_input_header">
+        <th>Player Names:</th>
       </tr>
     </thead>
-    <tbody>
+    <!--using score_input_body class for styling-->
+    <tbody class="score_input_body">
       <tr>
         <td>
           <label>Player 1 Name:</label>
