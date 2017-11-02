@@ -1,17 +1,24 @@
 {% extends "base.html" %} {% block content %}
-<h1>Setting up round for {{course}}</h1>
+
+<link rel="stylesheet" href="/static/css/styles.css">
+
 
 <form action="/process_players" method="post">
-  <label>Tournament Name</label>
-  <input type='text' name='tournament_name' />
 
   <table class="table table-hover table-inverse">
-    <thead>
-      <tr>
-        <th>Player Name</th>
-      </tr>
-    </thead>
-    <tbody>
+
+    <div class="player_names card" style="width: 30rem;">
+      <div class="card-body">
+        <h3>Setting up round for: </h3>
+        <h5>{{course}}</h5>
+        <label>Tournament Name:</label>
+        <input type='text' name='tournament_name' /><br><br>
+        <h3>Player Names:</h3>
+      </div>
+    </div>
+
+    <!--using score_input_body class for styling-->
+    <tbody class="score_input_body">
       <tr>
         <td>
           <label>Player 1 Name:</label>
@@ -59,7 +66,9 @@
     </tbody>
   </table>
 
-  <input type="Submit" value='Start Round!' />
+  <div class="submit_btn">
+    <input class="scsubmit_text btn-lg btn-primary text-center" type="Submit" value='Start Round!'>
+  </div>
 
 </form>
 

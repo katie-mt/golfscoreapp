@@ -29,11 +29,9 @@
       </ul>
       <span class="navbar-text">
         {% if 'user' in session %} {{ session['user'] }}
-        <li>
-          <form action="/logout" method="post" id='logout' align="right">
-            <input type="submit" value="Log Out" />
-          </form>
-        </li>
+        <form action="/logout" method="post" id='logout' align="right">
+          <input type="submit" value="Log Out" />
+        </form>
         {% endif %} {% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
         <p>{{message}}</p>
         {% endfor %}{% endif %}{% endwith %}
