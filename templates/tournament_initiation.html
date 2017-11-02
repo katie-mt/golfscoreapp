@@ -12,12 +12,18 @@
   <input type='text' name='tournament_name' />
 
   <table class="table table-hover table-inverse">
-    <thead>
-      <!--Using score_input_header class for styling-->
+    <!--<thead>
       <tr class="score_input_header">
         <th>Player Names:</th>
       </tr>
-    </thead>
+    </thead>-->
+
+    <div class="player_names card" style="width: 30rem;">
+      <div class="card-body">
+        <h3>Player Names:</h3>
+      </div>
+    </div>
+
     <!--using score_input_body class for styling-->
     <tbody class="score_input_body">
       <tr>
@@ -70,7 +76,7 @@
   <div class="submit_btn">
     <input class="scsubmit_text btn-lg btn-primary text-center" type="Submit" value='Start Round!'>
   </div>
-  
+
 </form>
 
 {% endblock %}
