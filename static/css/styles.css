@@ -1,19 +1,30 @@
 body{
   margin: 0;
+<<<<<<< HEAD
   /*background-image: url("../img/golf_image3.jpg");*/
+=======
+  background-image: url("../img/golf_image2.jpg");
+>>>>>>> table_updates
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
 }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> table_updates
 .title_styling {
     color: rgba(48, 48, 48, 0.85);
 }
 
 .signin_styling {
+<<<<<<< HEAD
     background-image: url("../img/golf_image.jpg");
+=======
+    background-image: url("../img/golf_image1.jpg");
+>>>>>>> table_updates
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
@@ -22,7 +33,7 @@ body{
 }
 
 .titles {
-    font-family: 'Arvo', serif;
+    font-family: 'Fira Sans', sans-serif;
 }
 
 .sign-in-form{
@@ -39,4 +50,35 @@ body{
   min-width: 0;
   background-color: rgba(53, 59, 64, 0.7);
   color: rgba(249,249,239);
+}
+
+/*score_input*/
+
+.card {
+      border-radius: 25rem;
+}
+
+.score_input_header {
+  background-color: rgba(48, 48, 48, 1);
+  color: white;
+}
+
+.score_input_body {
+  background-color: #e6e6e6;
+}
+
+.submit_btn {
+    margin: 0;
+    background-color: transparent;
+    text-align: center;
+    padding: 30px;
+}
+
+
+/*Base*/
+
+.navbar {
+  background-color:  rgb(48, 48, 48);
+
+
 }
