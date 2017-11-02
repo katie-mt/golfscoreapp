@@ -39,3 +39,7 @@ body{
   background-color: rgba(53, 59, 64, 0.7);
   color: rgba(249,249,239);
 }
+
+.card {
+      border-radius: 25rem;
+}
