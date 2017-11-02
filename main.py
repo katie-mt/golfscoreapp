@@ -13,7 +13,7 @@ def index():
    return redirect('/courses')
 
 @app.route("/signin", methods=['GET', 'POST'])
-def signin():#Accessible without logging in. 
+def signin():#Accessible without logging in.
     if request.method == 'GET':#During a get request, display the blank signin template
         return render_template('signin.html')
     elif request.method == 'POST':
@@ -120,7 +120,7 @@ def process_players():#This method sets up players in the database so that their
     db.session.add(Tournament(tournament_Owner_Id, tournament_Name))#Intatiates a tournament with ownerID and tournament name
     db.session.commit()#Confirms tournament intatiation
     session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id#Assigns tournemant ID to session variable with key 'tournament_ID'
-      
+
     player_1_Name = request.form['player1']
     db.session.add(Player(player_1_Name,session['tournament_Id']))#Players are instatiated using player name from template POST request and tournament_ID session variable
     player_2_Name = request.form['player2']
@@ -220,7 +220,7 @@ def process_score():#Takes scores from the score_input template and puts them in
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-<<<<<<< HEAD
+
     #get the player ids using Session variable
     player_1_Id = Player.query.filter_by(name = session['player_1_Name']).first().id
     player_2_Id = Player.query.filter_by(name = session['player_2_Name']).first().id
@@ -231,16 +231,16 @@ def process_score():#Takes scores from the score_input template and puts them in
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_2_Id, tournament_id=session['tournament_Id'],score=player_2_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_3_Id, tournament_id=session['tournament_Id'],score=player_3_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=player_4_Id, tournament_id=session['tournament_Id'],score=player_4_Score))
-=======
+
 
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_1_Id'], tournament_id=session['tournament_Id'],score=player_1_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_2_Id'], tournament_id=session['tournament_Id'],score=player_2_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_3_Id'], tournament_id=session['tournament_Id'],score=player_3_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=session['hole_num'], course_id=session['course_id'], player_id=session['player_4_Id'], tournament_id=session['tournament_Id'],score=player_4_Score))
     session['hole_num'] += 1
->>>>>>> list_tournanaments
+
     db.session.commit()
-    
+
     #update the current hole number in the session variable
     session['hole_num'] += 1
     if session['hole_num'] > 18: #this logic will determine if all 18 holes have been played.
@@ -251,7 +251,7 @@ def process_score():#Takes scores from the score_input template and puts them in
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
-        db.session.commit() 
+        db.session.commit()
         return redirect('/leaderboard') #After last 18 holes, user sent to leaderboard
     return redirect('/score_input') #when there are more scores to report, user goes to next score_input template
 
