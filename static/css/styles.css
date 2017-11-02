@@ -105,3 +105,11 @@ body{
 .signup_title {
     font-family: 'Fira Sans', sans-serif;
 }
+
+.signup_box {
+  color: white;
+}
+
+.signin_elements {
+  text-align: left;
+}
