@@ -43,3 +43,8 @@ body{
 .card {
       border-radius: 25rem;
 }
+
+.score_input_header {
+  background-color: rgba(48, 48, 48, 1);
+  color: white;
+}
