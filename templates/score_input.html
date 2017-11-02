@@ -1,17 +1,8 @@
 {% extends "base.html" %} {% block content %}
-<<<<<<< HEAD
-<h3>Input Scores:</h3>
-<h2>Round: {{round_num}}</h2>
-<h2>Hole: {{hole_num}}</h2>
-<h2>Par: {{par_num}}</h2>
-=======
-
-<link rel="stylesheet" href="/static/css/styles.css">
-<link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
 <div class="info-row" style="display: flex; justify-content: space-around; padding-bottom: 30px; padding-top: 20px;">
 
-  <div class="card" style="float: center; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
+  <div class="card" style="float: left; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); width: 10rem; height: 8rem; text-align: center;">
     <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Round</h4>
@@ -19,7 +10,7 @@
     </div>
   </div>
 
-  <div class="card" style="float: center; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
+  <div class="card" style="float: center; border: 1px solid; width: 10rem; height: 10rem; text-align: center;">
     <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Hole</h4>
@@ -27,7 +18,7 @@
     </div>
   </div>
 
-  <div class="card" style="float: right; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
+  <div class="card" style="float: right; border: 1px solid; width: 10rem; height: 10rem; text-align: center;">
     <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Par<h4>
@@ -36,40 +27,37 @@
   </div>
 
 </div>
->>>>>>> table_updates
 
 <form action='/process_score' method='post'>
 
   <table class="table table-hover table-inverse">
-    <!--<thead class="thead-light">-->
-      <tr class="score_input_header">
+    <thead class="thead-light">
+      <tr>
         <th>Player Name</th>
         <th>Score</th>
+
       </tr>
     </thead>
-    <tbody class="score_input_body">
-      <tr>
+    <tbody>
+      <tr class="table-success">
         <td>{{players[0].name}}</td>
         <td><input type="text" name="player_1_score" placeholder="Enter Score"></td>
       </tr>
-      <tr>
+      <tr class="table-success">
         <td>{{players[1].name}}</td>
         <td><input type="text" name="player_2_score" placeholder="Enter Score"></td>
       </tr>
-      <tr>
+      <tr class="table-success">
         <td>{{players[2].name}}</td>
         <td><input type="text" name="player_3_score" placeholder="Enter Score"></td>
       </tr>
-      <tr>
+      <tr class="table-success">
         <td>{{players[3].name}}</td>
         <td><input type="text" name="player_4_score" placeholder="Enter Score"></td>
       </tr>
     </tbody>
   </table>
-
-  <div class="submit_btn">
-    <input class="scsubmit_text btn-lg btn-primary text-center" type="submit" value="Submit Scores!">
-  </div>
+  <input type='submit' value='Submit Scores!'>
 
 </form>
 
