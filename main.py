@@ -157,7 +157,7 @@ def score_input():
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
-        db.session.add(Round(session['round_num'],1))
+        db.session.add(Round(session['round_num'],session['tournament_Id']))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
