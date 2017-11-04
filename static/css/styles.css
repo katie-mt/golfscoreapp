@@ -44,7 +44,6 @@ body{
 }
 
 /*score_input*/
-/*updated this from 'card' to round_card*/
 .round_card {
       border-radius: 25rem;
 }
@@ -64,6 +63,7 @@ body{
     background-color: transparent;
     text-align: center;
     padding: 30px;
+    margin-top: 10px;
 }
 
 
@@ -89,10 +89,19 @@ body{
   color: white;
 }
 
-.player_names {
+.player_names1 {
   background-color: rgba(48, 48, 48, 0.9);
   color: white;
-  margin-top: 30px;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
+.player_names2 {
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .tourney_name {
