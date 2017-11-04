@@ -203,56 +203,6 @@ def process_score():
 
     return redirect('/score_input')
 
-    # else:
-    #     player_1_Score_val = score1.strip()
-    #     for c in player_1_Score_val:
-    #         if not c in '0123456789':        
-    #             session['error2'] = "Input must be a positive number"
-    #             return redirect('/score_inpout')
-    #     if session['error2'] == "":
-    #         player_1_Score = int(player_1_Score_val)
-    #         if player_1_Score <= 0:
-    #             session['error'] = "Score must be a number greater than 0"
-    #         if player_1_Score > 99:
-    #             session['error4'] = "Score must be no greater than 99"
-
-    #     player_2_Score_val = score2.strip()
-    #     for c in player_2_Score_val:
-    #         if not c in '0123456789':        
-    #             session['error2'] = "Input must be a number"
-    #             return redirect('/score_inpout')
-    #     player_2_Score = int(player_2_Score_val)
-    #     if player_2_Score <= 0:
-    #         session['error'] = "Score must be a number greater than 0"
-    #     if player_2_Score > 99:
-    #         session['error4'] = "Score must be no greater than 99"
-        
-    #     player_3_Score_val = score3.strip()
-    #     for c in player_3_Score_val:
-    #         if not c in '0123456789':        
-    #             session['error2'] = "Input must be a number"
-    #             return redirect('/score_inpout')
-    #     player_3_Score = int(player_3_Score_val)
-    #     if player_3_Score <= 0:
-    #         session['error'] = "Score must be a number greater than 0"
-    #     if player_3_Score > 99:
-    #         session['error4'] = "Score must be no greater than 99"
-
-    #     player_4_Score_val = score4.strip()
-    #     for c in player_4_Score_val:
-    #         if not c in '0123456789':        
-    #             session['error2'] = "Input must be a number"
-    #             return redirect('/score_inpout')
-    #     player_4_Score = int(player_4_Score_val)
-    #     if player_4_Score <= 0:
-    #         session['error3'] = "Score must be a number greater than 0"
-    #     if player_4_Score > 99:
-    #         session['error4'] = "Score must be no greater than 99"
-        
-    #     session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
-    #     if session['error'] > "":
-    #         return redirect('/score_input')
-
 @app.route('/list_tournaments')
 def list_tournaments():
     if request.args.get('tournament_id'):
