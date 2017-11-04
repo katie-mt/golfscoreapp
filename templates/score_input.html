@@ -1,3 +1,5 @@
+Score input
+
 {% extends "base.html" %} {% block content %}
 
 
@@ -32,13 +34,13 @@
 
 </div>
 
-
+<!-- 
 {% if errors > "" %}
-<h5> {{ session['error'] }} </h5>
-<!-- <h5> {{ session['error'][1] }} </h5>
-<h5> {{ session['error'][2] }} </h5>
-<h5> {{ session'[error'][3] }} </h5> -->
-{% endif %}
+<h5> {{ error[0] }} </h5>
+<h5> {{ error[1] }} </h5>
+<h5> {{ error[2] }} </h5>
+<h5> {{ error[3] }} </h5>
+{% endif %} -->
 
     
 <form action='/process_score' method='post'>
