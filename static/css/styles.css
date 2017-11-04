@@ -56,6 +56,7 @@ body{
 .score_input_body {
   background-color: #e6e6e6;
   color: black;
+  font-weight: bold;
 }
 
 .submit_btn {
@@ -81,7 +82,10 @@ body{
   background-color: rgba(48, 48, 48, 0.8);
   color: white;
   padding: 20px;
-  margin-top: 30px;
+  text-align: left;
+  margin: auto;
+  margin-top: 40px;
+
 }
 
 /*tournament initiation*/
@@ -95,6 +99,7 @@ body{
   margin-top: 10px;
   width: 100%;
   text-align: center;
+  font-weight: bold;
 }
 
 .player_names2 {
