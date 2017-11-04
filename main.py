@@ -157,7 +157,7 @@ def score_input():
         session['hole_num'] = 1
     if 'round_num' not in session:
         session['round_num'] = 1
-        db.session.add(Round(session['round_num'],1))
+        db.session.add(Round(session['round_num'],session['tournament_Id']))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
@@ -172,78 +172,86 @@ def score_input():
 
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
-    tournament_id = 1 
-    session['error'] = ""
-    session['error1'] = "" 
-    session['error2'] = "" 
-    session['error3'] = "" 
-    session['error4'] = "" 
+    tournament_id = session['tournament_Id']
 
-    score1 = request.form['player_1_score']
-    if (score1 == None) or (score1 == "") or (score1 == False):
-        session['error1'] = "You must input a score for every player"
-    score2 = request.form['player_2_score']
-    if (score2 == None) or (score2 == "") or (score2 == False):
-        session['error1'] = "You must input a score for every player"
-    score3 = request.form['player_3_score']
-    if (score3 == None) or (score3 == "") or (score3 == False):
-        session['error1'] = "You must input a score for every player"
-    score4 = request.form['player_4_score']
-    if (score4 == None) or (score4 == "") or (score4 == False):
-        session['error1'] = "You must input a score for every player"
-    
-    if session['error1'] != "":
-        return redirect ('/score_input')
 
-    else:
-        player_1_Score_val = score1.strip()
-        for c in player_1_Score_val:
-            if not c in '0123456789':        
-                session['error2'] = "Input must be a positive number"
-                return redirect('/score_inpout')
-        if session['error2'] == "":
-            player_1_Score = int(player_1_Score_val)
-            if player_1_Score <= 0:
-                session['error'] = "Score must be a number greater than 0"
-            if player_1_Score > 99:
-                session['error4'] = "Score must be no greater than 99"
+    player_1_Score = int(request.form['player_1_score'])
+    player_2_Score = int(request.form['player_2_score'])
+    player_3_Score = int(request.form['player_3_score'])
+    player_4_Score = int(request.form['player_4_score'])
 
-        player_2_Score_val = score2.strip()
-        for c in player_2_Score_val:
-            if not c in '0123456789':        
-                session['error2'] = "Input must be a number"
-                return redirect('/score_inpout')
-        player_2_Score = int(player_2_Score_val)
-        if player_2_Score <= 0:
-            session['error'] = "Score must be a number greater than 0"
-        if player_2_Score > 99:
-            session['error4'] = "Score must be no greater than 99"
+    hole_id = Hole.query.filter_by(hole_num = session['hole_num'], owner_id = session['course_id']).first().id
+    print(hole_id)
+
+
+    db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_1_Id'], tournament_id=session['tournament_Id'],score=player_1_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_2_Id'], tournament_id=session['tournament_Id'],score=player_2_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_3_Id'], tournament_id=session['tournament_Id'],score=player_3_Score))
+    db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_4_Id'], tournament_id=session['tournament_Id'],score=player_4_Score))
+    session['hole_num'] += 1
+    db.session.commit()
+    if session['hole_num'] > 18:
+        session['hole_num'] = 1
+        session['round_num'] += 1
+        db.session.add(Round(session['round_num'],tournament_id))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
+        db.session.commit()
+        return redirect('/leaderboard')
+
+    return redirect('/score_input')
+
+    # else:
+    #     player_1_Score_val = score1.strip()
+    #     for c in player_1_Score_val:
+    #         if not c in '0123456789':        
+    #             session['error2'] = "Input must be a positive number"
+    #             return redirect('/score_inpout')
+    #     if session['error2'] == "":
+    #         player_1_Score = int(player_1_Score_val)
+    #         if player_1_Score <= 0:
+    #             session['error'] = "Score must be a number greater than 0"
+    #         if player_1_Score > 99:
+    #             session['error4'] = "Score must be no greater than 99"
+
+    #     player_2_Score_val = score2.strip()
+    #     for c in player_2_Score_val:
+    #         if not c in '0123456789':        
+    #             session['error2'] = "Input must be a number"
+    #             return redirect('/score_inpout')
+    #     player_2_Score = int(player_2_Score_val)
+    #     if player_2_Score <= 0:
+    #         session['error'] = "Score must be a number greater than 0"
+    #     if player_2_Score > 99:
+    #         session['error4'] = "Score must be no greater than 99"
         
-        player_3_Score_val = score3.strip()
-        for c in player_3_Score_val:
-            if not c in '0123456789':        
-                session['error2'] = "Input must be a number"
-                return redirect('/score_inpout')
-        player_3_Score = int(player_3_Score_val)
-        if player_3_Score <= 0:
-            session['error'] = "Score must be a number greater than 0"
-        if player_3_Score > 99:
-            session['error4'] = "Score must be no greater than 99"
+    #     player_3_Score_val = score3.strip()
+    #     for c in player_3_Score_val:
+    #         if not c in '0123456789':        
+    #             session['error2'] = "Input must be a number"
+    #             return redirect('/score_inpout')
+    #     player_3_Score = int(player_3_Score_val)
+    #     if player_3_Score <= 0:
+    #         session['error'] = "Score must be a number greater than 0"
+    #     if player_3_Score > 99:
+    #         session['error4'] = "Score must be no greater than 99"
 
-        player_4_Score_val = score4.strip()
-        for c in player_4_Score_val:
-            if not c in '0123456789':        
-                session['error2'] = "Input must be a number"
-                return redirect('/score_inpout')
-        player_4_Score = int(player_4_Score_val)
-        if player_4_Score <= 0:
-            session['error3'] = "Score must be a number greater than 0"
-        if player_4_Score > 99:
-            session['error4'] = "Score must be no greater than 99"
+    #     player_4_Score_val = score4.strip()
+    #     for c in player_4_Score_val:
+    #         if not c in '0123456789':        
+    #             session['error2'] = "Input must be a number"
+    #             return redirect('/score_inpout')
+    #     player_4_Score = int(player_4_Score_val)
+    #     if player_4_Score <= 0:
+    #         session['error3'] = "Score must be a number greater than 0"
+    #     if player_4_Score > 99:
+    #         session['error4'] = "Score must be no greater than 99"
         
-        session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
-        if session['error'] > "":
-            return redirect('/score_input')
+    #     session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
+    #     if session['error'] > "":
+    #         return redirect('/score_input')
 
 @app.route('/list_tournaments')
 def list_tournaments():
