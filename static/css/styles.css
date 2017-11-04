@@ -138,6 +138,13 @@ body{
     min-width: 0;
     background-color: rgba(53, 59, 64, 0.7);
     margin: auto;
+}
+
+.signup_button {
+  text-align: center;
+  margin: auto;
+}
+
 
 /*Leaderboard*/
 
