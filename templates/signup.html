@@ -6,42 +6,38 @@
 
 <div class="signin_styling text-center">
   <div class="container">
-    <div class="titles"><br>
+    <div class="titles">
       <h1 class="signup_title title_styling text-center font-weight-bold">Signup for an Account</h1><br>
     </div>
   </div>
 
 <div class='container'>
   <div class='row'>
-    <div class='col-md-4'>
-    </div>
     <div id='sign-in-form'>
       <div class="box_styling" id=id='sign-in-form'>
         <form action="/signup" method="post">
 
-            <label for='username'><strong>Username:</strong></label>
-            <input name="username" type="text" value="{{username}}" />
-            <p class="username_error">{{username_error}}</p>
+          <label for='username'><strong>Username:</strong></label><br>
+          <input name="username" type="text" value="{{username}}" />
+          <p class="username_error">{{username_error}}</p>
 
-            <label for='password'><strong>Password:</strong></label>
-            <input name="password" type="password" value="{{password}}" />
-            <p class="email_error">{{password_error1}}</p>
+          <label for='password'><strong>Password:</strong></label><br>
+          <input name="password" type="password" value="{{password}}" />
+          <p class="email_error">{{password_error1}}</p>
 
-            <label for='verify'><strong>Verify Password:</strong></label>
-            <input name="verify" type="password" value="{{verify}}" />
-            <p class="password_error">{{password_error2}}</p>
+          <label for='verify'><strong>Verify Password:</strong></label><br>
+          <input name="verify" type="password" value="{{verify}}" />
+          <p class="password_error">{{password_error2}}</p>
 
-            <label for='email'><strong>Email Address:</strong></label>
-            <input name="email" type="text" value="{{email}}" />
-            <p class="email_error">{{email_error}}</p><br>
+          <label for='email'><strong>Email Address:</strong></label><br>
+          <input name="email" type="text" value="{{email}}" />
+          <p class="email_error">{{email_error}}</p>
 
-            <input class="btn btn-primary text-center" type="submit" value="Submit"><br><br>
+          <input class="btn btn-primary text-center" type="submit" value="Submit"><br><br>
             
-            <p>Already a user? Login <strong><a href="/">here</a></strong></p>
+          <p>Already a user? Login <strong><a href="/">here</a></strong></p>
         </form>
       </div>
-    </div>
-    <div class='col-md-4'>
     </div>
   </div>
 </div>
