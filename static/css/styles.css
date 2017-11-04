@@ -85,7 +85,6 @@ body{
   text-align: left;
   margin: auto;
   margin-top: 40px;
-
 }
 
 /*tournament initiation*/
@@ -118,14 +117,16 @@ body{
 /*signup*/
 .signup_title {
     font-family: 'Fira Sans', sans-serif;
-}
-
-.signup_box {
-  color: white;
+    margin: auto;
 }
 
 .signin_elements {
   text-align: left;
+}
+
+.box_styling {
+  color: white;
+  padding: 30px;
 }
 
 

@@ -12,35 +12,36 @@
   </div>
 
 <div class='container'>
-  <div class='signup_box row'>
-    <div class='col-md-4' id='sign-in-form'>
-      <form action="/signup" method="post">
-        <div class="signin_elements"
+  <div class='row'>
+    <div class='col-md-4'>
+    </div>
+    <div id='sign-in-form'>
+      <div class="box_styling" id=id='sign-in-form'>
+        <form action="/signup" method="post">
 
-          <label for='username'><strong>Username:</strong></label>
-          <input name="username" type="text" value="{{username}}" />
-          <p class="username_error">{{username_error}}</p>
+            <label for='username'><strong>Username:</strong></label>
+            <input name="username" type="text" value="{{username}}" />
+            <p class="username_error">{{username_error}}</p>
 
-          <label for='password'><strong>Password:</strong></label>
-          <input name="password" type="password" value="{{password}}" />
-          <p class="email_error">{{password_error1}}</p>
+            <label for='password'><strong>Password:</strong></label>
+            <input name="password" type="password" value="{{password}}" />
+            <p class="email_error">{{password_error1}}</p>
 
-          <label for='verify'><strong>Verify Password:</strong></label>
-          <input name="verify" type="password" value="{{verify}}" />
-          <p class="password_error">{{password_error2}}</p>
+            <label for='verify'><strong>Verify Password:</strong></label>
+            <input name="verify" type="password" value="{{verify}}" />
+            <p class="password_error">{{password_error2}}</p>
 
-          <label for='email'><strong>Email Address:</strong></label>
-          <input name="email" type="text" value="{{email}}" />
-          <p class="email_error">{{email_error}}</p>
+            <label for='email'><strong>Email Address:</strong></label>
+            <input name="email" type="text" value="{{email}}" />
+            <p class="email_error">{{email_error}}</p><br>
 
-        </div>
-        <br>
-
-        <input class="btn btn-primary text-center" type="submit" value="Submit"><br>
-          
-        <p>Already a user? Login <strong><a href="/">here</a></strong></p>
-      </form>
-
+            <input class="btn btn-primary text-center" type="submit" value="Submit"><br><br>
+            
+            <p>Already a user? Login <strong><a href="/">here</a></strong></p>
+        </form>
+      </div>
+    </div>
+    <div class='col-md-4'>
     </div>
   </div>
 </div>
