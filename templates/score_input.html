@@ -32,15 +32,14 @@
 
 </div>
 
-          
-{% if session['error'] > "" %}
-<h5>{{ session['error1'] }}</h5>
-<h5>{{ session['error2'] }}</h5>
-<h5>{{ session['error3'] }}</h5>
-<h5>{{ session['error4'] }}</h5>
+
+{% if errors > "" %}
+<h5> {{ session['error'] }} </h5>
+<!-- <h5> {{ session['error'][1] }} </h5>
+<h5> {{ session['error'][2] }} </h5>
+<h5> {{ session'[error'][3] }} </h5> -->
 {% endif %}
-      </div>
-    </div>
+
     
 <form action='/process_score' method='post'>
 
@@ -80,3 +79,4 @@
 
 
 {% endblock %}
+
