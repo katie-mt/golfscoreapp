@@ -127,3 +127,15 @@ body{
 .signin_elements {
   text-align: left;
 }
+
+
+/*Leaderboard*/
+
+.leaderboard_title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.leaderboard_round {
+  font-weight: bold;
+}
