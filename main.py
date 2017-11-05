@@ -156,8 +156,22 @@ def process_players():#This method sets up players in the database so that their
             session['player_4_Id'] = player_4_Id
             return redirect('/score_input')
 
+
+
+
 @app.route('/score_input')#This route handles score input
 def score_input():#this fills in a blank template with player,round,and par information for use in score inputs.
+    if 'error' not in session:
+        session['error'] = ""
+    if 'error1' not in session:
+        session['error1'] = ""
+    if 'error2' not in session:
+        session['error2'] = ""
+    if 'error3' not in session:
+        session['error3'] = ""
+    if 'error4' not in session:
+        session['error4'] = ""
+
     this_Rounds_Players = []#create an empty list then add player names from session into the list
     this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id'])
@@ -173,23 +187,95 @@ def score_input():#this fills in a blank template with player,round,and par info
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
-
-
-    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par)
-
-@app.route('/process_score', methods=['POST'])#Takes scores from the score_input template and puts them into the db.
-def process_score():
-    tournament_id = session['tournament_Id']
+    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par, errors=session['error'], error1=session['error1'], error2=session['error2'], error3=session['error3'], error4=session['error4'])
 
     #grab scores from form POST request
-    player_1_Score = int(request.form['player_1_score'])
-    player_2_Score = int(request.form['player_2_score'])
-    player_3_Score = int(request.form['player_3_score'])
-    player_4_Score = int(request.form['player_4_score'])
-    #get the player ids using Session variable
+@app.route('/process_score', methods=['POST', 'GET'])
+def process_score():
+    # if request.method=='POST':
+    tournament_id = 1 
+    session['error'] = ""
+    session['error1'] = "" 
+    session['error2'] = "" 
+    session['error3'] = "" 
+    session['error4'] = "" 
+    
+    #grab scores from form POST request
+    score1 = request.form['player_1_score']
+    if (score1 == None) or (score1 == "") or (score1 == False):
+        session['error1'] = "You must input a score for every player"
+    score2 = request.form['player_2_score']
+    if (score2 == None) or (score2 == "") or (score2 == False):
+        session['error1'] = "You must input a score for every player"
+    score3 = request.form['player_3_score']
+    if (score3 == None) or (score3 == "") or (score3 == False):
+        session['error1'] = "You must input a score for every player"
+    score4 = request.form['player_4_score']
+    if (score4 == None) or (score4 == "") or (score4 == False):
+        session['error1'] = "You must input a score for every player"
+    
+    if session['error1'] != "":
+        session['error'] += session['error1']
+        return redirect ('/score_input')
+
+    else:
+        player_1_Score_val = score1.strip()
+        for c in player_1_Score_val:
+            if not c in '0123456789':        
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":
+            player_1_Score = int(player_1_Score_val)
+            if player_1_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_1_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+
+        player_2_Score_val = score2.strip()
+        for c in player_2_Score_val:
+            if not c in '0123456789':        
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":            
+            player_2_Score = int(player_2_Score_val)
+            if player_2_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_2_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+        
+        player_3_Score_val = score3.strip()
+        for c in player_3_Score_val:
+            if not c in '0123456789':        
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":            
+            player_3_Score = int(player_3_Score_val)
+            if player_3_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_3_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+
+        player_4_Score_val = score4.strip()
+        for c in player_4_Score_val:
+            if not c in '0123456789':        
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":            
+            player_4_Score = int(player_4_Score_val)
+            if player_4_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_4_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+    session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
+    if session['error'] > "":
+        print("hellooooooooo")
+        print ("HELLLLLOOOOOOOOOO@!(*#&!@#*OUOP" + session['error'])
+        return redirect('/score_input')
+
+
+    #get the player ids using Session variable    
     hole_id = Hole.query.filter_by(hole_num = session['hole_num'], owner_id = session['course_id']).first().id
     print(hole_id)
     #create new score object using player ID, Round ID, Hole ID, Course ID, Tournament ID all from session and Score from the POST request

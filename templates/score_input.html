@@ -31,6 +31,15 @@
   </div>
 
 </div>
+
+<div>
+  {% if errors > "" %}
+  <h5> {{ error1 }} </h5>
+  <h5> {{ error2 }} </h5>
+  <h5> {{ error3 }} </h5>
+  <h5> {{ error4 }} </h5>  
+  {% endif %}
+</div>
     
 <form action='/process_score' method='post'>
 
