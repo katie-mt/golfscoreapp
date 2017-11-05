@@ -174,3 +174,7 @@ body{
   margin: auto;
   margin-top: 20px;
 }
+
+.tournament_name {
+  font-weight: bold;
+}

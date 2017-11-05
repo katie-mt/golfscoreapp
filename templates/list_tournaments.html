@@ -8,10 +8,11 @@
   <div class="container">
     <h3>Tournaments:</h3> {% if tournaments %} {% for tournament in tournaments %}
     <a href='/list_tournaments?tournament_id={{tournament.id}}'>
-      <p>{{tournament.name}}</p>
+      <p class="tournament_name">{{tournament.name}}</p>
     </a>
     {% endfor%} {% endif %}
   </div>
+  <br>
   <div class="container">
     <h5>Click <a href='/'>here</a> to go home </h5>
   </div>
