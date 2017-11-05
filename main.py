@@ -97,8 +97,14 @@ def find_courses():
     r = requests.get("http://api.sportradar.us/golf-t2/schedule/pga/2017/tournaments/schedule.json?api_key=cruz8v8npxp9zd2s3wzk9uwr")
     json_string = r.text
     all_tourney = json.loads(json_string)
-    courses = all_tourney['tournaments'][0]['venue']['courses'][0]['holes']
-    return render_template("list_api_courses.html", courses=courses)
+    all_Courses = all_tourney['tournaments']
+    a = 0
+    list_courses = []
+    for course in all_Courses:
+        print(course['venue']['courses'][0]['name'])
+        list_courses.append(course['venue']['courses'][0]['name'])
+        
+    return render_template("list_api_courses.html", courses=list_courses)
 
 
 @app.route("/courses")
