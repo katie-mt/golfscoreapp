@@ -104,7 +104,14 @@ def list_courses():
 @app.route("/initiate_tournament", methods=['GET', 'POST'])
 def initiate_tournament():
     if request.method == 'GET':
-        return render_template('tournament_initiation.html', title='Start A Tournament')
+        player_1_Name = request.args.get('p1')
+        player_2_Name = request.args.get('p2')
+        player_3_Name = request.args.get('p3')
+        player_4_Name = request.args.get('p4')
+        tournament_Name = request.args.get('tname')
+        name_Error = 'No blank names allowed, please input 4 player names.'
+        return render_template('tournament_initiation.html', title='Start A Tournament', course=session['course'], 
+    p1_Name=player_1_Name, p2_Name=player_2_Name, p3_Name=player_3_Name, p4_Name=player_4_Name, t_Name=tournament_Name, name_Error=name_Error)
     elif request.method == 'POST':
         tournament_course = request.form['course']
         session['course'] = tournament_course
@@ -116,35 +123,37 @@ def initiate_tournament():
 @app.route('/process_players', methods=['POST', 'GET'])
 def process_players():
     if request.method == 'POST':
-
-
-        logged_in_user_id = User.query.filter_by(email=session['user']).first().id
+        player_1_Name = request.form['player1']
+        player_2_Name = request.form['player2']
+        player_3_Name = request.form['player3']
+        player_4_Name = request.form['player4']
         tournament_Name = request.form['tournament_name']
 
-        db.session.add(Tournament(logged_in_user_id, tournament_Name))
-        db.session.commit()
-        session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
-        player_1_Name = request.form['player1']
-        db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))
-        player_2_Name = request.form['player2']
-        db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user_id))
-        player_3_Name = request.form['player3']
-        db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user_id))
-        player_4_Name = request.form['player4']
-        db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user_id))
-        db.session.commit()
+        if (player_1_Name and player_2_Name and player_3_Name and player_4_Name == None) or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == "") or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == False):
+            flash('No blank names allowed, please input 4 player names.')
+            return redirect('/initiate_tournament?p1='+player_1_Name+'&p2='+player_2_Name+'&p3='+player_3_Name+'&p4='+player_4_Name+'&tname='+tournament_Name)
+        else:
+            logged_in_user_id = User.query.filter_by(email=session['user']).first().id 
+            db.session.add(Tournament(logged_in_user_id, tournament_Name))
+            db.session.commit()
+            session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
+            
+            db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))
+            db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user_id))
+            db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user_id))
+            db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user_id))
+            db.session.commit()
 
-        player_1_Id = Player.query.filter_by(name = player_1_Name , owner_id = logged_in_user_id).first().id
-        player_2_Id = Player.query.filter_by(name = player_2_Name , owner_id = logged_in_user_id).first().id
-        player_3_Id = Player.query.filter_by(name = player_3_Name , owner_id = logged_in_user_id).first().id
-        player_4_Id = Player.query.filter_by(name = player_4_Name , owner_id = logged_in_user_id).first().id
+            player_1_Id = Player.query.filter_by(name = player_1_Name , owner_id = logged_in_user_id).first().id
+            player_2_Id = Player.query.filter_by(name = player_2_Name , owner_id = logged_in_user_id).first().id
+            player_3_Id = Player.query.filter_by(name = player_3_Name , owner_id = logged_in_user_id).first().id
+            player_4_Id = Player.query.filter_by(name = player_4_Name , owner_id = logged_in_user_id).first().id
 
-
-        session['player_1_Id'] = player_1_Id
-        session['player_2_Id'] = player_2_Id
-        session['player_3_Id'] = player_3_Id
-        session['player_4_Id'] = player_4_Id
-        return redirect('/score_input')
+            session['player_1_Id'] = player_1_Id
+            session['player_2_Id'] = player_2_Id
+            session['player_3_Id'] = player_3_Id
+            session['player_4_Id'] = player_4_Id
+            return redirect('/score_input')
 
 @app.route('/score_input', methods=['POST', 'GET'])
 def score_input():
