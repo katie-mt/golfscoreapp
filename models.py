@@ -84,14 +84,16 @@ class Course(db.Model):
 
 class Hole(db.Model):
     id = db.Column(db.Integer, primary_key= True)
+    hole_num = db.Column(db.Integer)
     par = db.Column(db.Integer)
     owner_id = db.Column(db.Integer, db.ForeignKey('course.id'))
     scores = db.relationship('Score', backref='hole')
 
 
-    def __init__(self, owner_id, par):
+    def __init__(self, owner_id, par,hole_num):
         self.owner_id = owner_id
         self.par = par
+        self.hole_num = hole_num
 
     def __repr__(self):
         return '<Hole %d>' % self.id
