@@ -164,3 +164,13 @@ body{
 .leaderboard_round {
   font-weight: bold;
 }
+
+/*list_tournaments*/
+.list_tournaments_card {
+  background-color: rgba(48, 48, 48, 0.8);
+  color: white;
+  padding: 20px;
+  text-align: left;
+  margin: auto;
+  margin-top: 20px;
+}
