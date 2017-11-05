@@ -13,8 +13,8 @@
 <div class="signin_styling text-center">
   <div class="container">
     <div class="titles">
-      <h1 class="display-1 title_styling text-center font-weight-bold">ParPal</h1><br>
-      <p class="lead text-center font-weight-bold">Tee off your golf game <br>with ParPal</p><br><br>
+      <h1 class="title_styling display-1 text-center font-weight-bold">ParPal</h1>
+      <p class="lead text-center font-weight-bold">Tee off your golf game <br>with ParPal</p>
     </div>
   </div>
 
@@ -23,7 +23,7 @@
       <div class='col-md-4'>
       </div>
       <div class='col-md-4' id='sign-in-form'>
-        <p class="h4">Sign-in:</p>
+        <h3 class="signin_title">Sign-in:</h3>
         <form class='sign-in-form' action="/signin" method="post">
           <label for='email'><strong>Email:</strong></label>
           <input name="email" type="text" value="{{email}}" />
@@ -33,7 +33,9 @@
           <p class="password_error">{{password_error}}</p>
           <input class="btn btn-primary text-center" type="submit" value="Submit">
         </form>
-        <p><strong>Not a user? Sign up<a href="/signup"> here</a></strong></p>
+        <br>
+        <br>
+        <p class="signup_link"><strong>Not a user? Sign up<a href="/signup"> here</a></strong></p>
 
         <!--<p>Competitors, check out the <strong><a href="/leaderboard">Leaderboard</a></strong></p>-->
         
