@@ -375,7 +375,8 @@ def list_tournaments():#Used to display tournaments that a user can select to se
             i += 1
         #print(player_Names_Dict)
 
-        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        last_hole_id = Score.query.order_by(desc(Score.hole_id)).first().id
+        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
     else:
@@ -428,7 +429,8 @@ def leaderboard():#populating score data assuming a for loop will be used in the
         course_id = first_score.course_id
         round_num = Round.query.filter_by(id = round_id).first().round_number
         course = Course.query.filter_by(id = course_id).first().name
-        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        last_hole_id = Score.query.order_by(desc(Score.hole_id)).first().id
+        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
         #TODO find a better way to get last hole played
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
