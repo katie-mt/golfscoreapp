@@ -9,9 +9,10 @@ body{
 }
 
 
-
+/*signin page*/
 .title_styling {
-    color: rgba(48, 48, 48, 0.85);
+    color: rgba(48, 48, 48, 0.9);
+    padding-top: 20px;
 }
 
 .signin_styling {
@@ -32,8 +33,9 @@ body{
   display:inline-block;
   margin: auto;
   text-align: center;
-
+  color:white;
 }
+
 #sign-in-form {
   border: 1px solid black;
   border-radius: 10px;
@@ -43,8 +45,15 @@ body{
   color: rgba(249,249,239);
 }
 
+.signin_title {
+  color: white;
+}
+
+.signup_link {
+  color: white;
+}
+
 /*score_input*/
-/*updated this from 'card' to round_card*/
 .round_card {
       border-radius: 25rem;
 }
@@ -57,6 +66,7 @@ body{
 .score_input_body {
   background-color: #e6e6e6;
   color: black;
+  font-weight: bold;
 }
 
 .submit_btn {
@@ -64,6 +74,7 @@ body{
     background-color: transparent;
     text-align: center;
     padding: 30px;
+    margin-top: 10px;
 }
 
 
@@ -81,7 +92,9 @@ body{
   background-color: rgba(48, 48, 48, 0.8);
   color: white;
   padding: 20px;
-  margin-top: 30px;
+  text-align: left;
+  margin: auto;
+  margin-top: 40px;
 }
 
 /*tournament initiation*/
@@ -89,10 +102,20 @@ body{
   color: white;
 }
 
-.player_names {
+.player_names1 {
   background-color: rgba(48, 48, 48, 0.9);
   color: white;
-  margin-top: 30px;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+
+.player_names2 {
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
+  margin-top: 10px;
+  width: 100%;
 }
 
 .tourney_name {
@@ -104,12 +127,42 @@ body{
 /*signup*/
 .signup_title {
     font-family: 'Fira Sans', sans-serif;
+    margin: auto;
+    padding-top: 10px;
+    padding-bottom: 0px;
 }
 
-.signup_box {
+.box_styling {
   color: white;
+  padding: 30px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin: auto;
+  text-align:left;
 }
 
-.signin_elements {
-  text-align: left;
+#sign-in-form {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 1em;
+    min-width: 0;
+    background-color: rgba(53, 59, 64, 0.7);
+    margin: auto;
+}
+
+.signup_button {
+  text-align: center;
+  margin: auto;
+}
+
+
+/*Leaderboard*/
+
+.leaderboard_title {
+  text-align: center;
+  text-decoration: underline;
+}
+
+.leaderboard_round {
+  font-weight: bold;
 }
