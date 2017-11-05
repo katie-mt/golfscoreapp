@@ -4,6 +4,16 @@
 <link rel="stylesheet" href="/static/css/styles.css">
 <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
+
+<div>
+    {% if errors > "" %}
+    <h5 style="color: #ff0000; text-align: center"> {{ error1 }} </h5>
+    <h5 style="color: #ff0000; text-align: center"> {{ error2 }} </h5>
+    <h5 style="color: #ff0000; text-align: center"> {{ error3 }} </h5>
+    <h5 style="color: #ff0000; text-align: center"> {{ error4 }} </h5>  
+    {% endif %}
+  </div>
+
 <div class="info-row" style="display: flex; justify-content: space-around; padding-bottom: 30px; padding-top: 20px;">
 <!--updated these from simply 'card' to 'round_card'-->
   <div class="round_card card" style="float: center; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
@@ -30,15 +40,6 @@
     </div>
   </div>
 
-</div>
-
-<div>
-  {% if errors > "" %}
-  <h5> {{ error1 }} </h5>
-  <h5> {{ error2 }} </h5>
-  <h5> {{ error3 }} </h5>
-  <h5> {{ error4 }} </h5>  
-  {% endif %}
 </div>
     
 <form action='/process_score' method='post'>
