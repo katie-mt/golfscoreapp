@@ -1,11 +1,11 @@
-from flask import request, redirect, render_template, session, flash
+from flask import request, redirect, render_template, session, flash, json
 from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
+import requests
 from sqlalchemy import desc
 
 def logged_in_user_id():#creates a logged in user
     return User.query.filter_by(email=session['user']).first().id
-
 
 @app.route("/")
 def index():
@@ -96,6 +96,21 @@ def validate_user():#Validate signup inputs and record errors if there are any.
         return render_template("signup.html", username=username, email=email,
     username_error=user_error, password_error1=password_error1,
     password_error2=password_error2, email_error=email_error)
+
+@app.route("/api_courses")
+def find_courses():
+    r = requests.get("http://api.sportradar.us/golf-t2/schedule/pga/2017/tournaments/schedule.json?api_key=cruz8v8npxp9zd2s3wzk9uwr")
+    json_string = r.text
+    all_tourney = json.loads(json_string)
+    all_Courses = all_tourney['tournaments']
+    a = 0
+    list_courses = []
+    for course in all_Courses:
+        print(course['venue']['courses'][0]['name'])
+        list_courses.append(course['venue']['courses'][0]['name'])
+        
+    return render_template("list_api_courses.html", courses=list_courses)
+
 
 @app.route("/courses")
 def list_courses():#Queries the database for all Course names and passes them to template. Template loops and displays names.
