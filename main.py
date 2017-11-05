@@ -25,7 +25,6 @@ def signin():#Accessible without logging in.
             user = users.first()
             if user.password == password:
                 session['user'] = user.email#Put user email into Session variable
-                flash('welcome back, ' + user.email)
                 return redirect("/")
         flash('bad username or password')
         '''have it redirect to courses page until other controllers are implemented'''
@@ -132,7 +131,7 @@ def initiate_tournament():
         player_4_Name = request.args.get('p4')
         tournament_Name = request.args.get('tname')
         name_Error = 'No blank names allowed, please input 4 player names.'
-        return render_template('tournament_initiation.html', title='Start A Tournament', course=session['course'], 
+        return render_template('tournament_initiation.html', title='Start A Tournament', course=session['course'],
     p1_Name=player_1_Name, p2_Name=player_2_Name, p3_Name=player_3_Name, p4_Name=player_4_Name, t_Name=tournament_Name, name_Error=name_Error)
     elif request.method == 'POST':
         tournament_course = request.form['course']#pulls name of course from list_courses template
@@ -140,10 +139,10 @@ def initiate_tournament():
         course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
         course_id = course.id#assigns course ID from db to variable
         session['course_id'] = course_id #puts course ID varible into session with key 'course_id'
-        
+
         if not Hole.query.filter_by(owner_id=course.id).first():#Check to see if this course has holes
             create_holes_for_course(course.name)#If no holes exsist, create them with helper
-        
+
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)#sends course name to template using Jinja
 
 @app.route('/process_players', methods=['POST', 'GET'])
@@ -159,11 +158,11 @@ def process_players():#This method sets up players in the database so that their
             flash('No blank names allowed, please input 4 player names.')
             return redirect('/initiate_tournament?p1='+player_1_Name+'&p2='+player_2_Name+'&p3='+player_3_Name+'&p4='+player_4_Name+'&tname='+tournament_Name)
         else:#This adds a tournament and players to the database
-            logged_in_user_id = User.query.filter_by(email=session['user']).first().id 
+            logged_in_user_id = User.query.filter_by(email=session['user']).first().id
             db.session.add(Tournament(logged_in_user_id, tournament_Name))
             db.session.commit()
             session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
-            
+
             db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))#Players are instatiated using player name from template POST request and tournament_ID session variable
             db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user_id))
             db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user_id))
@@ -181,8 +180,22 @@ def process_players():#This method sets up players in the database so that their
             session['player_4_Id'] = player_4_Id
             return redirect('/score_input')
 
+
+
+
 @app.route('/score_input')#This route handles score input
 def score_input():#this fills in a blank template with player,round,and par information for use in score inputs.
+    if 'error' not in session:
+        session['error'] = ""
+    if 'error1' not in session:
+        session['error1'] = ""
+    if 'error2' not in session:
+        session['error2'] = ""
+    if 'error3' not in session:
+        session['error3'] = ""
+    if 'error4' not in session:
+        session['error4'] = ""
+
     this_Rounds_Players = []#create an empty list then add player names from session into the list
     this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id'])
@@ -198,22 +211,94 @@ def score_input():#this fills in a blank template with player,round,and par info
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-
     #get the hole from the db for the par property
     hole = Hole.query.filter_by(id = session['hole_num']).first()
-
-
-    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par)
-
-@app.route('/process_score', methods=['POST'])#Takes scores from the score_input template and puts them into the db.
-def process_score():
-    tournament_id = session['tournament_Id']
+    return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par, errors=session['error'], error1=session['error1'], error2=session['error2'], error3=session['error3'], error4=session['error4'])
 
     #grab scores from form POST request
-    player_1_Score = int(request.form['player_1_score'])
-    player_2_Score = int(request.form['player_2_score'])
-    player_3_Score = int(request.form['player_3_score'])
-    player_4_Score = int(request.form['player_4_score'])
+@app.route('/process_score', methods=['POST', 'GET'])
+def process_score():
+    # if request.method=='POST':
+    tournament_id = 1
+    session['error'] = ""
+    session['error1'] = ""
+    session['error2'] = ""
+    session['error3'] = ""
+    session['error4'] = ""
+
+    #grab scores from form POST request
+    score1 = request.form['player_1_score']
+    if (score1 == None) or (score1 == "") or (score1 == False):
+        session['error1'] = "You must input a score for every player"
+    score2 = request.form['player_2_score']
+    if (score2 == None) or (score2 == "") or (score2 == False):
+        session['error1'] = "You must input a score for every player"
+    score3 = request.form['player_3_score']
+    if (score3 == None) or (score3 == "") or (score3 == False):
+        session['error1'] = "You must input a score for every player"
+    score4 = request.form['player_4_score']
+    if (score4 == None) or (score4 == "") or (score4 == False):
+        session['error1'] = "You must input a score for every player"
+
+    if session['error1'] != "":
+        session['error'] += session['error1']
+        return redirect ('/score_input')
+
+    else:
+        player_1_Score_val = score1.strip()
+        for c in player_1_Score_val:
+            if not c in '0123456789':
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":
+            player_1_Score = int(player_1_Score_val)
+            if player_1_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_1_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+
+        player_2_Score_val = score2.strip()
+        for c in player_2_Score_val:
+            if not c in '0123456789':
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":
+            player_2_Score = int(player_2_Score_val)
+            if player_2_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_2_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+
+        player_3_Score_val = score3.strip()
+        for c in player_3_Score_val:
+            if not c in '0123456789':
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":
+            player_3_Score = int(player_3_Score_val)
+            if player_3_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_3_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+
+        player_4_Score_val = score4.strip()
+        for c in player_4_Score_val:
+            if not c in '0123456789':
+                session['error2'] = "Input must be a number"
+                # return redirect('/score_input')
+        if session['error2'] == "":
+            player_4_Score = int(player_4_Score_val)
+            if player_4_Score <= 0:
+                session['error3'] = "Score must be greater than 0"
+            if player_4_Score > 99:
+                session['error4'] = "Score must be no greater than 99"
+    session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
+    if session['error'] > "":
+        print("hellooooooooo")
+        print ("HELLLLLOOOOOOOOOO@!(*#&!@#*OUOP" + session['error'])
+        return redirect('/score_input')
+
+
     #get the player ids using Session variable
     hole_id = Hole.query.filter_by(hole_num = session['hole_num'], owner_id = session['course_id']).first().id
     print(hole_id)
@@ -289,7 +374,8 @@ def list_tournaments():#Used to display tournaments that a user can select to se
             i += 1
         #print(player_Names_Dict)
 
-        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        last_hole_id = Score.query.order_by(desc(Score.hole_id)).first().id
+        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
     else:
@@ -304,7 +390,7 @@ def list_tournaments():#Used to display tournaments that a user can select to se
 def leaderboard():#populating score data assuming a for loop will be used in the template to list every players score'''
     if not Score.query.all():
         flash('Leaderboard is currently empty')
-        return redirect('/')
+        return redirect('/score_input')
 
     if request.method == 'GET':
         player1total = 0
@@ -342,7 +428,8 @@ def leaderboard():#populating score data assuming a for loop will be used in the
         course_id = first_score.course_id
         round_num = Round.query.filter_by(id = round_id).first().round_number
         course = Course.query.filter_by(id = course_id).first().name
-        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        last_hole_id = Score.query.order_by(desc(Score.hole_id)).first().id
+        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
         #TODO find a better way to get last hole played
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)

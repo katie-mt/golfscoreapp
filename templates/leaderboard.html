@@ -5,21 +5,21 @@
 
 
 <div>
-  <div class="player_names2 card";>
+  <div class="player_names2 card">
     <div class="card-body">
       <h3 class="leaderboard_title">Leaderboard</h3><br>
-        <div class="leaderboard_round">
-          <p>Course: {{course}}</p>
-          <p>Round: {{round_num}}</p>
-          <p>Last Hole Played: {{last_hole_played}}</p>
-        </div>
+      <div class="leaderboard_round">
+        <p>Course: {{course}}</p>
+        <p>Round: {{round_num}}</p>
+        <p>Last Hole Played: {{last_hole_played}}</p>
+      </div>
     </div>
   </div>
 
   <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
 
   <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
-  <div class="player_names2 card";>
+  <div class="player_names2 card" ;>
     <div class="card-body">
       <h5>Total scores</h5> {% if user %}
       <h2>Go back to <a href="/score_input"> Score Input</a></h2> {% endif %}
@@ -75,13 +75,13 @@
     </tbody>
   </table>
 
-  <div class="player_names2 card";>
+  <div class="player_names2 card">
     <div class="card-body">
       {% if last_hole_played >= 18 and session['user'] %}
       <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
       <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
-      <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
+      <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}
     </div>
   </div>
 </div>
-
+{% endblock %}
