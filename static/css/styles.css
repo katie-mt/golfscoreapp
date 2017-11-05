@@ -1,0 +1,115 @@
+body{
+  margin: 0;
+  /*background-image: url("../img/golf_image3.jpg");*/
+  background-image: url("../img/golf_image2.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+
+.title_styling {
+    color: rgba(48, 48, 48, 0.85);
+}
+
+.signin_styling {
+    background-image: url("../img/golf_image1.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh
+}
+
+.titles {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.sign-in-form{
+  width: 200px;
+  display:inline-block;
+  margin: auto;
+  text-align: center;
+
+}
+#sign-in-form {
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 1em;
+  min-width: 0;
+  background-color: rgba(53, 59, 64, 0.7);
+  color: rgba(249,249,239);
+}
+
+/*score_input*/
+/*updated this from 'card' to round_card*/
+.round_card {
+      border-radius: 25rem;
+}
+
+.score_input_header {
+  background-color: rgba(48, 48, 48, 1);
+  color: white;
+}
+
+.score_input_body {
+  background-color: #e6e6e6;
+  color: black;
+}
+
+.submit_btn {
+    margin: 0;
+    background-color: transparent;
+    text-align: center;
+    padding: 30px;
+}
+
+
+/*Base*/
+
+.navbar {
+  background-color:  rgb(48, 48, 48);
+
+
+}
+
+/*list_courses*/
+
+.round_selector {
+  background-color: rgba(48, 48, 48, 0.8);
+  color: white;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+/*tournament initiation*/
+.initiation_header {
+  color: white;
+}
+
+.player_names {
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
+  margin-top: 30px;
+}
+
+.tourney_name {
+  background-color: rgba(48, 48, 48, 0.9);
+  color: white;
+}
+
+
+/*signup*/
+.signup_title {
+    font-family: 'Fira Sans', sans-serif;
+}
+
+.signup_box {
+  color: white;
+}
+
+.signin_elements {
+  text-align: left;
+}

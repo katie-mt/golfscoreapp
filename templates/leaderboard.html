@@ -6,43 +6,65 @@
   <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
   <h2>Course: {{course}}</h2>
   <h2>Round: {{round_num}}</h2>
+  <h2>Last Hole Played: {{last_hole_played}}</h2>
 
+  <h5>Total scores</h5> {% if user %}
+  <h2>Go back to <a href="/score_input"> Score Input</a></h2> {% endif %}
 
+  {% if session['error'] > "" %}
+  <h5>session['error1']</h5>
+  <h5>session['error2']</h5>
+  <h5>session['error3']</h5>
+  <h5>session['error4']</h5>
+  {% endif %}
+  
   <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
 
   <table class="table table-hover table-inverse">
     <thead>
-      <!--<tr>
-        <th>Rank</th>
-        <th>Player Name</th>
-        <th>Round 1 Score</th>
-        <th>Round 2 Score</th>
-        <th>Round 3 Score</th>
-        <th>Overall Score</th>
-      </tr>-->
     </thead>
     <tbody>
       <tr>
         <th scope="row">1</th>
+        {% if player_names %}
         <td>{{player_names[0]}}</td>
+        {% endif%} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_0_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[0]}}</td>
+
       </tr>
       <tr>
         <th scope="row">2</th>
+        {% if player_names %}
         <td>{{player_names[1]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_1_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[1]}}</td>
       </tr>
       <tr>
         <th scope="row">3</th>
+        {% if player_names %}
         <td>{{player_names[2]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_2_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[2]}}</td>
       </tr>
       <tr>
         <th scope="row">4</th>
+        {% if player_names %}
         <td>{{player_names[3]}}</td>
+        {% endif %} {% if player_Names_Dict %}
+        <td>{{player_Names_Dict['player_3_Name']}}</td>
+        {% endif %}
         <td>{{player_scores[3]}}</td>
       </tr>
     </tbody>
   </table>
 
-  {% endblock %}
+  {% if last_hole_played >= 18 and session['user'] %}
+  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
+  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
+  <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
