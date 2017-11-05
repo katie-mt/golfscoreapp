@@ -1,15 +1,22 @@
 {% extends "base.html" %} {% block content%}
-<h3>Leaderboard</h3>
 
-<table style="width:50%">
+<link rel="stylesheet" href="/static/css/styles.css">
+<link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
+
+
+<div>
+  <div class="player_names2 card";>
+    <div class="card-body">
+      <h3 class="leaderboard_title">Leaderboard</h3><br>
+        <div class="leaderboard_round">
+          <p>Course: {{course}}</p>
+          <p>Round: {{round_num}}</p>
+          <p>Last Hole Played: {{last_hole_played}}</p>
+        </div>
+    </div>
+  </div>
 
   <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
-  <h2>Course: {{course}}</h2>
-  <h2>Round: {{round_num}}</h2>
-  <h2>Last Hole Played: {{last_hole_played}}</h2>
-
-  <h5>Total scores</h5> {% if user %}
-  <h2>Go back to <a href="/score_input"> Score Input</a></h2> {% endif %}
 
   {% if session['error'] > "" %}
   <h5>session['error1']</h5>
@@ -19,11 +26,22 @@
   {% endif %}
   
   <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
+  <div class="player_names2 card";>
+    <div class="card-body">
+      <h5>Total scores</h5> {% if user %}
+      <h2>Go back to <a href="/score_input"> Score Input</a></h2> {% endif %}
+    </div>
+  </div>
 
   <table class="table table-hover table-inverse">
     <thead>
+      <tr class="score_input_header">
+        <th>Player Rank</th>
+        <th>Player Name</th>
+        <th>Round 1 Score</th>
+      </tr>
     </thead>
-    <tbody>
+    <tbody class="score_input_body">
       <tr>
         <th scope="row">1</th>
         {% if player_names %}
@@ -64,7 +82,13 @@
     </tbody>
   </table>
 
-  {% if last_hole_played >= 18 and session['user'] %}
-  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
-  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
-  <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
+  <div class="player_names2 card";>
+    <div class="card-body">
+      {% if last_hole_played >= 18 and session['user'] %}
+      <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
+      <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
+      <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %}{% endblock %}
+    </div>
+  </div>
+</div>
+

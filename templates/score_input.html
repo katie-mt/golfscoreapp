@@ -5,9 +5,8 @@
 <link href="https://fonts.googleapis.com/css?family=Fira+Sans" rel="stylesheet">
 
 <div class="info-row" style="display: flex; justify-content: space-around; padding-bottom: 30px; padding-top: 20px;">
-<!--updated these from simply 'card' to 'round_card'-->
+
   <div class="round_card card" style="float: center; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
-    <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Round</h4>
       <h4>{{round_num}}</h4>
@@ -15,7 +14,6 @@
   </div>
 
   <div class="round_card card" style="float: center; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
-    <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Hole</h4>
       <h4>{{hole_num}}</h4>
@@ -23,7 +21,6 @@
   </div>
 
   <div class="round_card card" style="float: right; border: 1px solid; width: 8rem; height: 8rem; text-align: center;">
-    <img class="card-img-top" src="..." >
     <div class="card-body">
       <h4 class="card-title">Par<h4>
       <h4>{{par_num}}</h4>
@@ -44,7 +41,7 @@
 <form action='/process_score' method='post'>
 
   <table class="table table-hover table-inverse">
-    <!--<thead class="thead-light">-->
+    <thead>
       <tr class="score_input_header">
         <th>Player Name</th>
         <th>Score</th>
