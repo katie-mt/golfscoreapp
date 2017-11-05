@@ -2,6 +2,9 @@
 
 <link rel="stylesheet" href="/static/css/styles.css">
 
+<div>
+    <h5 style="color: #ff0000; text-align: center"><strong> {{name_Error}}</strong> </h5> 
+</div>
 
 <form action="/process_players" method="post">
 
@@ -24,11 +27,6 @@
 
     <!--using score_input_body class for styling-->
     <tbody class="score_input_body">
-      <tr>
-        <td colspan=2>
-          <p class="name_error">{{name_Error}}</p>
-        </td>
-      </tr>
       <tr>
         <td>
           <label>Player 1 Name:</label>
