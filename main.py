@@ -25,7 +25,6 @@ def signin():#Accessible without logging in.
             user = users.first()
             if user.password == password:
                 session['user'] = user.email#Put user email into Session variable
-                flash('welcome back, ' + user.email)
                 return redirect("/")
         flash('bad username or password')
         '''have it redirect to courses page until other controllers are implemented'''
@@ -140,10 +139,10 @@ def initiate_tournament():
         course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
         course_id = course.id#assigns course ID from db to variable
         session['course_id'] = course_id #puts course ID varible into session with key 'course_id'
-        
+
         if not Hole.query.filter_by(owner_id=course.id).first():#Check to see if this course has holes
             create_holes_for_course(course.name)#If no holes exsist, create them with helper
-        
+
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)#sends course name to template using Jinja
 
 @app.route('/process_players', methods=['POST', 'GET'])
