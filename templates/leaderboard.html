@@ -18,13 +18,6 @@
 
   <!--TODO:  Update with round 1, round 2, and round 3 score columns-->
 
-  {% if session['error'] > "" %}
-  <h5>session['error1']</h5>
-  <h5>session['error2']</h5>
-  <h5>session['error3']</h5>
-  <h5>session['error4']</h5>
-  {% endif %}
-  
   <!--Leaderboard table with columns for rank, player name, round 1 score, round 2 score, round 3 score and overall score-->
   <div class="player_names2 card";>
     <div class="card-body">
@@ -82,6 +75,11 @@
     </tbody>
   </table>
 
+  {% if last_hole_played >= 18 and session['user'] %}
+  <h3>Proceed to<a href="/score_input"> Round {{ session['round_num'] }}</a></h3> {% elif session['user'] %}
+  <h3>Return to<a href="/score_input"> Score Input</a></h3> {% elif not session['user'] %}
+  <h3>Back To <a href='/list_tournaments'>Tournaments</a> </h3> {% endif %} {% endblock %}
+
   <div class="player_names2 card";>
     <div class="card-body">
       {% if last_hole_played >= 18 and session['user'] %}
@@ -91,4 +89,3 @@
     </div>
   </div>
 </div>
-
