@@ -3,6 +3,7 @@ from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 import requests
 from sqlalchemy import desc
+from helper import create_holes_for_course
 
 def logged_in_user_id():#creates a logged in user
     return User.query.filter_by(email=session['user']).first().id
@@ -108,12 +109,17 @@ def find_courses():
     for course in all_Courses:
         print(course['venue']['courses'][0]['name'])
         list_courses.append(course['venue']['courses'][0]['name'])
-        
-    return render_template("list_api_courses.html", courses=list_courses)
+    for course in list_courses:
+        if not Course.query.filter_by(name=course).all():
+            db.session.add(Course(course))
+            db.session.commit()
+    return render_template("list_api_courses.html", courses=all_Courses)
 
 
 @app.route("/courses")
 def list_courses():#Queries the database for all Course names and passes them to template. Template loops and displays names.
+    if not Course.query.filter_by(id=4).first():
+        find_courses()
     courses = Course.query.all()
     return render_template("list_courses.html", courses=courses)
 
@@ -134,6 +140,10 @@ def initiate_tournament():
         course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
         course_id = course.id#assigns course ID from db to variable
         session['course_id'] = course_id #puts course ID varible into session with key 'course_id'
+        
+        if not Hole.query.filter_by(owner_id=course.id).first():#Check to see if this course has holes
+            create_holes_for_course(course.name)#If no holes exsist, create them with helper
+        
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)#sends course name to template using Jinja
 
 @app.route('/process_players', methods=['POST', 'GET'])
