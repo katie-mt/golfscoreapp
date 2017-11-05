@@ -3,7 +3,7 @@ from app import app, db
 from models import User, Tournament, Player, Round, Round_Player_Table, Course, Hole, Score
 from sqlalchemy import desc
 
-def logged_in_user_id():
+def logged_in_user_id():#creates a logged in user
     return User.query.filter_by(email=session['user']).first().id
 
 
@@ -13,17 +13,17 @@ def index():
    return redirect('/courses')
 
 @app.route("/signin", methods=['GET', 'POST'])
-def signin():
-    if request.method == 'GET':
+def signin():#Accessible without logging in.
+    if request.method == 'GET':#During a get request, display the blank signin template
         return render_template('signin.html')
     elif request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
         users = User.query.filter_by(email=email)
-        if users.count() == 1:
+        if users.count() == 1:#Validate if user exsists in the database
             user = users.first()
             if user.password == password:
-                session['user'] = user.email
+                session['user'] = user.email#Put user email into Session variable
                 flash('welcome back, ' + user.email)
                 return redirect("/")
         flash('bad username or password')
@@ -37,11 +37,11 @@ def logout():
     return redirect('/')
 
 @app.route("/signup", methods=['GET'])
-def display_signup():
+def display_signup():#show signup blank signup template on from get request
     return render_template('signup.html', title='Sign Up!')
 
 @app.route("/signup", methods=['POST'])
-def validate_user():
+def validate_user():#Validate signup inputs and record errors if there are any.
     username = request.form['username']
     email = request.form['email']
     password = request.form['password']
@@ -87,23 +87,24 @@ def validate_user():
 
     if not user_error and not password_error1 and not password_error2 and not email_error:
         user = User(username=username, email=email, password=password)
+        #When there is no error's present, log the user into the database and create a session variable with email
         db.session.add(user)
         db.session.commit()
         session['user'] = user.email
         return redirect('/')
-    else:
+    else:#When there are errors, display signup template with errors passed through using Jinja
         return render_template("signup.html", username=username, email=email,
     username_error=user_error, password_error1=password_error1,
     password_error2=password_error2, email_error=email_error)
 
 @app.route("/courses")
-def list_courses():
+def list_courses():#Queries the database for all Course names and passes them to template. Template loops and displays names.
     courses = Course.query.all()
     return render_template("list_courses.html", courses=courses)
 
-@app.route("/initiate_tournament", methods=['GET', 'POST'])
+@app.route("/initiate_tournament", methods=['GET', 'POST'])#This route is accessed through the post request from list_courses template and GET from initiate_tournament.html template
 def initiate_tournament():
-    if request.method == 'GET':
+    if request.method == 'GET':#The template is rendered user query parameters when a player name input is blank
         player_1_Name = request.args.get('p1')
         player_2_Name = request.args.get('p2')
         player_3_Name = request.args.get('p3')
@@ -113,15 +114,15 @@ def initiate_tournament():
         return render_template('tournament_initiation.html', title='Start A Tournament', course=session['course'], 
     p1_Name=player_1_Name, p2_Name=player_2_Name, p3_Name=player_3_Name, p4_Name=player_4_Name, t_Name=tournament_Name, name_Error=name_Error)
     elif request.method == 'POST':
-        tournament_course = request.form['course']
-        session['course'] = tournament_course
-        course = Course.query.filter_by(name = tournament_course).first()
-        course_id = course.id
-        session['course_id'] = course_id
-        return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)
+        tournament_course = request.form['course']#pulls name of course from list_courses template
+        session['course'] = tournament_course#puts that course name in session variable with key 'course'
+        course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
+        course_id = course.id#assigns course ID from db to variable
+        session['course_id'] = course_id #puts course ID varible into session with key 'course_id'
+        return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)#sends course name to template using Jinja
 
 @app.route('/process_players', methods=['POST', 'GET'])
-def process_players():
+def process_players():#This method sets up players in the database so that their scores can be tracked
     if request.method == 'POST':
         player_1_Name = request.form['player1']
         player_2_Name = request.form['player2']
@@ -132,18 +133,18 @@ def process_players():
         if (player_1_Name and player_2_Name and player_3_Name and player_4_Name == None) or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == "") or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == False):
             flash('No blank names allowed, please input 4 player names.')
             return redirect('/initiate_tournament?p1='+player_1_Name+'&p2='+player_2_Name+'&p3='+player_3_Name+'&p4='+player_4_Name+'&tname='+tournament_Name)
-        else:
+        else:#This adds a tournament and players to the database
             logged_in_user_id = User.query.filter_by(email=session['user']).first().id 
             db.session.add(Tournament(logged_in_user_id, tournament_Name))
             db.session.commit()
             session['tournament_Id'] = Tournament.query.filter_by(name=tournament_Name).first().id
             
-            db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))
+            db.session.add(Player(player_1_Name,session['tournament_Id'],logged_in_user_id))#Players are instatiated using player name from template POST request and tournament_ID session variable
             db.session.add(Player(player_2_Name,session['tournament_Id'],logged_in_user_id))
             db.session.add(Player(player_3_Name,session['tournament_Id'],logged_in_user_id))
             db.session.add(Player(player_4_Name,session['tournament_Id'],logged_in_user_id))
             db.session.commit()
-
+            #After players have been confirmed in the DB, their name is assigned into Session variables
             player_1_Id = Player.query.filter_by(name = player_1_Name , owner_id = logged_in_user_id).first().id
             player_2_Id = Player.query.filter_by(name = player_2_Name , owner_id = logged_in_user_id).first().id
             player_3_Id = Player.query.filter_by(name = player_3_Name , owner_id = logged_in_user_id).first().id
@@ -155,19 +156,19 @@ def process_players():
             session['player_4_Id'] = player_4_Id
             return redirect('/score_input')
 
-@app.route('/score_input', methods=['POST', 'GET'])
-def score_input():
-    this_Rounds_Players = []
+@app.route('/score_input')#This route handles score input
+def score_input():#this fills in a blank template with player,round,and par information for use in score inputs.
+    this_Rounds_Players = []#create an empty list then add player names from session into the list
     this_Rounds_Players += Player.query.filter_by(id = session['player_1_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_2_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_3_Id'])
     this_Rounds_Players += Player.query.filter_by(id = session['player_4_Id'])
-    if 'hole_num' not in session:
+    if 'hole_num' not in session:#This tracks the current hole number being scored
         session['hole_num'] = 1
-    if 'round_num' not in session:
+    if 'round_num' not in session:#This tracks the current round number being scored
         session['round_num'] = 1
-        db.session.add(Round(session['round_num'],session['tournament_Id']))
-        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
+        db.session.add(Round(session['round_num'],session['tournament_Id']))#Instantiate a round with the given round number.
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))#Connect each player to this new round
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
@@ -179,41 +180,40 @@ def score_input():
 
     return render_template('score_input.html', players=this_Rounds_Players, hole_num=session['hole_num'], round_num=session['round_num'],par_num=hole.par)
 
-@app.route('/process_score', methods=['POST', 'GET'])
+@app.route('/process_score', methods=['POST'])#Takes scores from the score_input template and puts them into the db.
 def process_score():
     tournament_id = session['tournament_Id']
 
-
+    #grab scores from form POST request
     player_1_Score = int(request.form['player_1_score'])
     player_2_Score = int(request.form['player_2_score'])
     player_3_Score = int(request.form['player_3_score'])
     player_4_Score = int(request.form['player_4_score'])
-
+    #get the player ids using Session variable
     hole_id = Hole.query.filter_by(hole_num = session['hole_num'], owner_id = session['course_id']).first().id
     print(hole_id)
-
-
+    #create new score object using player ID, Round ID, Hole ID, Course ID, Tournament ID all from session and Score from the POST request
     db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_1_Id'], tournament_id=session['tournament_Id'],score=player_1_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_2_Id'], tournament_id=session['tournament_Id'],score=player_2_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_3_Id'], tournament_id=session['tournament_Id'],score=player_3_Score))
     db.session.add(Score(round_id=session['round_num'], hole_id=hole_id, course_id=session['course_id'], player_id=session['player_4_Id'], tournament_id=session['tournament_Id'],score=player_4_Score))
-    session['hole_num'] += 1
     db.session.commit()
-    if session['hole_num'] > 18:
-        session['hole_num'] = 1
-        session['round_num'] += 1
-        db.session.add(Round(session['round_num'],tournament_id))
-        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))
+    #update the current hole number in the session variable
+    session['hole_num'] += 1
+    if session['hole_num'] > 18:#this logic will determine if all 18 holes have been played.
+        session['hole_num'] = 1#After 18 holes, hole is reset to 1
+        session['round_num'] += 1#Round is increased by 1
+        db.session.add(Round(session['round_num'],tournament_id))#New round is created in preparation for new scores
+        db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=1))#Player connected to new round
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=2))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-        return redirect('/leaderboard')
-
-    return redirect('/score_input')
+        return redirect('/leaderboard')#After last 18 holes, user sent to leaderboard
+    return redirect('/score_input')#when there are more scores to report, user goes to next score_input template
 
 @app.route('/list_tournaments')
-def list_tournaments():
+def list_tournaments():#Used to display tournaments that a user can select to see their leaderboard
     if request.args.get('tournament_id'):
         tournament_id = request.args.get('tournament_id')
 
@@ -230,12 +230,12 @@ def list_tournaments():
         for player in players:
             player_ids['player_{0}_Id'.format(j)] = player.id
             j+=1
-
+        #Set scores to zero
         player1total = 0
         player2total = 0
         player3total = 0
         player4total = 0
-
+        #Query score database using player_ID and accumulate total scores
         player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id']).all()
         for score in player_1_Scores:
             player1total += score.score
@@ -276,8 +276,7 @@ def list_tournaments():
 
 
 @app.route("/leaderboard", methods=['GET'])
-def leaderboard():
-#populating score data assuming a for loop will be used in the template to list every players score'''
+def leaderboard():#populating score data assuming a for loop will be used in the template to list every players score'''
     if not Score.query.all():
         flash('Leaderboard is currently empty')
         return redirect('/')
@@ -328,7 +327,7 @@ def leaderboard():
 endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'signin', 'static']
 
 @app.before_request
-def require_login():
+def require_login():#Control for endpoint access for a non logged in user
     if not ('user' in session or request.endpoint in endpoints_without_login):
         return redirect("/signin")
 
