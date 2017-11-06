@@ -341,7 +341,6 @@ def leaderboard():#populating score data assuming a for loop will be used in the
         tournament_id = request.args.get('tournament_id')
 
         some_Score = Score.query.filter_by(tournament_id = tournament_id).first()
-        print(some_Score)
         round_num = some_Score.round_id
         course_id = some_Score.course_id
         course = Course.query.filter_by(id = course_id).first().name
@@ -354,44 +353,79 @@ def leaderboard():#populating score data assuming a for loop will be used in the
         for player in players:
             player_ids['player_{0}_Id'.format(j)] = player.id
             j+=1
+        
+        #Create empty lists to be used for sorting later
+        ordered_names = []
+        ordered_scores = []
+
         #Set scores to zero
         player1total = 0
         player2total = 0
         player3total = 0
         player4total = 0
+
         #Query score database using player_ID and accumulate total scores
         player_1_Scores = Score.query.filter_by(player_id=player_ids['player_1_Id']).all()
         for score in player_1_Scores:
             player1total += score.score
+
+        #add the score and name to the sorting list
+        ordered_names.append(players[0].name)
+        ordered_scores.append(player1total)
 
 
         player_2_Scores = Score.query.filter_by(player_id=player_ids['player_2_Id']).all()
         for score in player_2_Scores:
             player2total += score.score
 
+        #Logic to determine if where score/name goes in the list
+        if player2total <= ordered_scores[0]:
+            ordered_names.insert(0,players[1].name)
+            ordered_scores.insert(0,player2total)
+        else:
+            ordered_names.append(players[1].name)
+            ordered_scores.append(player2total)
+
 
         player_3_Scores = Score.query.filter_by(player_id=player_ids['player_3_Id']).all()
         for score in player_3_Scores:
             player3total += score.score
+        
+        #Logic to determine if where score/name goes in the list
+        if player3total <= ordered_scores[0]:
+            ordered_names.insert(0,players[2].name)
+            ordered_scores.insert(0,player3total)
+        elif player3total <= ordered_scores[1]:
+            ordered_names.insert(1,players[2].name)
+            ordered_scores.insert(1,player3total)
+        else:
+            ordered_names.append(players[2].name)
+            ordered_scores.append(player3total)
+
 
         player_4_Scores = Score.query.filter_by(player_id=player_ids['player_4_Id']).all()
         for score in player_4_Scores:
             player4total += score.score
+        
+        #Logic to determine if where score/name goes in the list
+        if player4total <= ordered_scores[0]:
+            ordered_names.insert(0,players[3].name)
+            ordered_scores.insert(0,player4total)
+        elif player4total <= ordered_scores[1]:
+            ordered_names.insert(1,players[3].name)
+            ordered_scores.insert(1,player4total)
+        elif player4total <= ordered_scores[2]:
+            ordered_names.insert(2,players[3].name)
+            ordered_scores.insert(2,player4total)
+        else:
+            ordered_names.append(players[3].name)
+            ordered_scores.append(player4total)
 
-        all_Players_Total_Scores = player1total, player2total, player3total, player4total
-
-        #get the player names for the template
-        player_Names_Dict = {}
-        i=0
-        for player in players:
-            player_Names_Dict['player_{0}_Name'.format(i)] = players[i].name
-            i += 1
-        #print(player_Names_Dict)
-
+        #determine the last hole played on this tournament
         last_hole_id = Score.query.filter_by(tournament_id=tournament_id).order_by(desc(Score.hole_id)).first().hole_id
         last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
+        return render_template("leaderboard.html", player_scores=ordered_scores,round_num=round_num, player_Names_List=ordered_names,course=course,last_hole_played=last_hole_played)
     
 
 
