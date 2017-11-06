@@ -219,7 +219,9 @@ def score_input():#this fills in a blank template with player,round,and par info
 @app.route('/process_score', methods=['POST', 'GET'])
 def process_score():
     # if request.method=='POST':
-    tournament_id = 1
+
+    tournament_id = session['tournament_Id']
+    tournament_id_str = str(tournament_id)
     session['error'] = ""
     session['error1'] = ""
     session['error2'] = ""
@@ -294,8 +296,6 @@ def process_score():
                 session['error4'] = "Score must be no greater than 99"
     session['error'] += session['error1'] + session['error2'] + session['error3'] + session['error4']
     if session['error'] > "":
-        print("hellooooooooo")
-        print ("HELLLLLOOOOOOOOOO@!(*#&!@#*OUOP" + session['error'])
         return redirect('/score_input')
 
 
@@ -319,15 +319,29 @@ def process_score():
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=3))
         db.session.add(Round_Player_Table(round_id=session['round_num'],player_id=4))
         db.session.commit()
-        return redirect('/leaderboard')#After last 18 holes, user sent to leaderboard
+        return redirect('/leaderboard?tournament_id='+ tournament_id_str)#After last 18 holes, user sent to leaderboard
     return redirect('/score_input')#when there are more scores to report, user goes to next score_input template
 
 @app.route('/list_tournaments')
 def list_tournaments():#Used to display tournaments that a user can select to see their leaderboard
-    if request.args.get('tournament_id'):
+    tournaments = Tournament.query.all()
+    if not tournaments:
+        flash('There are currently no tournaments, sign-in and start one!')
+        return redirect('/sign-in')
+    return render_template('list_tournaments.html',tournaments=tournaments)
+
+
+@app.route("/leaderboard", methods=['GET'])
+def leaderboard():#populating score data assuming a for loop will be used in the template to list every players score'''
+    if not Score.query.all():
+        flash('Leaderboard is currently empty')
+        return redirect('/score_input')
+
+    else:
         tournament_id = request.args.get('tournament_id')
 
         some_Score = Score.query.filter_by(tournament_id = tournament_id).first()
+        print(some_Score)
         round_num = some_Score.round_id
         course_id = some_Score.course_id
         course = Course.query.filter_by(id = course_id).first().name
@@ -378,66 +392,10 @@ def list_tournaments():#Used to display tournaments that a user can select to se
         last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
-    else:
-        tournaments = Tournament.query.all()
-        if not tournaments:
-            flash('There are currently no tournaments, sign-in and start one!')
-            return redirect('/sign-in')
-        return render_template('list_tournaments.html',tournaments=tournaments)
+    
 
 
-@app.route("/leaderboard", methods=['GET'])
-def leaderboard():#populating score data assuming a for loop will be used in the template to list every players score'''
-    if not Score.query.all():
-        flash('Leaderboard is currently empty')
-        return redirect('/score_input')
-
-    if request.method == 'GET':
-        player1total = 0
-        player2total = 0
-        player3total = 0
-        player4total = 0
-
-        player_1_Scores = Score.query.filter_by(player_id=1)
-        for score in player_1_Scores:
-            player1total += score.score
-
-        player_2_Scores = Score.query.filter_by(player_id=2)
-        for score in player_2_Scores:
-            player2total += score.score
-
-        player_3_Scores = Score.query.filter_by(player_id=3)
-        for score in player_3_Scores:
-            player3total += score.score
-
-        player_4_Scores = Score.query.filter_by(player_id=4)
-        for score in player_4_Scores:
-            player4total += score.score
-
-        all_Players_Total_Scores = player1total, player2total, player3total, player4total
-
-
-        player_1_Name = Player.query.filter_by(id = 1).first().name
-        player_2_Name = Player.query.filter_by(id = 2).first().name
-        player_3_Name = Player.query.filter_by(id = 3).first().name
-        player_4_Name = Player.query.filter_by(id = 4).first().name
-        player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
-
-        first_score = Score.query.first()
-        round_id = first_score.round_id
-        course_id = first_score.course_id
-        round_num = Round.query.filter_by(id = round_id).first().round_number
-        course = Course.query.filter_by(id = course_id).first().name
-        
-        last_hole_id = Score.query.order_by(desc(Score.id)).first().hole_id
-        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
-       
-
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
-
-
-
-endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'signin', 'static']
+endpoints_without_login = ['display_signup' , 'validate_user','list_tournaments', 'leaderboard', 'signin', 'static']
 
 @app.before_request
 def require_login():#Control for endpoint access for a non logged in user
