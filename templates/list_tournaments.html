@@ -7,8 +7,8 @@
 <div class="list_tournaments_card">
   <div class="container">
     <h3>Tournaments:</h3> {% if tournaments %} {% for tournament in tournaments %}
-    <a href='/list_tournaments?tournament_id={{tournament.id}}'>
-      <p class="tournament_name">{{tournament.name}}</p>
+    <a href='/leaderboard?tournament_id={{tournament.id}}'>
+      <p>{{tournament.name}}</p>
     </a>
     {% endfor%} {% endif %}
   </div>
