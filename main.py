@@ -25,6 +25,7 @@ def signin():#Accessible without logging in.
             user = users.first()
             if user.password == password:
                 session['user'] = user.email#Put user email into Session variable
+                flash('welcome back, ' + user.email)
                 return redirect("/")
         flash('bad username or password')
         '''have it redirect to courses page until other controllers are implemented'''
@@ -139,10 +140,10 @@ def initiate_tournament():
         course = Course.query.filter_by(name = tournament_course).first()#assigns course database object to variable via the course name
         course_id = course.id#assigns course ID from db to variable
         session['course_id'] = course_id #puts course ID varible into session with key 'course_id'
-
+        
         if not Hole.query.filter_by(owner_id=course.id).first():#Check to see if this course has holes
             create_holes_for_course(course.name)#If no holes exsist, create them with helper
-
+        
         return render_template('tournament_initiation.html', title='Starting Tournament', course=tournament_course)#sends course name to template using Jinja
 
 @app.route('/process_players', methods=['POST', 'GET'])
@@ -154,7 +155,7 @@ def process_players():#This method sets up players in the database so that their
         player_4_Name = request.form['player4']
         tournament_Name = request.form['tournament_name']
 
-        if (player_1_Name and player_2_Name and player_3_Name and player_4_Name) == None or (player_1_Name and player_2_Name and player_3_Name and player_4_Name) == "" or (player_1_Name and player_2_Name and player_3_Name and player_4_Name) == False:
+        if (player_1_Name and player_2_Name and player_3_Name and player_4_Name == None) or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == "") or (player_1_Name and player_2_Name and player_3_Name and player_4_Name == False):
             flash('No blank names allowed, please input 4 player names.')
             return redirect('/initiate_tournament?p1='+player_1_Name+'&p2='+player_2_Name+'&p3='+player_3_Name+'&p4='+player_4_Name+'&tname='+tournament_Name)
         else:#This adds a tournament and players to the database
@@ -374,8 +375,7 @@ def list_tournaments():#Used to display tournaments that a user can select to se
             i += 1
         #print(player_Names_Dict)
 
-        last_hole_id = Score.query.filter_by(tournament_id=tournament_id).order_by(desc(Score.hole_id)).first().hole_id
-        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
+        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
 
         return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_Names_Dict=player_Names_Dict,course=course,last_hole_played=last_hole_played)
     else:
@@ -423,17 +423,40 @@ def leaderboard():#populating score data assuming a for loop will be used in the
         player_4_Name = Player.query.filter_by(id = 4).first().name
         player_names = [player_1_Name, player_2_Name,player_3_Name,player_4_Name]
 
+        namesAndScores_dict = {}
+        for i in range(len(player_names)):
+            namesAndScores_dict[player_names[i]] = all_Players_Total_Scores[i]
+        flash(namesAndScores_dict)
+        namesAndScores_val = sorted(namesAndScores_dict.values())
+        flash(namesAndScores_val)
+        
+        # p1name = namesAndScores_dict.key()[0]
+        # p1score = namesAndScores_dict.values()[0]
+        # p2name = namesAndScores_dict.key()[1]
+        # p2score =namesAndScores_dict.values()[1]
+        # p3name =  namesAndScores_dict.key()[2]
+        # p3score = namesAndScores_dict.values()[2]
+        # p4name = namesAndScores_dict.key()[3]
+        # p4score = namesAndScores_dict.values()[3]
+
+        # flash(namesAndScores_dict[0],[0])
+        # flash(p1name)
+        # flash(p1score)
+        # flash(p4name)
+        # flash(p4score)
+
+        # flash(namesAndScores_dict)
+
+
         first_score = Score.query.first()
         round_id = first_score.round_id
         course_id = first_score.course_id
         round_num = Round.query.filter_by(id = round_id).first().round_number
         course = Course.query.filter_by(id = course_id).first().name
-        
-        last_hole_id = Score.query.order_by(desc(Score.id)).first().hole_id
-        last_hole_played = Hole.query.filter_by(id=last_hole_id).first().hole_num
-       
+        last_hole_played = Score.query.order_by(desc(Score.hole_id)).first().hole_id
+        #TODO find a better way to get last hole played
 
-        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played)
+        return render_template("leaderboard.html", player_scores=all_Players_Total_Scores,round_num=round_num, player_names=player_names,course=course,last_hole_played=last_hole_played, nameScoreDict=namesAndScores_dict)
 
 
 
