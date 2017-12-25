@@ -11,3 +11,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://wz4ok3xgjr71glb0:he72rv
 app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
+
+import main
